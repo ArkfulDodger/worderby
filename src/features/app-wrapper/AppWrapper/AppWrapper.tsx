@@ -1,14 +1,30 @@
-import { ReactNode } from "react";
-import { store } from "../../../../store";
-import { Provider as ReduxProvider } from "react-redux";
+import { Provider as PaperProvider } from "react-native-paper";
+import { useAppSelector } from "../../../hooks/reduxHooks";
+import { lightTheme, darkTheme } from "../../../theme/themes";
+import { ThemeProp } from "react-native-paper/lib/typescript/src/types";
+import { StatusBar } from "expo-status-bar";
+import { NavigationContainer } from "@react-navigation/native";
+import { useMemo } from "react";
 
-export type Props = {
-  children: ReactNode;
+type Props = {
+  children: React.ReactNode;
 };
 
 // responsible for wrapping the app in global providers
 const AppWrapper = ({ children }: Props) => {
-  return <ReduxProvider store={store}>{children}</ReduxProvider>;
+  const { isDark } = useAppSelector((state) => ({
+    isDark: state.theme.isDark,
+  }));
+  const theme = useMemo(() => (isDark ? darkTheme : lightTheme), [isDark]);
+
+  return (
+    <PaperProvider theme={theme as ThemeProp}>
+      <NavigationContainer theme={theme}>
+        {children}
+        <StatusBar style={isDark ? "light" : "dark"} />
+      </NavigationContainer>
+    </PaperProvider>
+  );
 };
 
 export default AppWrapper;

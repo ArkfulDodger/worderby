@@ -1,10 +1,14 @@
+import { Provider as ReduxProvider } from "react-redux";
 import AppWrapper from "./src/features/app-wrapper/AppWrapper";
 import TestScreen from "./src/features/dev/screens/TestScreen";
+import { store } from "./store";
 
 export default function App() {
   return (
-    <AppWrapper>
-      <TestScreen />
-    </AppWrapper>
+    <ReduxProvider store={store}>
+      <AppWrapper>
+        <TestScreen />
+      </AppWrapper>
+    </ReduxProvider>
   );
 }

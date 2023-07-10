@@ -1,41 +1,26 @@
-import { StatusBar } from "expo-status-bar";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Pressable, View } from "react-native";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/reduxHooks";
-import { deposit, withdraw } from "../../../../../balanceSlice";
+import { Text } from "react-native-paper";
+import { toggleDarkMode } from "../../../../reducers/themeReducer";
+import useStyles from "../../../../hooks/useStyles";
+import { createStyles } from "./TestScreen.styles";
 
 const TestScreen = () => {
+  const styles = useStyles(createStyles);
   const dispatch = useAppDispatch();
-  const balance = useAppSelector((state) => state.balance.value);
+  const isDark = useAppSelector((state) => state.theme.isDark);
 
-  const onAddTen = () => {
-    dispatch(deposit(10));
-  };
-
-  const onSubtractTen = () => {
-    dispatch(withdraw(10));
+  const toggleTheme = () => {
+    dispatch(toggleDarkMode());
   };
 
   return (
     <View style={styles.container}>
-      <Text>Balance: {balance}</Text>
-      <Pressable onPress={onAddTen}>
-        <Text>Add 10</Text>
+      <Pressable onPress={toggleTheme}>
+        <Text>Toggle Theme: {isDark ? "Dark" : "Light"}</Text>
       </Pressable>
-      <Pressable onPress={onSubtractTen}>
-        <Text>Subtract 10</Text>
-      </Pressable>
-      <StatusBar style="auto" />
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "space-around",
-  },
-});
 
 export default TestScreen;

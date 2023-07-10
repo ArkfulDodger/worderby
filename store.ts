@@ -1,9 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
-import balanceReducer from "./balanceSlice";
+import themeReducer from "./src/reducers/themeReducer";
 
 export const store = configureStore({
   reducer: {
-    balance: balanceReducer,
+    theme: themeReducer,
   },
 });
 
