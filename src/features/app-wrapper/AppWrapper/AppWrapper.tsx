@@ -5,6 +5,7 @@ import { ThemeProp } from "react-native-paper/lib/typescript/src/types";
 import { StatusBar } from "expo-status-bar";
 import { NavigationContainer } from "@react-navigation/native";
 import { useMemo } from "react";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 type Props = {
   children: React.ReactNode;
@@ -20,8 +21,10 @@ const AppWrapper = ({ children }: Props) => {
   return (
     <PaperProvider theme={theme as ThemeProp}>
       <NavigationContainer theme={theme}>
-        {children}
-        <StatusBar style={isDark ? "light" : "dark"} />
+        <SafeAreaProvider>
+          {children}
+          <StatusBar style={isDark ? "light" : "dark"} />
+        </SafeAreaProvider>
       </NavigationContainer>
     </PaperProvider>
   );

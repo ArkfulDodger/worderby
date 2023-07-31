@@ -4,14 +4,15 @@ import { AppTheme } from "../utils/types";
 
 // take a style-creation function, and return its memoized style object, incorporating theme
 const useStyles = <T>(
-  createStyles: (theme: AppTheme) => T,
+  createStyles: (theme: AppTheme, vars?: any) => T,
+  vars: any = undefined,
   deps: any[] = []
 ): T => {
   // get the app theme, relative to where the hook has been called
   const theme = useTheme() as AppTheme;
 
   // memoize the returned styles, to be recalculated when theme or deps are changed
-  const styles = useMemo(() => createStyles(theme), [theme, ...deps]);
+  const styles = useMemo(() => createStyles(theme, vars), [theme, ...deps]);
 
   return styles;
 };
