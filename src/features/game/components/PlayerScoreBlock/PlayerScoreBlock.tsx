@@ -4,19 +4,19 @@ import { createStyles } from "./PlayerScoreBlock.styles";
 import { Avatar, Text } from "react-native-paper";
 
 export type Props = {
-  isPlayer1?: boolean;
+  isPlayer?: boolean;
 };
 
-const PlayerScoreBlock = ({ isPlayer1 = false }: Props) => {
-  const styles = useStyles(createStyles, isPlayer1, [isPlayer1]);
+const PlayerScoreBlock = ({ isPlayer = false }: Props) => {
+  const styles = useStyles(createStyles, isPlayer, [isPlayer]);
 
   return (
     <View style={[styles.container]}>
-      <Text style={[styles.score]}>{isPlayer1 ? 404 : 666}</Text>
+      <Text style={[styles.score]}>{isPlayer ? 404 : 666}</Text>
       <View style={styles.playerInfo}>
         <Avatar.Icon icon="account" style={styles.avatar} size={20} />
         <Text numberOfLines={1} style={styles.playerName}>
-          {isPlayer1 ? "John" : "Jane"} Doe
+          {isPlayer ? "John" : "Jane"} Doe
         </Text>
       </View>
     </View>

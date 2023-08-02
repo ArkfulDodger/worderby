@@ -15,21 +15,21 @@ interface DynamicStyles {
 
 export interface Styles extends StaticStyles, DynamicStyles {}
 
-export const createStyles = (theme: AppTheme, isPlayer1: boolean): Styles => {
+export const createStyles = (theme: AppTheme, isPlayer: boolean): Styles => {
   const staticStyles = StyleSheet.create<StaticStyles>({
     container: {
-      alignItems: isPlayer1 ? "flex-start" : "flex-end",
+      alignItems: isPlayer ? "flex-start" : "flex-end",
     },
     score: {
       fontSize: 30,
     },
     playerInfo: {
-      flexDirection: isPlayer1 ? "row" : "row-reverse",
+      flexDirection: isPlayer ? "row" : "row-reverse",
       alignItems: "center",
     },
     avatar: {
-      marginLeft: isPlayer1 ? 0 : 10,
-      marginRight: isPlayer1 ? 10 : 0,
+      marginLeft: isPlayer ? 0 : 10,
+      marginRight: isPlayer ? 10 : 0,
     },
     playerName: {
       //
