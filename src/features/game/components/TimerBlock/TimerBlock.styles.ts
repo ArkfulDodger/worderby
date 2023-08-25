@@ -11,7 +11,7 @@ export const createStyles = (theme: AppTheme): Styles => {
 
   return StyleSheet.create<Styles>({
     container: {
-      backgroundColor: "yellow",
+      backgroundColor: theme.colors.inverseOnSurface,
       width: size,
       height: size,
       borderRadius: size * 0.5,
@@ -22,6 +22,8 @@ export const createStyles = (theme: AppTheme): Styles => {
     },
     counter: {
       fontSize: 26,
+      color: theme.colors.text,
+      fontWeight: "bold",
     },
   });
 };
