@@ -15,6 +15,7 @@ import { IconButton, Surface, Text, TouchableRipple } from "react-native-paper";
 import Button from "../../../../components/atoms/Button";
 import { useMemo, useRef, useState } from "react";
 import PromptGestureHandler from "../../components/PromptGestureHandler";
+import GameTextInput from "../../components/GameTextInput";
 
 export type Props = {};
 
@@ -41,10 +42,10 @@ const GamePage = ({}: Props) => {
 
   // turn variables
   const timerCount = 5;
-  const wordInput = "er";
 
-  // the pIndex the player is trying to enact
+  // the playerInputs
   const [pIndexInput, setPIndexInput] = useState<number>(1);
+  const [wordInput, setWordInput] = useState("");
 
   // the active pIndex (cannot be lower than 1)
   const pIndex = useMemo(() => Math.max(1, pIndexInput), [pIndexInput]);
@@ -55,6 +56,10 @@ const GamePage = ({}: Props) => {
 
   // handle the prompt gesture input
   const handlePromptInput = (index: number) => setPIndexInput(index);
+
+  const handleWordInput = (str: string) => {
+    setWordInput(str);
+  };
 
   // play the worderbyte audio
   const playWorderbyte = () => {
@@ -96,11 +101,10 @@ const GamePage = ({}: Props) => {
           <View>
             <Text style={styles.stolenLetters}>{usedPrompt}</Text>
           </View>
-          <TextInput
-            ref={playerInputRef}
-            style={styles.input}
+          <GameTextInput
+            inputRef={playerInputRef}
             value={wordInput}
-            returnKeyLabel="Submit"
+            onChangeText={handleWordInput}
           />
         </Pressable>
         <PromptGestureHandler

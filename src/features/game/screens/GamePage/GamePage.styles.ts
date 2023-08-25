@@ -12,7 +12,6 @@ export interface Styles {
   worderbyte: TextStyle;
   playWord: ViewStyle;
   stolenLetters: TextStyle;
-  input: TextStyle;
   promptInput: ViewStyle;
   unusable: TextStyle;
   unused: TextStyle;
@@ -58,7 +57,6 @@ export const createStyles = (theme: AppTheme, insets: EdgeInsets): Styles => {
     worderbyte: {
       fontSize: 15,
     },
-
     playWord: {
       flex: 2,
       alignItems: "center",
@@ -68,10 +66,6 @@ export const createStyles = (theme: AppTheme, insets: EdgeInsets): Styles => {
     stolenLetters: {
       fontSize: 30,
       color: "magenta",
-    },
-    input: {
-      fontSize: 30,
-      textDecorationLine: "underline",
     },
     promptInput: {
       alignItems: "center",
