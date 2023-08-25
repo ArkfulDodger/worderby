@@ -11,36 +11,56 @@ import PlayerScoreBlock from "../../components/PlayerScoreBlock";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import TimerBlock from "../../components/TimerBlock";
 import TurnCounter from "../../components/TurnCounter";
-import { IconButton, Surface, Text } from "react-native-paper";
+import { IconButton, Surface, Text, TouchableRipple } from "react-native-paper";
 import Button from "../../../../components/atoms/Button";
+import { useMemo, useRef, useState } from "react";
+import PromptGestureHandler from "../../components/PromptGestureHandler";
 
 export type Props = {};
 
 export type GameUser = {};
 
 const GamePage = ({}: Props) => {
+  // hooks
   const insets = useSafeAreaInsets();
   const styles = useStyles(createStyles, insets, [insets]);
 
-  let playerScore = 404;
-  let opponentScore = 666;
-  let playerTurnCount = 2;
-  let opponentTurnCount = 1;
-  let timerCount = 5;
+  // refs
+  const playerInputRef = useRef<TextInput>(null);
 
-  let worderbyte = "word";
+  // settings
+  const isMuted = false;
 
-  let wordInput = "er";
+  // game state
+  const playerScore = 404;
+  const opponentScore = 666;
+  const playerTurnCount = 2;
+  const opponentTurnCount = 1;
+  const worderbyte = "word";
+  const prompt = "word";
 
-  let promptWord: string = "word";
-  let pIndexInput: number = 1;
-  let pIndex = Math.max(1, pIndexInput);
-  let usedPrompt = promptWord.slice(pIndex);
-  let unusedPrompt = promptWord.slice(0, pIndex);
+  // turn variables
+  const timerCount = 5;
+  const wordInput = "er";
 
-  const focusInput = () => {
-    //
-  };
+  // the pIndex the player is trying to enact
+  const [pIndexInput, setPIndexInput] = useState<number>(1);
+
+  // the active pIndex (cannot be lower than 1)
+  const pIndex = useMemo(() => Math.max(1, pIndexInput), [pIndexInput]);
+
+  // the prompt string pieces which are used/unused
+  const usedPrompt = useMemo(() => prompt.slice(pIndex), [prompt, pIndex]);
+  const unusedPrompt = useMemo(() => prompt.slice(0, pIndex), [prompt, pIndex]);
+
+  // handle the prompt gesture input
+  const handlePromptInput = (index: number) => setPIndexInput(index);
+
+  // play the worderbyte audio
+  const playWorderbyte = () => {};
+
+  // focus the player text input
+  const focusInput = () => {};
 
   return (
     <View style={styles.container}>
@@ -54,9 +74,12 @@ const GamePage = ({}: Props) => {
           </View>
           <PlayerScoreBlock />
         </Surface>
-        <Pressable style={styles.worderbyteContainer}>
+        <TouchableRipple
+          onPress={playWorderbyte}
+          style={styles.worderbyteContainer}
+        >
           <Text style={styles.worderbyte}>{worderbyte}</Text>
-        </Pressable>
+        </TouchableRipple>
       </Surface>
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -66,21 +89,32 @@ const GamePage = ({}: Props) => {
           <View>
             <Text style={styles.stolenLetters}>{usedPrompt}</Text>
           </View>
-          <TextInput style={styles.input} value={wordInput} />
+          <TextInput
+            ref={playerInputRef}
+            style={styles.input}
+            value={wordInput}
+            returnKeyLabel="Submit"
+          />
         </Pressable>
-        <Pressable style={styles.promptInput}>
-          <Text style={styles.prompt}>
-            <Text style={pIndex === 0 ? styles.unusable : styles.unused}>
-              {unusedPrompt}
+        <PromptGestureHandler
+          promptLength={prompt.length}
+          pIndex={pIndex}
+          updatePromptInput={handlePromptInput}
+        >
+          <View style={styles.promptInput}>
+            <Text style={styles.prompt}>
+              <Text style={pIndexInput === 0 ? styles.unusable : styles.unused}>
+                {unusedPrompt}
+              </Text>
+              {usedPrompt}
             </Text>
-            {usedPrompt}
-          </Text>
-        </Pressable>
+          </View>
+        </PromptGestureHandler>
       </KeyboardAvoidingView>
       <Surface style={styles.footer}>
         <IconButton icon="home" />
         <Button>SUBMIT</Button>
-        <IconButton icon="volume-off" />
+        <IconButton icon={isMuted ? "volume-off" : "volume-high"} />
       </Surface>
     </View>
   );

@@ -80,6 +80,7 @@ export const createStyles = (theme: AppTheme, insets: EdgeInsets): Styles => {
       alignItems: "center",
       justifyContent: "center",
       flex: 1,
+      backgroundColor: "yellow",
     },
     unusable: {
       color: "red",
