@@ -2,7 +2,9 @@ import { StyleSheet, TextStyle, ViewStyle } from "react-native";
 import { AppTheme } from "../../../../utils/types";
 import { EdgeInsets } from "react-native-safe-area-context";
 
-export interface Styles {
+interface StaticStyles {
+  container: ViewStyle;
+  keyboardAwareContainer: ViewStyle;
   headerContainer: ViewStyle;
   playAreaContainer: ViewStyle;
   footerContainer: ViewStyle;
@@ -18,8 +20,18 @@ export interface Styles {
   prompt: TextStyle;
 }
 
+interface DynamicStyles {}
+
+export interface Styles extends StaticStyles, DynamicStyles {}
+
 export const createStyles = (theme: AppTheme, insets: EdgeInsets): Styles => {
-  return StyleSheet.create<Styles>({
+  const staticStyles = StyleSheet.create<StaticStyles>({
+    container: {
+      flex: 1,
+    },
+    keyboardAwareContainer: {
+      flex: 1,
+    },
     headerContainer: {
       backgroundColor: "#DDDDDD",
     },
@@ -70,6 +82,7 @@ export const createStyles = (theme: AppTheme, insets: EdgeInsets): Styles => {
     promptInput: {
       alignItems: "center",
       justifyContent: "center",
+      backgroundColor: theme.colors.primaryContainer,
       flex: 1,
     },
     unusable: {
@@ -85,4 +98,10 @@ export const createStyles = (theme: AppTheme, insets: EdgeInsets): Styles => {
       fontWeight: "bold",
     },
   });
+
+  const dynamicStyles: DynamicStyles = {
+    //
+  };
+
+  return { ...staticStyles, ...dynamicStyles };
 };

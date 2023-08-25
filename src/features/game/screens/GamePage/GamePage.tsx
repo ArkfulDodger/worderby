@@ -7,15 +7,15 @@ import {
 } from "react-native";
 import useStyles from "../../../../hooks/useStyles";
 import { createStyles } from "./GamePage.styles";
-import PlayerScoreBlock from "../../components/PlayerScoreBlock";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import TimerBlock from "../../components/TimerBlock";
-import TurnCounter from "../../components/TurnCounter";
 import { IconButton, Surface, Text, TouchableRipple } from "react-native-paper";
-import Button from "../../../../components/atoms/Button";
 import { useMemo, useRef, useState } from "react";
 import PromptGestureHandler from "../../components/PromptGestureHandler";
 import GameTextInput from "../../components/GameTextInput";
+import Button from "../../../../components/atoms/Button";
+import PlayerScoreBlock from "../../components/PlayerScoreBlock";
+import TurnCounter from "../../components/TurnCounter";
+import TimerBlock from "../../components/TimerBlock";
 
 export type Props = {};
 
@@ -73,62 +73,64 @@ const GamePage = ({}: Props) => {
     playerInputRef.current?.isFocused() ? blurInput() : focusInput();
 
   return (
-    // TODO:  if placed in a container, container's height must be defined for Android
-    //        for Android keyboard behavior to function properly. iOS can be flex 1
-    <>
-      <Surface style={styles.headerContainer}>
-        <Surface style={styles.header}>
-          <PlayerScoreBlock isPlayer />
-          <View style={styles.centerContainer}>
-            <TurnCounter value={playerTurnCount} />
-            <TimerBlock count={timerCount} />
-            <TurnCounter value={opponentTurnCount} />
-          </View>
-          <PlayerScoreBlock />
-        </Surface>
-        <TouchableRipple
-          onPress={playWorderbyte}
-          style={styles.worderbyteContainer}
-        >
-          <Text style={styles.worderbyte}>{worderbyte}</Text>
-        </TouchableRipple>
-      </Surface>
+    <View style={styles.container}>
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={styles.playAreaContainer}
+        style={styles.keyboardAwareContainer}
       >
-        <Pressable onPress={toggleInputFocus} style={styles.playWord}>
-          <View>
-            <Text style={styles.stolenLetters}>{usedPrompt}</Text>
-          </View>
-          <GameTextInput
-            inputRef={playerInputRef}
-            value={wordInput}
-            onChangeText={handleWordInput}
-          />
-        </Pressable>
-        <PromptGestureHandler
-          promptLength={prompt.length}
-          pIndex={pIndex}
-          updatePromptInput={handlePromptInput}
-          focusInput={focusInput}
-        >
-          <Pressable onPress={blurInput} style={styles.promptInput}>
-            <Text style={styles.prompt}>
-              <Text style={pIndexInput === 0 ? styles.unusable : styles.unused}>
-                {unusedPrompt}
-              </Text>
-              {usedPrompt}
-            </Text>
+        <Surface style={styles.headerContainer}>
+          <Surface style={styles.header}>
+            <PlayerScoreBlock isPlayer />
+            <View style={styles.centerContainer}>
+              <TurnCounter value={playerTurnCount} />
+              <TimerBlock count={timerCount} />
+              <TurnCounter value={opponentTurnCount} />
+            </View>
+            <PlayerScoreBlock />
+          </Surface>
+          <TouchableRipple
+            onPress={playWorderbyte}
+            style={styles.worderbyteContainer}
+          >
+            <Text style={styles.worderbyte}>{worderbyte}</Text>
+          </TouchableRipple>
+        </Surface>
+        <View style={styles.playAreaContainer}>
+          <Pressable onPress={toggleInputFocus} style={styles.playWord}>
+            <View>
+              <Text style={styles.stolenLetters}>{usedPrompt}</Text>
+            </View>
+            <GameTextInput
+              inputRef={playerInputRef}
+              value={wordInput}
+              onChangeText={handleWordInput}
+            />
           </Pressable>
-        </PromptGestureHandler>
+          <PromptGestureHandler
+            promptLength={prompt.length}
+            pIndex={pIndex}
+            updatePromptInput={handlePromptInput}
+            focusInput={focusInput}
+          >
+            <Pressable onPress={blurInput} style={styles.promptInput}>
+              <Text style={styles.prompt}>
+                <Text
+                  style={pIndexInput === 0 ? styles.unusable : styles.unused}
+                >
+                  {unusedPrompt}
+                </Text>
+                {usedPrompt}
+              </Text>
+            </Pressable>
+          </PromptGestureHandler>
+        </View>
       </KeyboardAvoidingView>
       <Surface style={styles.footerContainer}>
         <IconButton icon="home" />
         <Button>SUBMIT</Button>
         <IconButton icon={isMuted ? "volume-off" : "volume-high"} />
       </Surface>
-    </>
+    </View>
   );
 };
 
