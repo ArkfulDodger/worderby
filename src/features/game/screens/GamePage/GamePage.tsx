@@ -59,8 +59,11 @@ const GamePage = ({}: Props) => {
   // play the worderbyte audio
   const playWorderbyte = () => {};
 
-  // focus the player text input
-  const focusInput = () => {};
+  // focus or blur the player text input
+  const focusInput = () => playerInputRef.current?.focus();
+  const blurInput = () => playerInputRef.current?.blur();
+  const toggleInputFocus = () =>
+    playerInputRef.current?.isFocused() ? blurInput() : focusInput();
 
   return (
     <View style={styles.container}>
@@ -85,7 +88,7 @@ const GamePage = ({}: Props) => {
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.playArea}
       >
-        <Pressable onPress={focusInput} style={styles.playWord}>
+        <Pressable onPress={toggleInputFocus} style={styles.playWord}>
           <View>
             <Text style={styles.stolenLetters}>{usedPrompt}</Text>
           </View>
@@ -100,15 +103,16 @@ const GamePage = ({}: Props) => {
           promptLength={prompt.length}
           pIndex={pIndex}
           updatePromptInput={handlePromptInput}
+          focusInput={focusInput}
         >
-          <View style={styles.promptInput}>
+          <Pressable onPress={blurInput} style={styles.promptInput}>
             <Text style={styles.prompt}>
               <Text style={pIndexInput === 0 ? styles.unusable : styles.unused}>
                 {unusedPrompt}
               </Text>
               {usedPrompt}
             </Text>
-          </View>
+          </Pressable>
         </PromptGestureHandler>
       </KeyboardAvoidingView>
       <Surface style={styles.footer}>
