@@ -57,7 +57,9 @@ const GamePage = ({}: Props) => {
   const handlePromptInput = (index: number) => setPIndexInput(index);
 
   // play the worderbyte audio
-  const playWorderbyte = () => {};
+  const playWorderbyte = () => {
+    console.log("Pressed");
+  };
 
   // focus or blur the player text input
   const focusInput = () => playerInputRef.current?.focus();
@@ -66,7 +68,9 @@ const GamePage = ({}: Props) => {
     playerInputRef.current?.isFocused() ? blurInput() : focusInput();
 
   return (
-    <View style={styles.container}>
+    // TODO:  if placed in a container, container's height must be defined for Android
+    //        for Android keyboard behavior to function properly. iOS can be flex 1
+    <>
       <Surface style={styles.headerContainer}>
         <Surface style={styles.header}>
           <PlayerScoreBlock isPlayer />
@@ -86,7 +90,7 @@ const GamePage = ({}: Props) => {
       </Surface>
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={styles.playArea}
+        style={styles.playAreaContainer}
       >
         <Pressable onPress={toggleInputFocus} style={styles.playWord}>
           <View>
@@ -115,12 +119,12 @@ const GamePage = ({}: Props) => {
           </Pressable>
         </PromptGestureHandler>
       </KeyboardAvoidingView>
-      <Surface style={styles.footer}>
+      <Surface style={styles.footerContainer}>
         <IconButton icon="home" />
         <Button>SUBMIT</Button>
         <IconButton icon={isMuted ? "volume-off" : "volume-high"} />
       </Surface>
-    </View>
+    </>
   );
 };
 

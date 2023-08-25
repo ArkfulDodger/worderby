@@ -3,14 +3,13 @@ import { AppTheme } from "../../../../utils/types";
 import { EdgeInsets } from "react-native-safe-area-context";
 
 export interface Styles {
-  container: ViewStyle;
   headerContainer: ViewStyle;
+  playAreaContainer: ViewStyle;
+  footerContainer: ViewStyle;
   header: ViewStyle;
   centerContainer: ViewStyle;
   worderbyteContainer: ViewStyle;
   worderbyte: TextStyle;
-  playArea: ViewStyle;
-  footer: ViewStyle;
   playWord: ViewStyle;
   stolenLetters: TextStyle;
   input: TextStyle;
@@ -22,11 +21,20 @@ export interface Styles {
 
 export const createStyles = (theme: AppTheme, insets: EdgeInsets): Styles => {
   return StyleSheet.create<Styles>({
-    container: {
-      flex: 1,
-    },
     headerContainer: {
       backgroundColor: "#DDDDDD",
+    },
+    playAreaContainer: {
+      flex: 1,
+    },
+    footerContainer: {
+      flexDirection: "row",
+      justifyContent: "space-evenly",
+      alignItems: "center",
+      paddingBottom: insets.bottom,
+      shadowOffset: { width: 0, height: 0 },
+      shadowOpacity: 0.5,
+      shadowRadius: 2,
     },
     header: {
       paddingTop: insets.top,
@@ -50,18 +58,7 @@ export const createStyles = (theme: AppTheme, insets: EdgeInsets): Styles => {
     worderbyte: {
       fontSize: 15,
     },
-    playArea: {
-      flex: 1,
-    },
-    footer: {
-      flexDirection: "row",
-      justifyContent: "space-evenly",
-      alignItems: "center",
-      paddingBottom: insets.bottom,
-      shadowOffset: { width: 0, height: 0 },
-      shadowOpacity: 0.5,
-      shadowRadius: 2,
-    },
+
     playWord: {
       flex: 2,
       alignItems: "center",
