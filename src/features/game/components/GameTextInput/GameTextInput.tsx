@@ -138,7 +138,7 @@ const GameTextInput = ({
         enablesReturnKeyAutomatically // ios
         importantForAutofill="no" // android
         keyboardType="ascii-capable" // ios
-        maxLength={5}
+        maxLength={50} // longest english word is 45 letters
         onBlur={hideCaret}
         onChangeText={handleChangeText}
         onFocus={showCaret}
