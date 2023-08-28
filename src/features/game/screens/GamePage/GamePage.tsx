@@ -47,6 +47,9 @@ const GamePage = ({}: Props) => {
   const [pIndexInput, setPIndexInput] = useState<number>(1);
   const [wordInput, setWordInput] = useState("");
 
+  // the input timeout for auto-merges (for voice typing)
+  const [autoMergeTimeout, setAutoMergeTimeout] = useState<NodeJS.Timeout>();
+
   // the active pIndex (cannot be lower than 1)
   const pIndex = useMemo(() => Math.max(1, pIndexInput), [pIndexInput]);
 
@@ -57,7 +60,28 @@ const GamePage = ({}: Props) => {
   // handle the prompt gesture input
   const handlePromptInput = (index: number) => setPIndexInput(index);
 
+  // adjust word input into a compatible prompt portion (for voice typing)
+  const autoMerge = (str?: string) => {
+    let text = str || wordInput;
+
+    for (let i = 1; i < prompt.length; i++) {
+      const possiblePrompt = prompt.slice(i);
+      if (text.startsWith(possiblePrompt)) {
+        setPIndexInput(i);
+        setWordInput(text.slice(possiblePrompt.length));
+        return;
+      }
+    }
+  };
+
   const handleWordInput = (str: string) => {
+    // assume an input change of more than one letter at a time might be a whole word
+    if (Math.abs(str.length - wordInput.length) > 1) {
+      clearTimeout(autoMergeTimeout);
+      const timeout = setTimeout(() => autoMerge(str), 300);
+      setAutoMergeTimeout(timeout);
+    }
+
     setWordInput(str);
   };
 
