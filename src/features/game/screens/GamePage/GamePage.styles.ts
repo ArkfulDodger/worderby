@@ -16,11 +16,12 @@ interface StaticStyles {
   stolenLetters: TextStyle;
   promptInput: ViewStyle;
   unusable: TextStyle;
-  unused: TextStyle;
-  prompt: TextStyle;
 }
 
-interface DynamicStyles {}
+interface DynamicStyles {
+  prompt: (size: number, display: boolean) => TextStyle;
+  unused: (forceBold: boolean) => TextStyle;
+}
 
 export interface Styles extends StaticStyles, DynamicStyles {}
 
@@ -84,23 +85,30 @@ export const createStyles = (theme: AppTheme, insets: EdgeInsets): Styles => {
       justifyContent: "center",
       backgroundColor: theme.colors.primaryContainer,
       flex: 1,
+      padding: 15,
     },
     unusable: {
+      fontSize: undefined, // inherit from prompt
+      textAlign: undefined, // inherit from prompt
       color: "red",
-    },
-    unused: {
-      color: "magenta",
-      opacity: 0.5,
-    },
-    prompt: {
-      fontSize: 20,
-      color: "magenta",
-      fontWeight: "bold",
+      fontWeight: "normal",
     },
   });
 
   const dynamicStyles: DynamicStyles = {
-    //
+    prompt: (size: number, display: boolean) => ({
+      fontSize: size,
+      color: display ? "magenta" : "transparent",
+      fontWeight: "bold",
+      textAlign: "center",
+    }),
+    unused: (forceBold: boolean) => ({
+      fontSize: undefined, // inherit from prompt
+      color: undefined, // inherit from prompt
+      textAlign: undefined, // inherit from prompt
+      opacity: 0.5,
+      fontWeight: forceBold ? "bold" : "normal", // force bold prior to display for sizing
+    }),
   };
 
   return { ...staticStyles, ...dynamicStyles };

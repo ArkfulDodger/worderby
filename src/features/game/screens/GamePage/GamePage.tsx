@@ -16,6 +16,7 @@ import Button from "../../../../components/atoms/Button";
 import PlayerScoreBlock from "../../components/PlayerScoreBlock";
 import TurnCounter from "../../components/TurnCounter";
 import TimerBlock from "../../components/TimerBlock";
+import useResizingFont from "../../../../hooks/useResizingFont";
 
 export type Props = {};
 
@@ -25,6 +26,11 @@ const GamePage = ({}: Props) => {
   // hooks
   const insets = useSafeAreaInsets();
   const styles = useStyles(createStyles, insets, [insets]);
+  const {
+    isFontSized: isPromptSized,
+    fontSize: promptFontSize,
+    onTextLayout: onPromptTextLayout,
+  } = useResizingFont({ minFontSize: 15, startingFontSize: 20 });
 
   // refs
   const playerInputRef = useRef<TextInput>(null);
@@ -38,13 +44,15 @@ const GamePage = ({}: Props) => {
   const playerTurnCount = 2;
   const opponentTurnCount = 1;
   const worderbyte = "word";
-  const prompt = "word";
+  const prompt = "pneumonoultramicroscopicsilicovolcanoconiosis";
+
+  // longest word: pneumonoultramicroscopicsilicovolcanoconiosis
 
   // turn variables
   const timerCount = 5;
 
   // the playerInputs
-  const [pIndexInput, setPIndexInput] = useState<number>(1);
+  const [pIndexInput, setPIndexInput] = useState<number>(prompt.length - 1);
   const [wordInput, setWordInput] = useState("");
 
   // the input timeout for auto-merges (for voice typing)
@@ -137,9 +145,17 @@ const GamePage = ({}: Props) => {
             focusInput={focusInput}
           >
             <Pressable onPress={blurInput} style={styles.promptInput}>
-              <Text style={styles.prompt}>
+              <Text
+                onTextLayout={onPromptTextLayout}
+                style={styles.prompt(promptFontSize, isPromptSized)}
+              >
                 <Text
-                  style={pIndexInput === 0 ? styles.unusable : styles.unused}
+                  onTextLayout={onPromptTextLayout}
+                  style={
+                    pIndexInput === 0
+                      ? styles.unusable
+                      : styles.unused(!isPromptSized)
+                  }
                 >
                   {unusedPrompt}
                 </Text>
