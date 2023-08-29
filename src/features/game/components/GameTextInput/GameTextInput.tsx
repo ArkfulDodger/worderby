@@ -37,12 +37,6 @@ const GameTextInput = ({
   const styles = useStyles(createStyles, fontSize, [fontSize]);
   const { colors } = useTheme() as AppTheme;
 
-  // useEffect(() => {
-  //   const listener = Keyboard.addListener("keyboardWillHide", (e) => {
-  //     Keyboard.
-  //   })
-  // }, [])
-
   // the height of the text, including padding
   const [textHeight, setTextHeight] = useState<number>();
 
@@ -64,6 +58,34 @@ const GameTextInput = ({
       hideCaret();
     }
   };
+
+  // switch inputs from single to multiline if on ios
+  useEffect(() => {
+    if (Platform.OS !== "ios") return;
+
+    if (multiline) {
+      multilineInputRef.current?.focus();
+    } else {
+      inputRef.current?.focus();
+    }
+  }, [multiline]);
+
+  // focus input on android after first render (keyboard layout bug if immediate focus)
+  const [hasRendered, setHasRendered] = useState(false);
+  const [hasFocusedFirst, setHasFocusedFirst] = useState(false);
+  useEffect(() => {
+    console.log("ran");
+    if (
+      Platform.OS === "android" &&
+      inputRef.current &&
+      hasRendered &&
+      !hasFocusedFirst
+    ) {
+      console.log("did it");
+      setHasFocusedFirst(true);
+      inputRef.current.focus();
+    }
+  }, [inputRef.current, hasRendered]);
 
   // the descent of the font (half the distance for android)
   const descent = useMemo(() => {
@@ -124,19 +146,11 @@ const GameTextInput = ({
     }
   };
 
-  // switch inputs from single to multiline if on ios
-  useEffect(() => {
-    if (Platform.OS !== "ios") return;
-
-    if (multiline) {
-      multilineInputRef.current?.focus();
-    } else {
-      inputRef.current?.focus();
-    }
-  }, [multiline]);
-
   return (
-    <View style={[containerStyle, { overflow: "visible" }]}>
+    <View
+      onLayout={() => !hasRendered && setHasRendered(true)}
+      style={[containerStyle, { overflow: "visible" }]}
+    >
       {descent && !multiline && <View style={styles.underline(descent)} />}
       {!multiline && (
         <View style={styles.mockInputContainer(textHeight)}>
