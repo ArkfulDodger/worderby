@@ -10,21 +10,23 @@ import {
 } from "react-native";
 import useStyles from "../../../../hooks/useStyles";
 import { createStyles } from "./GameTextInput.styles";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTheme } from "react-native-paper";
 import { AppTheme } from "../../../../utils/types";
 
 export type Props = TextInputProps & {
   containerStyle?: ViewStyle;
   inputRef: React.RefObject<TextInput>;
+  multilineInputRef: React.RefObject<TextInput>;
   fontSize?: number;
 };
 
-const AUTO_FOCUS = false; // leave off to fix Android Keyboard Padding Issue
+const AUTO_FOCUS = Platform.OS !== "android"; // leave off to fix Android Keyboard Padding Issue
 
 const GameTextInput = ({
   containerStyle,
   inputRef,
+  multilineInputRef,
   fontSize = 30,
   style,
   value,
@@ -34,6 +36,12 @@ const GameTextInput = ({
 }: Props) => {
   const styles = useStyles(createStyles, fontSize, [fontSize]);
   const { colors } = useTheme() as AppTheme;
+
+  // useEffect(() => {
+  //   const listener = Keyboard.addListener("keyboardWillHide", (e) => {
+  //     Keyboard.
+  //   })
+  // }, [])
 
   // the height of the text, including padding
   const [textHeight, setTextHeight] = useState<number>();
@@ -116,8 +124,19 @@ const GameTextInput = ({
     }
   };
 
+  // switch inputs from single to multiline if on ios
+  useEffect(() => {
+    if (Platform.OS !== "ios") return;
+
+    if (multiline) {
+      multilineInputRef.current?.focus();
+    } else {
+      inputRef.current?.focus();
+    }
+  }, [multiline]);
+
   return (
-    <View style={[containerStyle]}>
+    <View style={[containerStyle, { overflow: "visible" }]}>
       {descent && !multiline && <View style={styles.underline(descent)} />}
       {!multiline && (
         <View style={styles.mockInputContainer(textHeight)}>
@@ -130,38 +149,112 @@ const GameTextInput = ({
           </Text>
         </View>
       )}
-      <TextInput
-        ref={inputRef}
-        value={value}
-        multiline={multiline}
-        numberOfLines={multiline ? 2 : 1}
-        style={[
-          styles.text,
-          style,
-          multiline ? styles.multiline : styles.hiddenInput,
-        ]}
-        autoCapitalize="none"
-        autoComplete="off"
-        autoCorrect={false}
-        autoFocus={AUTO_FOCUS}
-        blurOnSubmit={false}
-        caretHidden={!multiline}
-        contextMenuHidden={true}
-        cursorColor={multiline ? colors.outline : "transparent"}
-        disableFullscreenUI // android
-        enablesReturnKeyAutomatically // ios
-        importantForAutofill="no" // android
-        keyboardType="ascii-capable" // ios
-        maxLength={44} // longest english word is 45 letters
-        onBlur={hideCaret}
-        onChangeText={handleChangeText}
-        onFocus={showCaret}
-        onLayout={(e) => setTextHeight(e.nativeEvent.layout.height)}
-        onSelectionChange={handleSelectionChange}
-        returnKeyType="go"
-        selectTextOnFocus={false}
-        {...props}
-      />
+      {Platform.OS === "ios" && (
+        <>
+          <TextInput
+            ref={inputRef}
+            value={value}
+            multiline={false}
+            numberOfLines={1}
+            // pointerEvents={multiline ? "box-none" : "auto"}
+            style={[
+              styles.text,
+              style,
+              styles.hiddenInput,
+              multiline ? styles.hiddenMultiline : undefined,
+            ]}
+            autoFocus={!multiline}
+            caretHidden={true}
+            cursorColor={!multiline ? colors.outline : "transparent"}
+            onSelectionChange={multiline ? undefined : handleSelectionChange}
+            autoCapitalize="none"
+            autoComplete="off"
+            autoCorrect={false}
+            blurOnSubmit={false}
+            contextMenuHidden={true}
+            disableFullscreenUI // android
+            enablesReturnKeyAutomatically // ios
+            importantForAutofill="no" // android
+            keyboardType="ascii-capable" // ios
+            maxLength={44} // longest english word is 45 letters
+            onBlur={hideCaret}
+            onChangeText={handleChangeText}
+            onFocus={showCaret}
+            onLayout={(e) => setTextHeight(e.nativeEvent.layout.height)}
+            returnKeyType="go"
+            selectTextOnFocus={false}
+            {...props}
+          />
+          <TextInput
+            ref={multilineInputRef}
+            // pointerEvents={multiline ? "auto" : "box-none"}
+            value={value}
+            multiline={true}
+            numberOfLines={multiline ? 3 : 1}
+            style={[
+              styles.text,
+              style,
+              styles.multiline,
+              styles.multilinePadding,
+              multiline ? undefined : styles.hiddenMultiline,
+            ]}
+            autoFocus={multiline}
+            caretHidden={!multiline}
+            cursorColor={multiline ? colors.outline : "transparent"}
+            onSelectionChange={multiline ? handleSelectionChange : undefined}
+            autoCapitalize="none"
+            autoComplete="off"
+            autoCorrect={false}
+            blurOnSubmit={false}
+            contextMenuHidden={true}
+            disableFullscreenUI // android
+            enablesReturnKeyAutomatically // ios
+            importantForAutofill="no" // android
+            keyboardType="ascii-capable" // ios
+            maxLength={44} // longest english word is 45 letters
+            onBlur={hideCaret}
+            onChangeText={handleChangeText}
+            onFocus={showCaret}
+            returnKeyType="go"
+            selectTextOnFocus={false}
+            {...props}
+          />
+        </>
+      )}
+      {Platform.OS !== "ios" && (
+        <TextInput
+          ref={inputRef}
+          value={value}
+          multiline={multiline}
+          numberOfLines={multiline ? 3 : 1}
+          style={[
+            styles.text,
+            style,
+            multiline ? styles.multiline : styles.hiddenInput,
+          ]}
+          autoCapitalize="none"
+          autoComplete="off"
+          autoCorrect={false}
+          autoFocus={AUTO_FOCUS}
+          blurOnSubmit={false}
+          caretHidden={!multiline}
+          contextMenuHidden={true}
+          cursorColor={multiline ? colors.outline : "transparent"}
+          disableFullscreenUI // android
+          enablesReturnKeyAutomatically // ios
+          importantForAutofill="no" // android
+          keyboardType="ascii-capable" // ios
+          maxLength={44} // longest english word is 45 letters
+          onBlur={hideCaret}
+          onChangeText={handleChangeText}
+          onFocus={showCaret}
+          onLayout={(e) => setTextHeight(e.nativeEvent.layout.height)}
+          onSelectionChange={handleSelectionChange}
+          returnKeyType="go"
+          selectTextOnFocus={false}
+          {...props}
+        />
+      )}
     </View>
   );
 };

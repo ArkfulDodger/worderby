@@ -42,6 +42,7 @@ const GamePage = ({}: Props) => {
 
   // refs
   const playerInputRef = useRef<TextInput>(null);
+  const multilineInputRef = useRef<TextInput>(null);
 
   // settings
   const isMuted = false;
@@ -52,9 +53,9 @@ const GamePage = ({}: Props) => {
   const playerTurnCount = 2;
   const opponentTurnCount = 1;
   const worderbyte = "word";
-  const prompt = "pneumonoultramicroscopicsilicovolcanoconiosis";
+  const prompt = "word";
 
-  // longest word: pneumonoultramicroscopicsilicovolcanoconiosis
+  // longest English word (for testing): pneumonoultramicroscopicsilicovolcanoconiosis
 
   // turn variables
   const timerCount = 5;
@@ -107,10 +108,22 @@ const GamePage = ({}: Props) => {
   };
 
   // focus or blur the player text input
-  const focusInput = () => playerInputRef.current?.focus();
-  const blurInput = () => playerInputRef.current?.blur();
+  const focusInput = () =>
+    isWordSplit && multilineInputRef.current
+      ? multilineInputRef.current.focus()
+      : playerInputRef.current?.focus();
+  const blurInput = () =>
+    isWordSplit && multilineInputRef.current
+      ? multilineInputRef.current.blur()
+      : playerInputRef.current?.blur();
   const toggleInputFocus = () =>
-    playerInputRef.current?.isFocused() ? blurInput() : focusInput();
+    (
+      isWordSplit && multilineInputRef.current
+        ? multilineInputRef.current.isFocused()
+        : playerInputRef.current?.isFocused()
+    )
+      ? blurInput()
+      : focusInput();
 
   return (
     <View style={styles.container}>
@@ -155,6 +168,7 @@ const GamePage = ({}: Props) => {
             </View>
             <GameTextInput
               inputRef={playerInputRef}
+              multilineInputRef={multilineInputRef}
               value={wordInput}
               onChangeText={handleWordInput}
               fontSize={wordFontSize}
@@ -166,9 +180,8 @@ const GamePage = ({}: Props) => {
             promptLength={prompt.length}
             pIndex={pIndex}
             updatePromptInput={handlePromptInput}
-            focusInput={focusInput}
           >
-            <Pressable onPress={blurInput} style={styles.promptInput}>
+            <Pressable onPress={toggleInputFocus} style={styles.promptInput}>
               <Text
                 onTextLayout={onPromptTextLayout}
                 style={styles.prompt(promptFontSize, isPromptSized)}
