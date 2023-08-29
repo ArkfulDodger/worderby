@@ -4,6 +4,7 @@ import { AppTheme } from "../../../../utils/types";
 interface StaticStyles {
   text: TextStyle;
   hiddenInput: TextStyle;
+  multiline: TextStyle;
 }
 
 interface DynamicStyles {
@@ -18,13 +19,16 @@ export const createStyles = (theme: AppTheme, fontSize: number): Styles => {
   const staticStyles = StyleSheet.create<StaticStyles>({
     text: {
       fontSize: fontSize,
-      marginHorizontal: 0,
-      paddingHorizontal: 0,
-      // minWidth: fontSize * 0.6,
     },
     hiddenInput: {
       position: "absolute",
+      // color: "red",
       color: "transparent",
+    },
+    multiline: {
+      textAlign: "right",
+      textAlignVertical: "top",
+      textDecorationLine: "underline",
     },
   });
 

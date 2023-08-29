@@ -11,6 +11,8 @@ import {
 import useStyles from "../../../../hooks/useStyles";
 import { createStyles } from "./GameTextInput.styles";
 import { useMemo, useState } from "react";
+import { useTheme } from "react-native-paper";
+import { AppTheme } from "../../../../utils/types";
 
 export type Props = TextInputProps & {
   containerStyle?: ViewStyle;
@@ -18,23 +20,27 @@ export type Props = TextInputProps & {
   fontSize?: number;
 };
 
+const AUTO_FOCUS = false; // leave off to fix Android Keyboard Padding Issue
+
 const GameTextInput = ({
   containerStyle,
   inputRef,
   fontSize = 30,
   style,
   value,
+  multiline,
   onChangeText,
   ...props
 }: Props) => {
   const styles = useStyles(createStyles, fontSize, [fontSize]);
+  const { colors } = useTheme() as AppTheme;
 
   // the height of the text, including padding
   const [textHeight, setTextHeight] = useState<number>();
 
   // whether to show the caret
   const [caretIndex, setCaretIndex] = useState(0);
-  const [isCaretVisible, setIsCaretVisible] = useState(true);
+  const [isCaretVisible, setIsCaretVisible] = useState(AUTO_FOCUS);
   const showCaret = () => setIsCaretVisible(true);
   const hideCaret = () => setIsCaretVisible(false);
   const handleSelectionChange = (
@@ -111,34 +117,42 @@ const GameTextInput = ({
   };
 
   return (
-    <View style={containerStyle}>
-      {descent && <View style={styles.underline(descent)} />}
-      <View style={styles.mockInputContainer(textHeight)}>
-        <Text selectable={false} style={[styles.text, style]}>
-          {value?.slice(0, caretIndex) || ""}
-        </Text>
-        {caret}
-        <Text selectable={false} style={[styles.text, style]}>
-          {value?.slice(caretIndex) || ""}
-        </Text>
-      </View>
+    <View style={[containerStyle]}>
+      {descent && !multiline && <View style={styles.underline(descent)} />}
+      {!multiline && (
+        <View style={styles.mockInputContainer(textHeight)}>
+          <Text selectable={false} style={[styles.text, style]}>
+            {value?.slice(0, caretIndex) || ""}
+          </Text>
+          {caret}
+          <Text selectable={false} style={[styles.text, style]}>
+            {value?.slice(caretIndex) || ""}
+          </Text>
+        </View>
+      )}
       <TextInput
         ref={inputRef}
         value={value}
-        style={[styles.text, style, styles.hiddenInput]}
+        multiline={multiline}
+        numberOfLines={multiline ? 2 : 1}
+        style={[
+          styles.text,
+          style,
+          multiline ? styles.multiline : styles.hiddenInput,
+        ]}
         autoCapitalize="none"
         autoComplete="off"
         autoCorrect={false}
-        autoFocus
+        autoFocus={AUTO_FOCUS}
         blurOnSubmit={false}
-        caretHidden={true}
+        caretHidden={!multiline}
         contextMenuHidden={true}
-        cursorColor={"transparent"}
+        cursorColor={multiline ? colors.outline : "transparent"}
         disableFullscreenUI // android
         enablesReturnKeyAutomatically // ios
         importantForAutofill="no" // android
         keyboardType="ascii-capable" // ios
-        maxLength={50} // longest english word is 45 letters
+        maxLength={44} // longest english word is 45 letters
         onBlur={hideCaret}
         onChangeText={handleChangeText}
         onFocus={showCaret}

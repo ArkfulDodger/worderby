@@ -17,6 +17,7 @@ import PlayerScoreBlock from "../../components/PlayerScoreBlock";
 import TurnCounter from "../../components/TurnCounter";
 import TimerBlock from "../../components/TimerBlock";
 import useResizingFont from "../../../../hooks/useResizingFont";
+import PhantomText from "../../components/PhantomText";
 
 export type Props = {};
 
@@ -31,6 +32,13 @@ const GamePage = ({}: Props) => {
     fontSize: promptFontSize,
     onTextLayout: onPromptTextLayout,
   } = useResizingFont({ minFontSize: 15, startingFontSize: 20 });
+  const {
+    fontSize: wordFontSize,
+    onTextLayout: onSizingTextLayout,
+    onSizeUpLayout: onLargerSizingTextLayout,
+    onIdealSizeLayout: onIdealSizingTextLayout,
+    isAtMin: isWordSplit,
+  } = useResizingFont({ elastic: true, minFontSize: 20, startingFontSize: 30 });
 
   // refs
   const playerInputRef = useRef<TextInput>(null);
@@ -128,14 +136,30 @@ const GamePage = ({}: Props) => {
           </TouchableRipple>
         </Surface>
         <View style={styles.playAreaContainer}>
-          <Pressable onPress={toggleInputFocus} style={styles.playWord}>
-            <View>
-              <Text style={styles.stolenLetters}>{usedPrompt}</Text>
+          <Pressable
+            onPress={toggleInputFocus}
+            style={styles.playWord(isWordSplit)}
+          >
+            <PhantomText
+              text={usedPrompt + (wordInput === "" ? "_" : wordInput)}
+              fontSize={wordFontSize}
+              idealFontSize={30}
+              onSizingTextLayout={onSizingTextLayout}
+              onLargerSizingTextLayout={onLargerSizingTextLayout}
+              onIdealSizingTextLayout={onIdealSizingTextLayout}
+            />
+            <View style={styles.stolenContainer(isWordSplit)}>
+              <Text style={styles.stolenLetters(wordFontSize)}>
+                {usedPrompt}
+              </Text>
             </View>
             <GameTextInput
               inputRef={playerInputRef}
               value={wordInput}
               onChangeText={handleWordInput}
+              fontSize={wordFontSize}
+              multiline={isWordSplit}
+              containerStyle={styles.inputContainer(isWordSplit)}
             />
           </Pressable>
           <PromptGestureHandler
