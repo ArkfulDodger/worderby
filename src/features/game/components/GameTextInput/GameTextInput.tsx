@@ -74,14 +74,12 @@ const GameTextInput = ({
   const [hasRendered, setHasRendered] = useState(false);
   const [hasFocusedFirst, setHasFocusedFirst] = useState(false);
   useEffect(() => {
-    console.log("ran");
     if (
       Platform.OS === "android" &&
       inputRef.current &&
       hasRendered &&
       !hasFocusedFirst
     ) {
-      console.log("did it");
       setHasFocusedFirst(true);
       inputRef.current.focus();
     }
