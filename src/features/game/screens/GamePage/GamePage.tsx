@@ -16,6 +16,8 @@ import Button from "../../../../components/atoms/Button";
 import PlayerScoreBlock from "../../components/PlayerScoreBlock";
 import TurnCounter from "../../components/TurnCounter";
 import TimerBlock from "../../components/TimerBlock";
+import useResizingFont from "../../../../hooks/useResizingFont";
+import PhantomText from "../../components/PhantomText";
 
 export type Props = {};
 
@@ -25,9 +27,22 @@ const GamePage = ({}: Props) => {
   // hooks
   const insets = useSafeAreaInsets();
   const styles = useStyles(createStyles, insets, [insets]);
+  const {
+    isFontSized: isPromptSized,
+    fontSize: promptFontSize,
+    onTextLayout: onPromptTextLayout,
+  } = useResizingFont({ minFontSize: 15, startingFontSize: 20 });
+  const {
+    fontSize: wordFontSize,
+    onTextLayout: onSizingTextLayout,
+    onSizeUpLayout: onLargerSizingTextLayout,
+    onIdealSizeLayout: onIdealSizingTextLayout,
+    isAtMin: isWordSplit,
+  } = useResizingFont({ elastic: true, minFontSize: 20, startingFontSize: 30 });
 
   // refs
   const playerInputRef = useRef<TextInput>(null);
+  const multilineInputRef = useRef<TextInput>(null);
 
   // settings
   const isMuted = false;
@@ -40,11 +55,13 @@ const GamePage = ({}: Props) => {
   const worderbyte = "word";
   const prompt = "word";
 
+  // longest English word (for testing): pneumonoultramicroscopicsilicovolcanoconiosis
+
   // turn variables
   const timerCount = 5;
 
   // the playerInputs
-  const [pIndexInput, setPIndexInput] = useState<number>(1);
+  const [pIndexInput, setPIndexInput] = useState<number>(prompt.length - 1);
   const [wordInput, setWordInput] = useState("");
 
   // the input timeout for auto-merges (for voice typing)
@@ -91,10 +108,22 @@ const GamePage = ({}: Props) => {
   };
 
   // focus or blur the player text input
-  const focusInput = () => playerInputRef.current?.focus();
-  const blurInput = () => playerInputRef.current?.blur();
+  const focusInput = () =>
+    isWordSplit && multilineInputRef.current
+      ? multilineInputRef.current.focus()
+      : playerInputRef.current?.focus();
+  const blurInput = () =>
+    isWordSplit && multilineInputRef.current
+      ? multilineInputRef.current.blur()
+      : playerInputRef.current?.blur();
   const toggleInputFocus = () =>
-    playerInputRef.current?.isFocused() ? blurInput() : focusInput();
+    (
+      isWordSplit && multilineInputRef.current
+        ? multilineInputRef.current.isFocused()
+        : playerInputRef.current?.isFocused()
+    )
+      ? blurInput()
+      : focusInput();
 
   return (
     <View style={styles.container}>
@@ -120,26 +149,50 @@ const GamePage = ({}: Props) => {
           </TouchableRipple>
         </Surface>
         <View style={styles.playAreaContainer}>
-          <Pressable onPress={toggleInputFocus} style={styles.playWord}>
-            <View>
-              <Text style={styles.stolenLetters}>{usedPrompt}</Text>
+          <Pressable
+            onPress={toggleInputFocus}
+            style={styles.playWord(isWordSplit)}
+          >
+            <PhantomText
+              text={usedPrompt + (wordInput === "" ? "_" : wordInput)}
+              fontSize={wordFontSize}
+              idealFontSize={30}
+              onSizingTextLayout={onSizingTextLayout}
+              onLargerSizingTextLayout={onLargerSizingTextLayout}
+              onIdealSizingTextLayout={onIdealSizingTextLayout}
+            />
+            <View style={styles.stolenContainer(isWordSplit)}>
+              <Text style={styles.stolenLetters(wordFontSize)}>
+                {usedPrompt}
+              </Text>
             </View>
             <GameTextInput
               inputRef={playerInputRef}
+              multilineInputRef={multilineInputRef}
               value={wordInput}
               onChangeText={handleWordInput}
+              fontSize={wordFontSize}
+              multiline={isWordSplit}
+              containerStyle={styles.inputContainer(isWordSplit)}
             />
           </Pressable>
           <PromptGestureHandler
             promptLength={prompt.length}
             pIndex={pIndex}
             updatePromptInput={handlePromptInput}
-            focusInput={focusInput}
           >
-            <Pressable onPress={blurInput} style={styles.promptInput}>
-              <Text style={styles.prompt}>
+            <Pressable onPress={toggleInputFocus} style={styles.promptInput}>
+              <Text
+                onTextLayout={onPromptTextLayout}
+                style={styles.prompt(promptFontSize, isPromptSized)}
+              >
                 <Text
-                  style={pIndexInput === 0 ? styles.unusable : styles.unused}
+                  onTextLayout={onPromptTextLayout}
+                  style={
+                    pIndexInput === 0
+                      ? styles.unusable
+                      : styles.unused(!isPromptSized)
+                  }
                 >
                   {unusedPrompt}
                 </Text>

@@ -11,7 +11,7 @@ export type Props = {
   promptLength: number;
   pIndex: number;
   updatePromptInput: (index: number) => void;
-  focusInput: () => void;
+  // focusInput: () => void;
 };
 
 // max/min pixels a user can swipe to change letters, regardless of word length
@@ -23,8 +23,8 @@ const PromptGestureHandler = ({
   pIndex,
   promptLength,
   updatePromptInput,
-  focusInput,
-}: Props) => {
+}: // focusInput,
+Props) => {
   // how many pixels to gesture before panning to the next letter
   // should be able to pan whole word in half the screen length
   const pixelPerLetter = useMemo(() => {
@@ -41,10 +41,10 @@ const PromptGestureHandler = ({
     setPIndexStart(pIndex);
   };
 
-  // focus the player input after a gesure has been performed
-  const onEnded = () => {
-    focusInput();
-  };
+  // // focus the player input after a gesure has been performed
+  // const onEnded = () => {
+  //   focusInput();
+  // };
 
   // how to handle the pan gesture over the prompt
   const onGestureEvent = (
@@ -80,7 +80,7 @@ const PromptGestureHandler = ({
   return (
     <PanGestureHandler
       onBegan={onBegan}
-      onEnded={onEnded}
+      // onEnded={onEnded}
       onGestureEvent={onGestureEvent}
     >
       {children}

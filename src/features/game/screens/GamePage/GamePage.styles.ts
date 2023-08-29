@@ -12,15 +12,18 @@ interface StaticStyles {
   centerContainer: ViewStyle;
   worderbyteContainer: ViewStyle;
   worderbyte: TextStyle;
-  playWord: ViewStyle;
-  stolenLetters: TextStyle;
   promptInput: ViewStyle;
   unusable: TextStyle;
-  unused: TextStyle;
-  prompt: TextStyle;
 }
 
-interface DynamicStyles {}
+interface DynamicStyles {
+  stolenLetters: (size: number) => TextStyle;
+  playWord: (split?: boolean) => ViewStyle;
+  prompt: (size: number, display: boolean) => TextStyle;
+  unused: (forceBold: boolean) => TextStyle;
+  stolenContainer: (isSplit: boolean) => ViewStyle;
+  inputContainer: (isSplit: boolean) => ViewStyle;
+}
 
 export interface Styles extends StaticStyles, DynamicStyles {}
 
@@ -69,38 +72,53 @@ export const createStyles = (theme: AppTheme, insets: EdgeInsets): Styles => {
     worderbyte: {
       fontSize: 15,
     },
-    playWord: {
-      flex: 2,
-      alignItems: "center",
-      justifyContent: "center",
-      flexDirection: "row",
-    },
-    stolenLetters: {
-      fontSize: 30,
-      color: "magenta",
-    },
     promptInput: {
       alignItems: "center",
       justifyContent: "center",
       backgroundColor: theme.colors.primaryContainer,
       flex: 1,
+      paddingHorizontal: 15,
     },
     unusable: {
+      fontSize: undefined, // inherit from prompt
+      textAlign: undefined, // inherit from prompt
       color: "red",
-    },
-    unused: {
-      color: "magenta",
-      opacity: 0.5,
-    },
-    prompt: {
-      fontSize: 20,
-      color: "magenta",
-      fontWeight: "bold",
+      fontWeight: "normal",
     },
   });
 
   const dynamicStyles: DynamicStyles = {
-    //
+    playWord: (split?: boolean) => ({
+      flex: 2,
+      paddingHorizontal: 15,
+      alignItems: "center",
+      justifyContent: "center",
+      // flexDirection: "row",
+      flexDirection: split ? "column" : "row",
+    }),
+    stolenLetters: (size: number) => ({
+      fontSize: size,
+      color: "magenta",
+    }),
+    prompt: (size: number, display: boolean) => ({
+      fontSize: size,
+      color: display ? "magenta" : "transparent",
+      fontWeight: "bold",
+      textAlign: "center",
+    }),
+    unused: (forceBold: boolean) => ({
+      fontSize: undefined, // inherit from prompt
+      color: undefined, // inherit from prompt
+      textAlign: undefined, // inherit from prompt
+      opacity: 0.5,
+      fontWeight: forceBold ? "bold" : "normal", // force bold prior to display for sizing
+    }),
+    stolenContainer: (isSplit) => ({
+      alignSelf: isSplit ? "flex-start" : "center",
+    }),
+    inputContainer: (isSplit) => ({
+      alignSelf: isSplit ? "flex-end" : "center",
+    }),
   };
 
   return { ...staticStyles, ...dynamicStyles };

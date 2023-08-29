@@ -1,9 +1,13 @@
 import { StyleSheet, TextStyle, ViewStyle } from "react-native";
 import { AppTheme } from "../../../../utils/types";
+import metrics from "../../../../utils/metrics";
 
 interface StaticStyles {
   text: TextStyle;
   hiddenInput: TextStyle;
+  hiddenMultiline: TextStyle;
+  multiline: TextStyle;
+  multilinePadding: TextStyle;
 }
 
 interface DynamicStyles {
@@ -18,13 +22,29 @@ export const createStyles = (theme: AppTheme, fontSize: number): Styles => {
   const staticStyles = StyleSheet.create<StaticStyles>({
     text: {
       fontSize: fontSize,
-      marginHorizontal: 0,
-      paddingHorizontal: 0,
-      // minWidth: fontSize * 0.6,
     },
     hiddenInput: {
       position: "absolute",
+      // color: "blue",
+      // opacity: 0,
       color: "transparent",
+    },
+    hiddenMultiline: {
+      position: "absolute",
+      transform: [{ translateX: metrics.screenWidth }],
+      // color: "red",
+      opacity: 0,
+    },
+    multilinePadding: {
+      padding: 5,
+      paddingBottom: 10,
+      paddingTop: 14,
+    },
+    multiline: {
+      // backgroundColor: "yellow",
+      textAlign: "right",
+      textAlignVertical: "top",
+      textDecorationLine: "underline",
     },
   });
 
