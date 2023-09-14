@@ -1,12 +1,11 @@
 module.exports = () => {
-  // environment vars
-  const IS_DEV = process.env.BUILD_PROFILE === "development";
+  // environment vars ("develpment" is default)
   const IS_PREV = process.env.BUILD_PROFILE === "preview";
   const IS_PROD = process.env.BUILD_PROFILE === "production";
 
   // platform vars
-  const IS_ANDROID = process.env.PLATFORM === "android";
-  const IS_IOS = process.env.PLATFORM === "ios";
+  // const IS_ANDROID = process.env.PLATFORM === "android";
+  // const IS_IOS = process.env.PLATFORM === "ios";
 
   return {
     name: IS_PROD ? "Worderby" : IS_PREV ? "Worderby - Preview" : "WORDER-DEV",
