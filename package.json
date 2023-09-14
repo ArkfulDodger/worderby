@@ -40,7 +40,9 @@
     "react-native-paper": "^5.9.0",
     "react-native-safe-area-context": "4.5.0",
     "react-redux": "^8.0.5",
-    "expo-system-ui": "~2.2.1"
+    "expo-system-ui": "~2.2.1",
+    "expo-dev-client": "~2.2.1",
+    "expo-updates": "~0.16.4"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

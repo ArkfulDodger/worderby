@@ -23,6 +23,12 @@ module.exports = () => {
       backgroundColor: "#ffffff",
     },
     assetBundlePatterns: ["**/*"],
+    updates: {
+      url: "https://u.expo.dev/26e4d88c-e377-4718-817a-6eca82dba993",
+    },
+    runtimeVersion: {
+      policy: "sdkVersion",
+    },
     ios: {
       supportsTablet: true,
       bundleIdentifier: IS_PROD
