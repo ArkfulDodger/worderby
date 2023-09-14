@@ -12,12 +12,13 @@ import { IconButton, Surface, Text, TouchableRipple } from "react-native-paper";
 import { useMemo, useRef, useState } from "react";
 import PromptGestureHandler from "../../components/PromptGestureHandler";
 import GameTextInput from "../../components/GameTextInput";
-import Button from "../../../../components/atoms/Button";
 import PlayerScoreBlock from "../../components/PlayerScoreBlock";
 import TurnCounter from "../../components/TurnCounter";
 import TimerBlock from "../../components/TimerBlock";
 import useResizingFont from "../../../../hooks/useResizingFont";
 import PhantomText from "../../components/PhantomText";
+import Button from "../../../../components/atoms/Button";
+import useAndroidBottomInset from "../../../../hooks/useAndroidBottomInset";
 
 export type Props = {};
 
@@ -26,6 +27,8 @@ export type GameUser = {};
 const GamePage = ({}: Props) => {
   // hooks
   const insets = useSafeAreaInsets();
+  const androidBottomInset = useAndroidBottomInset();
+
   const styles = useStyles(createStyles, insets, [insets]);
   const {
     isFontSized: isPromptSized,
@@ -52,7 +55,7 @@ const GamePage = ({}: Props) => {
   const opponentScore = 666;
   const playerTurnCount = 2;
   const opponentTurnCount = 1;
-  const worderbyte = "word";
+  const worderbyte = "updatedword";
   const prompt = "word";
 
   // longest English word (for testing): pneumonoultramicroscopicsilicovolcanoconiosis
@@ -130,6 +133,7 @@ const GamePage = ({}: Props) => {
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.keyboardAwareContainer}
+        keyboardVerticalOffset={androidBottomInset}
       >
         <Surface style={styles.headerContainer}>
           <Surface style={styles.header}>
