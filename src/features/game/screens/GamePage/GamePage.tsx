@@ -18,6 +18,7 @@ import TimerBlock from "../../components/TimerBlock";
 import useResizingFont from "../../../../hooks/useResizingFont";
 import PhantomText from "../../components/PhantomText";
 import Button from "../../../../components/atoms/Button";
+import useAndroidBottomInset from "../../../../hooks/useAndroidBottomInset";
 
 export type Props = {};
 
@@ -26,6 +27,8 @@ export type GameUser = {};
 const GamePage = ({}: Props) => {
   // hooks
   const insets = useSafeAreaInsets();
+  const androidBottomInset = useAndroidBottomInset();
+
   const styles = useStyles(createStyles, insets, [insets]);
   const {
     isFontSized: isPromptSized,
@@ -130,6 +133,7 @@ const GamePage = ({}: Props) => {
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.keyboardAwareContainer}
+        keyboardVerticalOffset={androidBottomInset}
       >
         <Surface style={styles.headerContainer}>
           <Surface style={styles.header}>
