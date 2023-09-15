@@ -8,6 +8,7 @@ interface StaticStyles {
   headerContainer: ViewStyle;
   playAreaContainer: ViewStyle;
   footerContainer: ViewStyle;
+  footerContent: ViewStyle;
   header: ViewStyle;
   centerContainer: ViewStyle;
   worderbyteContainer: ViewStyle;
@@ -42,13 +43,14 @@ export const createStyles = (theme: AppTheme, insets: EdgeInsets): Styles => {
       flex: 1,
     },
     footerContainer: {
-      flexDirection: "row",
-      justifyContent: "space-evenly",
-      alignItems: "center",
-      paddingBottom: insets.bottom,
       shadowOffset: { width: 0, height: 0 },
       shadowOpacity: 0.5,
       shadowRadius: 2,
+    },
+    footerContent: {
+      flexDirection: "row",
+      justifyContent: "space-evenly",
+      alignItems: "center",
     },
     header: {
       paddingTop: insets.top,
