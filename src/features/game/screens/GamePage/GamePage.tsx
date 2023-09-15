@@ -7,10 +7,7 @@ import {
 } from "react-native";
 import useStyles from "../../../../hooks/useStyles";
 import { createStyles } from "./GamePage.styles";
-import {
-  SafeAreaView,
-  useSafeAreaInsets,
-} from "react-native-safe-area-context";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { IconButton, Surface, Text, TouchableRipple } from "react-native-paper";
 import { useMemo, useRef, useState } from "react";
 import PromptGestureHandler from "../../components/PromptGestureHandler";
@@ -28,8 +25,7 @@ export type GameUser = {};
 
 const GamePage = ({}: Props) => {
   // hooks
-  const insets = useSafeAreaInsets();
-  const styles = useStyles(createStyles, insets, [insets]);
+  const styles = useStyles(createStyles);
   const {
     isFontSized: isPromptSized,
     fontSize: promptFontSize,
@@ -134,15 +130,17 @@ const GamePage = ({}: Props) => {
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.keyboardAwareContainer}
       >
-        <Surface style={styles.headerContainer}>
-          <Surface style={styles.header}>
-            <PlayerScoreBlock isPlayer />
-            <View style={styles.centerContainer}>
-              <TurnCounter value={playerTurnCount} />
-              <TimerBlock count={timerCount} />
-              <TurnCounter value={opponentTurnCount} />
-            </View>
-            <PlayerScoreBlock />
+        <Surface style={styles.outerHeaderContainer}>
+          <Surface style={styles.innerHeaderContainer}>
+            <SafeAreaView edges={["top"]} style={styles.headerContent}>
+              <PlayerScoreBlock isPlayer />
+              <View style={styles.centerContainer}>
+                <TurnCounter value={playerTurnCount} />
+                <TimerBlock count={timerCount} />
+                <TurnCounter value={opponentTurnCount} />
+              </View>
+              <PlayerScoreBlock />
+            </SafeAreaView>
           </Surface>
           <TouchableRipple
             onPress={playWorderbyte}

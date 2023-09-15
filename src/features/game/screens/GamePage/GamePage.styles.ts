@@ -1,15 +1,15 @@
 import { StyleSheet, TextStyle, ViewStyle } from "react-native";
 import { AppTheme } from "../../../../utils/types";
-import { EdgeInsets } from "react-native-safe-area-context";
 
 interface StaticStyles {
   container: ViewStyle;
   keyboardAwareContainer: ViewStyle;
-  headerContainer: ViewStyle;
+  outerHeaderContainer: ViewStyle;
   playAreaContainer: ViewStyle;
   footerContainer: ViewStyle;
   footerContent: ViewStyle;
-  header: ViewStyle;
+  innerHeaderContainer: ViewStyle;
+  headerContent: ViewStyle;
   centerContainer: ViewStyle;
   worderbyteContainer: ViewStyle;
   worderbyte: TextStyle;
@@ -28,7 +28,7 @@ interface DynamicStyles {
 
 export interface Styles extends StaticStyles, DynamicStyles {}
 
-export const createStyles = (theme: AppTheme, insets: EdgeInsets): Styles => {
+export const createStyles = (theme: AppTheme): Styles => {
   const staticStyles = StyleSheet.create<StaticStyles>({
     container: {
       flex: 1,
@@ -36,7 +36,7 @@ export const createStyles = (theme: AppTheme, insets: EdgeInsets): Styles => {
     keyboardAwareContainer: {
       flex: 1,
     },
-    headerContainer: {
+    outerHeaderContainer: {
       backgroundColor: "#DDDDDD",
     },
     playAreaContainer: {
@@ -52,13 +52,14 @@ export const createStyles = (theme: AppTheme, insets: EdgeInsets): Styles => {
       justifyContent: "space-evenly",
       alignItems: "center",
     },
-    header: {
-      paddingTop: insets.top,
+    innerHeaderContainer: {
+      backgroundColor: "#EEEEEE",
+    },
+    headerContent: {
       flexDirection: "row",
       justifyContent: "space-between",
       paddingHorizontal: 10,
       paddingBottom: 5,
-      backgroundColor: "#EEEEEE",
     },
     centerContainer: {
       flexDirection: "row",
@@ -95,7 +96,6 @@ export const createStyles = (theme: AppTheme, insets: EdgeInsets): Styles => {
       paddingHorizontal: 15,
       alignItems: "center",
       justifyContent: "center",
-      // flexDirection: "row",
       flexDirection: split ? "column" : "row",
     }),
     stolenLetters: (size: number) => ({
