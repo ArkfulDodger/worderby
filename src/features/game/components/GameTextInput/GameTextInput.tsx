@@ -21,8 +21,7 @@ export type Props = TextInputProps & {
   fontSize?: number;
 };
 
-const AUTO_FOCUS = Platform.OS !== "android"; // leave off to fix Android Keyboard Padding Issue
-
+// The text input component used during gameplay
 const GameTextInput = ({
   containerStyle,
   inputRef,
@@ -42,7 +41,7 @@ const GameTextInput = ({
 
   // whether to show the caret
   const [caretIndex, setCaretIndex] = useState(0);
-  const [isCaretVisible, setIsCaretVisible] = useState(AUTO_FOCUS);
+  const [isCaretVisible, setIsCaretVisible] = useState(false);
   const showCaret = () => setIsCaretVisible(true);
   const hideCaret = () => setIsCaretVisible(false);
   const handleSelectionChange = (
@@ -59,31 +58,31 @@ const GameTextInput = ({
     }
   };
 
-  // switch inputs from single to multiline if on ios
-  useEffect(() => {
-    if (Platform.OS !== "ios") return;
-
-    if (multiline) {
-      multilineInputRef.current?.focus();
-    } else {
-      inputRef.current?.focus();
-    }
-  }, [multiline]);
-
   // focus input on android after first render (keyboard layout bug if immediate focus)
   const [hasRendered, setHasRendered] = useState(false);
-  const [hasFocusedFirst, setHasFocusedFirst] = useState(false);
+  const onComponentRender = () => {
+    if (!hasRendered) setHasRendered(true);
+  };
+
+  const [canFocus, setCanFocus] = useState(false);
+
+  // once all necessary components have measured and rendered, allow input focus
   useEffect(() => {
-    if (
-      Platform.OS === "android" &&
-      inputRef.current &&
-      hasRendered &&
-      !hasFocusedFirst
-    ) {
-      setHasFocusedFirst(true);
-      inputRef.current.focus();
+    if (inputRef.current && hasRendered && textHeight && !canFocus) {
+      setCanFocus(true);
+      setTimeout(() => {
+        inputRef.current?.focus();
+      }, 1);
     }
-  }, [inputRef.current, hasRendered]);
+  }, [inputRef.current, hasRendered, textHeight]);
+
+  // when multiline or focus settings change, focus the appropriate input
+  useEffect(() => {
+    if (canFocus) {
+      if (multiline) multilineInputRef.current?.focus();
+      else inputRef.current?.focus();
+    }
+  }, [multiline]);
 
   // the descent of the font (half the distance for android)
   const descent = useMemo(() => {
@@ -105,34 +104,6 @@ const GameTextInput = ({
     </View>
   );
 
-  // notes for caret animation
-
-  // useEffect(() => {
-  //   let caretTimeout: NodeJS.Timeout;
-
-  //   if (children && scrollIndex >= children.length) {
-  //     setIsCaretOn(false);
-  //   } else {
-  //     caretTimeout = setTimeout(() => {
-  //       setIsCaretOn((prev) => !prev);
-  //     }, 700);
-  //   }
-
-  //   return () => {
-  //     clearTimeout(caretTimeout);
-  //   };
-  // }, [isCaretOn, scrollIndex]);
-
-  // const caret = (
-  //   <Animated.View
-  //     entering={FadeIn}
-  //     exiting={FadeOut.duration(600)}
-  //     style={styles.caretContainer}
-  //   >
-  //     <Text style={styles.caret}>{"   "}</Text>
-  //   </Animated.View>
-  // );
-
   // ensures only English alphabet characters (lower case) are submitted
   const handleChangeText = (text: string) => {
     let validatedText = text.replace(/[^a-zA-Z]/g, "").toLowerCase();
@@ -144,129 +115,77 @@ const GameTextInput = ({
     }
   };
 
+  // the base props utilized by the text input
+  const inputBaseProps: Partial<TextInputProps> = {
+    value: value,
+    onBlur: hideCaret,
+    onChangeText: handleChangeText,
+    onFocus: showCaret,
+    autoFocus: false,
+    autoCapitalize: "none",
+    autoComplete: "off",
+    autoCorrect: false,
+    blurOnSubmit: false,
+    contextMenuHidden: true,
+    disableFullscreenUI: true, // android
+    enablesReturnKeyAutomatically: true, // ios
+    importantForAutofill: "no", // android
+    keyboardType: "ascii-capable", // ios
+    maxLength: 44, // longest english word is 45 letters
+    returnKeyType: "go",
+    selectTextOnFocus: false,
+  };
+
   return (
-    <View
-      onLayout={() => !hasRendered && setHasRendered(true)}
-      style={[containerStyle, { overflow: "visible" }]}
-    >
-      {descent && !multiline && <View style={styles.underline(descent)} />}
+    <View onLayout={onComponentRender} style={containerStyle}>
       {!multiline && (
-        <View style={styles.mockInputContainer(textHeight)}>
-          <Text selectable={false} style={[styles.text, style]}>
-            {value?.slice(0, caretIndex) || ""}
-          </Text>
-          {caret}
-          <Text selectable={false} style={[styles.text, style]}>
-            {value?.slice(caretIndex) || ""}
-          </Text>
-        </View>
-      )}
-      {Platform.OS === "ios" && (
         <>
-          <TextInput
-            ref={inputRef}
-            value={value}
-            multiline={false}
-            numberOfLines={1}
-            // pointerEvents={multiline ? "box-none" : "auto"}
-            style={[
-              styles.text,
-              style,
-              styles.hiddenInput,
-              multiline ? styles.hiddenMultiline : undefined,
-            ]}
-            autoFocus={!multiline}
-            caretHidden={true}
-            cursorColor={!multiline ? colors.outline : "transparent"}
-            onSelectionChange={multiline ? undefined : handleSelectionChange}
-            autoCapitalize="none"
-            autoComplete="off"
-            autoCorrect={false}
-            blurOnSubmit={false}
-            contextMenuHidden={true}
-            disableFullscreenUI // android
-            enablesReturnKeyAutomatically // ios
-            importantForAutofill="no" // android
-            keyboardType="ascii-capable" // ios
-            maxLength={44} // longest english word is 45 letters
-            onBlur={hideCaret}
-            onChangeText={handleChangeText}
-            onFocus={showCaret}
-            onLayout={(e) => setTextHeight(e.nativeEvent.layout.height)}
-            returnKeyType="go"
-            selectTextOnFocus={false}
-            {...props}
-          />
-          <TextInput
-            ref={multilineInputRef}
-            // pointerEvents={multiline ? "auto" : "box-none"}
-            value={value}
-            multiline={true}
-            numberOfLines={multiline ? 3 : 1}
-            style={[
-              styles.text,
-              style,
-              styles.multiline,
-              styles.multilinePadding,
-              multiline ? undefined : styles.hiddenMultiline,
-            ]}
-            autoFocus={multiline}
-            caretHidden={!multiline}
-            cursorColor={multiline ? colors.outline : "transparent"}
-            onSelectionChange={multiline ? handleSelectionChange : undefined}
-            autoCapitalize="none"
-            autoComplete="off"
-            autoCorrect={false}
-            blurOnSubmit={false}
-            contextMenuHidden={true}
-            disableFullscreenUI // android
-            enablesReturnKeyAutomatically // ios
-            importantForAutofill="no" // android
-            keyboardType="ascii-capable" // ios
-            maxLength={44} // longest english word is 45 letters
-            onBlur={hideCaret}
-            onChangeText={handleChangeText}
-            onFocus={showCaret}
-            returnKeyType="go"
-            selectTextOnFocus={false}
-            {...props}
-          />
+          {descent && <View style={styles.underline(descent)} />}
+          <View style={styles.mockInputContainer(textHeight)}>
+            <Text selectable={false} style={[styles.text, style]}>
+              {value?.slice(0, caretIndex) || ""}
+            </Text>
+            {caret}
+            <Text selectable={false} style={[styles.text, style]}>
+              {value?.slice(caretIndex) || ""}
+            </Text>
+          </View>
         </>
       )}
-      {Platform.OS !== "ios" && (
-        <TextInput
-          ref={inputRef}
-          value={value}
-          multiline={multiline}
-          numberOfLines={multiline ? 3 : 1}
-          style={[
-            styles.text,
-            style,
-            multiline ? styles.multiline : styles.hiddenInput,
-          ]}
-          autoCapitalize="none"
-          autoComplete="off"
-          autoCorrect={false}
-          autoFocus={AUTO_FOCUS}
-          blurOnSubmit={false}
-          caretHidden={!multiline}
-          contextMenuHidden={true}
-          cursorColor={multiline ? colors.outline : "transparent"}
-          disableFullscreenUI // android
-          enablesReturnKeyAutomatically // ios
-          importantForAutofill="no" // android
-          keyboardType="ascii-capable" // ios
-          maxLength={44} // longest english word is 45 letters
-          onBlur={hideCaret}
-          onChangeText={handleChangeText}
-          onFocus={showCaret}
-          onLayout={(e) => setTextHeight(e.nativeEvent.layout.height)}
-          onSelectionChange={handleSelectionChange}
-          returnKeyType="go"
-          selectTextOnFocus={false}
-          {...props}
-        />
-      )}
+      <TextInput
+        {...inputBaseProps}
+        ref={inputRef}
+        multiline={false}
+        numberOfLines={1}
+        style={[
+          styles.text,
+          style,
+          styles.hiddenInput,
+          multiline ? styles.hiddenOffscreen : undefined,
+        ]}
+        caretHidden={true}
+        cursorColor={!multiline ? colors.outline : "transparent"}
+        onSelectionChange={multiline ? undefined : handleSelectionChange}
+        onLayout={(e) => setTextHeight(e.nativeEvent.layout.height)}
+        {...props}
+      />
+      <TextInput
+        {...inputBaseProps}
+        ref={multilineInputRef}
+        multiline={true}
+        numberOfLines={multiline ? 3 : 1}
+        style={[
+          styles.text,
+          style,
+          styles.multiline,
+          Platform.OS === "ios" ? styles.multilineIosPadding : undefined,
+          !multiline ? styles.hiddenOffscreen : undefined,
+        ]}
+        caretHidden={!multiline}
+        cursorColor={multiline ? colors.outline : "transparent"}
+        onSelectionChange={multiline ? handleSelectionChange : undefined}
+        {...props}
+      />
     </View>
   );
 };
