@@ -1,6 +1,7 @@
 // Import the createSlice API from Redux Toolkit
 import { createSlice } from "@reduxjs/toolkit";
 import { OnlineGameMode } from "../features/game/types";
+import { mockTurns } from "../features/game/mockData";
 
 // Define a type for the slice state
 export type Player = {
@@ -28,7 +29,7 @@ export type GameState = {
   opponent: Player;
   startingWord: string;
   turns: Turn[];
-  restrictions: string[];
+  initialRestrictions: string[];
 };
 
 // This is the initial state of the slice
@@ -41,9 +42,9 @@ const initialState: GameState = {
     name: "Worderbot",
     avatar: "",
   },
-  startingWord: "apple",
-  turns: [],
-  restrictions: [],
+  startingWord: "word",
+  turns: mockTurns.slice(0, 4),
+  initialRestrictions: [],
 };
 
 export const gameSlice = createSlice({
