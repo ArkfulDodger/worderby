@@ -41,7 +41,7 @@ const initialState: GameState = {
     name: "Worderbot",
     avatar: "",
   },
-  startingWord: "word",
+  startingWord: "apple",
   turns: [],
   restrictions: [],
 };

@@ -9,7 +9,7 @@ import useStyles from "../../../../hooks/useStyles";
 import { createStyles } from "./GamePage.styles";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { IconButton, Surface, Text, TouchableRipple } from "react-native-paper";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import PromptGestureHandler from "../../components/PromptGestureHandler";
 import GameTextInput from "../../components/GameTextInput";
 import PlayerScoreBlock from "../../components/PlayerScoreBlock";
@@ -20,6 +20,7 @@ import PhantomText from "../../components/PhantomText";
 import Button from "../../../../components/atoms/Button";
 import PromptText from "../../components/PromptText";
 import { useAppSelector } from "../../../../hooks/reduxHooks";
+import { getWorderbyte } from "../../../../utils/helpers";
 
 export type Props = {};
 
@@ -45,8 +46,18 @@ const GamePage = ({}: Props) => {
 
   // game state
   const game = useAppSelector((state) => state.game);
-  const worderbyte = "word";
-  const prompt = "word";
+
+  // update the worderbyte any time the starting word or turns change
+  const worderbyte = useMemo(
+    () => getWorderbyte(game.startingWord, game.turns),
+    [game.startingWord, game.turns]
+  );
+
+  // use latest word played as prompt, or starting word if first turn
+  const prompt =
+    game.turns.length > 0
+      ? game.turns[game.turns.length - 1].word
+      : game.startingWord;
 
   // longest English word (for testing): pneumonoultramicroscopicsilicovolcanoconiosis
 
@@ -54,8 +65,15 @@ const GamePage = ({}: Props) => {
   const timerCount = 5;
 
   // the playerInputs
-  const [pIndexInput, setPIndexInput] = useState<number>(prompt.length - 1);
+  const [pIndexInput, setPIndexInput] = useState<number>(
+    Math.max(1, prompt.length - 1)
+  );
   const [wordInput, setWordInput] = useState("");
+
+  // ensure inputs reset when prompt changes
+  useEffect(() => {
+    setPIndexInput(Math.max(1, prompt.length - 1));
+  }, [prompt]);
 
   // the input timeout for auto-merges (for voice typing)
   const [autoMergeTimeout, setAutoMergeTimeout] = useState<NodeJS.Timeout>();
