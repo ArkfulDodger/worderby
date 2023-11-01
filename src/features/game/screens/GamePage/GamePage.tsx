@@ -145,7 +145,7 @@ const GamePage = ({}: Props) => {
         <Surface style={styles.outerHeaderContainer}>
           <Surface style={styles.innerHeaderContainer}>
             <SafeAreaView edges={["top"]} style={styles.headerContent}>
-              <PlayerScoreBlock isPlayer />
+              <PlayerScoreBlock isPlayer style={styles.scoreContainer} />
 
               <View style={styles.centerContainer}>
                 <TurnCounter isPlayer />
@@ -153,7 +153,7 @@ const GamePage = ({}: Props) => {
                 <TurnCounter />
               </View>
 
-              <PlayerScoreBlock />
+              <PlayerScoreBlock style={styles.scoreContainer} />
             </SafeAreaView>
           </Surface>
 

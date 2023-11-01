@@ -32,7 +32,8 @@ export const createStyles = (theme: AppTheme, isPlayer: boolean): Styles => {
       marginRight: isPlayer ? 10 : 0,
     },
     playerName: {
-      //
+      flex: 1,
+      textAlign: isPlayer ? "left" : "right",
     },
   });
 

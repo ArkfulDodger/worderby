@@ -11,6 +11,7 @@ interface StaticStyles {
   innerHeaderContainer: ViewStyle;
   headerContent: ViewStyle;
   centerContainer: ViewStyle;
+  scoreContainer: ViewStyle;
   worderbyteContainer: ViewStyle;
   worderbyte: TextStyle;
   promptInput: ViewStyle;
@@ -54,7 +55,6 @@ export const createStyles = (theme: AppTheme): Styles => {
     },
     headerContent: {
       flexDirection: "row",
-      justifyContent: "space-between",
       paddingHorizontal: 10,
       paddingBottom: 5,
     },
@@ -62,6 +62,10 @@ export const createStyles = (theme: AppTheme): Styles => {
       flexDirection: "row",
       alignItems: "flex-end",
       columnGap: 4,
+      marginHorizontal: 5,
+    },
+    scoreContainer: {
+      flex: 1,
     },
     worderbyteContainer: {
       alignItems: "center",
