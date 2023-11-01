@@ -13,6 +13,7 @@ export const createStyles = (theme: AppTheme): Styles => {
     container: {
       flexDirection: "column-reverse",
       rowGap: 3,
+      width: size,
     },
     dot: {
       backgroundColor: "#00000088",

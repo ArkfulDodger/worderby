@@ -19,6 +19,7 @@ import useResizingFont from "../../../../hooks/useResizingFont";
 import PhantomText from "../../components/PhantomText";
 import Button from "../../../../components/atoms/Button";
 import PromptText from "../../components/PromptText";
+import { useAppSelector } from "../../../../hooks/reduxHooks";
 
 export type Props = {};
 
@@ -43,10 +44,7 @@ const GamePage = ({}: Props) => {
   const isMuted = false;
 
   // game state
-  const playerScore = 404;
-  const opponentScore = 666;
-  const playerTurnCount = 2;
-  const opponentTurnCount = 1;
+  const game = useAppSelector((state) => state.game);
   const worderbyte = "word";
   const prompt = "word";
 
@@ -132,9 +130,9 @@ const GamePage = ({}: Props) => {
               <PlayerScoreBlock isPlayer />
 
               <View style={styles.centerContainer}>
-                <TurnCounter value={playerTurnCount} />
+                <TurnCounter isPlayer />
                 <TimerBlock count={timerCount} />
-                <TurnCounter value={opponentTurnCount} />
+                <TurnCounter />
               </View>
 
               <PlayerScoreBlock />
