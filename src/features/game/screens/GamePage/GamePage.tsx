@@ -18,6 +18,7 @@ import TimerBlock from "../../components/TimerBlock";
 import useResizingFont from "../../../../hooks/useResizingFont";
 import PhantomText from "../../components/PhantomText";
 import Button from "../../../../components/atoms/Button";
+import PromptText from "../../components/PromptText";
 
 export type Props = {};
 
@@ -26,11 +27,6 @@ export type GameUser = {};
 const GamePage = ({}: Props) => {
   // hooks
   const styles = useStyles(createStyles);
-  const {
-    isFontSized: isPromptSized,
-    fontSize: promptFontSize,
-    onTextLayout: onPromptTextLayout,
-  } = useResizingFont({ minFontSize: 15, startingFontSize: 20 });
   const {
     fontSize: wordFontSize,
     onTextLayout: onSizingTextLayout,
@@ -69,7 +65,7 @@ const GamePage = ({}: Props) => {
   // the active pIndex (cannot be lower than 1)
   const pIndex = useMemo(() => Math.max(1, pIndexInput), [pIndexInput]);
 
-  // the prompt string pieces which are used/unused
+  // // the prompt string pieces which are used/unused
   const usedPrompt = useMemo(() => prompt.slice(pIndex), [prompt, pIndex]);
   const unusedPrompt = useMemo(() => prompt.slice(0, pIndex), [prompt, pIndex]);
 
@@ -134,14 +130,17 @@ const GamePage = ({}: Props) => {
           <Surface style={styles.innerHeaderContainer}>
             <SafeAreaView edges={["top"]} style={styles.headerContent}>
               <PlayerScoreBlock isPlayer />
+
               <View style={styles.centerContainer}>
                 <TurnCounter value={playerTurnCount} />
                 <TimerBlock count={timerCount} />
                 <TurnCounter value={opponentTurnCount} />
               </View>
+
               <PlayerScoreBlock />
             </SafeAreaView>
           </Surface>
+
           <TouchableRipple
             onPress={playWorderbyte}
             style={styles.worderbyteContainer}
@@ -149,11 +148,9 @@ const GamePage = ({}: Props) => {
             <Text style={styles.worderbyte}>{worderbyte}</Text>
           </TouchableRipple>
         </Surface>
-        <View style={styles.playAreaContainer}>
-          <Pressable
-            onPress={toggleInputFocus}
-            style={styles.playWord(isWordSplit)}
-          >
+
+        <Pressable onPress={toggleInputFocus} style={styles.playAreaContainer}>
+          <View style={styles.playWord(isWordSplit)}>
             <PhantomText
               text={usedPrompt + (wordInput === "" ? "_" : wordInput)}
               fontSize={wordFontSize}
@@ -176,33 +173,23 @@ const GamePage = ({}: Props) => {
               multiline={isWordSplit}
               containerStyle={styles.inputContainer(isWordSplit)}
             />
-          </Pressable>
+          </View>
           <PromptGestureHandler
             promptLength={prompt.length}
             pIndex={pIndex}
             updatePromptInput={handlePromptInput}
           >
-            <Pressable onPress={toggleInputFocus} style={styles.promptInput}>
-              <Text
-                onTextLayout={onPromptTextLayout}
-                style={styles.prompt(promptFontSize, isPromptSized)}
-              >
-                <Text
-                  onTextLayout={onPromptTextLayout}
-                  style={
-                    pIndexInput === 0
-                      ? styles.unusable
-                      : styles.unused(!isPromptSized)
-                  }
-                >
-                  {unusedPrompt}
-                </Text>
-                {usedPrompt}
-              </Text>
-            </Pressable>
+            <View style={styles.promptInput}>
+              <PromptText
+                usedPrompt={usedPrompt}
+                unusedPrompt={unusedPrompt}
+                pIndexInput={pIndexInput}
+              />
+            </View>
           </PromptGestureHandler>
-        </View>
+        </Pressable>
       </KeyboardAvoidingView>
+
       <Surface style={styles.footerContainer}>
         <SafeAreaView edges={["bottom"]} style={styles.footerContent}>
           <IconButton icon="home" />

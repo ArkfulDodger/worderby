@@ -14,14 +14,11 @@ interface StaticStyles {
   worderbyteContainer: ViewStyle;
   worderbyte: TextStyle;
   promptInput: ViewStyle;
-  unusable: TextStyle;
 }
 
 interface DynamicStyles {
   stolenLetters: (size: number) => TextStyle;
   playWord: (split?: boolean) => ViewStyle;
-  prompt: (size: number, display: boolean) => TextStyle;
-  unused: (forceBold: boolean) => TextStyle;
   stolenContainer: (isSplit: boolean) => ViewStyle;
   inputContainer: (isSplit: boolean) => ViewStyle;
 }
@@ -82,12 +79,6 @@ export const createStyles = (theme: AppTheme): Styles => {
       flex: 1,
       paddingHorizontal: 15,
     },
-    unusable: {
-      fontSize: undefined, // inherit from prompt
-      textAlign: undefined, // inherit from prompt
-      color: "red",
-      fontWeight: "normal",
-    },
   });
 
   const dynamicStyles: DynamicStyles = {
@@ -101,19 +92,6 @@ export const createStyles = (theme: AppTheme): Styles => {
     stolenLetters: (size: number) => ({
       fontSize: size,
       color: "magenta",
-    }),
-    prompt: (size: number, display: boolean) => ({
-      fontSize: size,
-      color: display ? "magenta" : "transparent",
-      fontWeight: "bold",
-      textAlign: "center",
-    }),
-    unused: (forceBold: boolean) => ({
-      fontSize: undefined, // inherit from prompt
-      color: undefined, // inherit from prompt
-      textAlign: undefined, // inherit from prompt
-      opacity: 0.5,
-      fontWeight: forceBold ? "bold" : "normal", // force bold prior to display for sizing
     }),
     stolenContainer: (isSplit) => ({
       alignSelf: isSplit ? "flex-start" : "center",
