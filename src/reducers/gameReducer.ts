@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { OnlineGameMode } from "../features/game/types";
 import { mockTurns } from "../features/game/mockData";
 
-// Define a type for the slice state
+// Define types for the slice state
 export type Player = {
   name: string;
   avatar?: string;
@@ -12,8 +12,8 @@ export type Player = {
 export type Turn = {
   isPlayerWord: boolean;
   turnNumber: number;
-  startedAt: Date;
-  playedAt: Date;
+  startedAt: string;
+  playedAt: string;
   word: string;
   pNum: number;
   penalty?: number;

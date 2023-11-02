@@ -2,17 +2,21 @@ import { StyleSheet, ViewStyle } from "react-native";
 import { AppTheme } from "../../../../utils/types";
 
 export interface Styles {
-  container: ViewStyle;
-  keyboardAwareContainer: ViewStyle;
+  footerContainer: ViewStyle;
+  footerContent: ViewStyle;
 }
 
 export const createStyles = (theme: AppTheme): Styles => {
   const staticStyles = StyleSheet.create<Styles>({
-    container: {
-      flex: 1,
+    footerContainer: {
+      shadowOffset: { width: 0, height: 0 },
+      shadowOpacity: 0.5,
+      shadowRadius: 2,
     },
-    keyboardAwareContainer: {
-      flex: 1,
+    footerContent: {
+      flexDirection: "row",
+      justifyContent: "space-evenly",
+      alignItems: "center",
     },
   });
 

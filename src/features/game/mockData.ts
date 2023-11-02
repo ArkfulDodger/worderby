@@ -1,10 +1,14 @@
 import { Turn } from "../../reducers/gameReducer";
 
+const staticDate = new Date().toISOString();
+
+// longest English word (for testing): pneumonoultramicroscopicsilicovolcanoconiosis
+
 const playerTurn1: Turn = {
   isPlayerWord: true,
   turnNumber: 1,
-  startedAt: new Date(),
-  playedAt: new Date(),
+  startedAt: staticDate,
+  playedAt: staticDate,
   word: "order",
   pNum: 3,
 };
@@ -12,8 +16,8 @@ const playerTurn1: Turn = {
 const opponentTurn2: Turn = {
   isPlayerWord: false,
   turnNumber: 2,
-  startedAt: new Date(),
-  playedAt: new Date(),
+  startedAt: staticDate,
+  playedAt: staticDate,
   word: "derby",
   pNum: 3,
 };
@@ -21,8 +25,8 @@ const opponentTurn2: Turn = {
 const playerTurn3: Turn = {
   isPlayerWord: true,
   turnNumber: 3,
-  startedAt: new Date(),
-  playedAt: new Date(),
+  startedAt: staticDate,
+  playedAt: staticDate,
   word: "byte",
   pNum: 2,
 };
@@ -30,8 +34,8 @@ const playerTurn3: Turn = {
 const opponentTurn4: Turn = {
   isPlayerWord: false,
   turnNumber: 4,
-  startedAt: new Date(),
-  playedAt: new Date(),
+  startedAt: staticDate,
+  playedAt: staticDate,
   word: "test",
   pNum: 2,
 };
@@ -39,8 +43,8 @@ const opponentTurn4: Turn = {
 const playerTurn5: Turn = {
   isPlayerWord: true,
   turnNumber: 5,
-  startedAt: new Date(),
-  playedAt: new Date(),
+  startedAt: staticDate,
+  playedAt: staticDate,
   word: "establish",
   pNum: 3,
 };
@@ -48,8 +52,8 @@ const playerTurn5: Turn = {
 const opponentTurn6: Turn = {
   isPlayerWord: false,
   turnNumber: 6,
-  startedAt: new Date(),
-  playedAt: new Date(),
+  startedAt: staticDate,
+  playedAt: staticDate,
   word: "ship",
   pNum: 2,
 };
