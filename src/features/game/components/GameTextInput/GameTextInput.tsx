@@ -1,5 +1,6 @@
 import {
   NativeSyntheticEvent,
+  PixelRatio,
   Platform,
   Text,
   TextInput,
@@ -35,6 +36,7 @@ const GameTextInput = ({
 }: Props) => {
   const styles = useStyles(createStyles, fontSize, [fontSize]);
   const { colors } = useTheme() as AppTheme;
+  const scaleFactor = PixelRatio.getFontScale();
 
   // the height of the text, including padding
   const [textHeight, setTextHeight] = useState<number>();
@@ -87,7 +89,7 @@ const GameTextInput = ({
   // the descent of the font (half the distance for android)
   const descent = useMemo(() => {
     if (textHeight) {
-      let heightDifference = textHeight - fontSize;
+      let heightDifference = textHeight - fontSize * scaleFactor;
       if (heightDifference > 0) {
         return Platform.OS === "ios"
           ? heightDifference

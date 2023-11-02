@@ -1,4 +1,4 @@
-import { StyleSheet, TextStyle, ViewStyle } from "react-native";
+import { PixelRatio, StyleSheet, TextStyle, ViewStyle } from "react-native";
 import { AppTheme } from "../../../../utils/types";
 
 export interface Styles {
@@ -7,7 +7,8 @@ export interface Styles {
 }
 
 export const createStyles = (theme: AppTheme): Styles => {
-  const size = 50;
+  const scaleFactor = PixelRatio.getFontScale();
+  const size = 50 * scaleFactor;
 
   return StyleSheet.create<Styles>({
     container: {

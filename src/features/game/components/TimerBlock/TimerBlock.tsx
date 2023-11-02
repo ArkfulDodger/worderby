@@ -4,7 +4,7 @@ import { createStyles } from "./TimerBlock.styles";
 import { Text } from "react-native-paper";
 
 export type Props = {
-  count: number;
+  count?: number;
 };
 
 const TimerBlock = ({ count }: Props) => {
@@ -12,7 +12,7 @@ const TimerBlock = ({ count }: Props) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.counter}>{count}</Text>
+      <Text style={styles.counter}>{count || "∞"}</Text>
     </View>
   );
 };
