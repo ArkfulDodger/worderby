@@ -1,9 +1,10 @@
-import { KeyboardAvoidingView, Platform, View } from "react-native";
+import { View } from "react-native";
 import useStyles from "../../../../hooks/useStyles";
 import { createStyles } from "./GamePage.styles";
 import PlayerTurnFrame from "../PlayerTurnFrame";
 import GameHeader from "../../components/GameHeader";
 import GameFooter from "../../components/GameFooter";
+import KeyboardAvoidingView from "../../../../components/atoms/KeyboardAvoidingView";
 
 export type Props = {};
 
@@ -13,10 +14,7 @@ const GamePage = ({}: Props) => {
 
   return (
     <View style={styles.container}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={styles.keyboardAwareContainer}
-      >
+      <KeyboardAvoidingView style={styles.keyboardAwareContainer}>
         <GameHeader />
         <PlayerTurnFrame />
       </KeyboardAvoidingView>
