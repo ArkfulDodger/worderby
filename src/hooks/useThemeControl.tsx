@@ -9,10 +9,10 @@ import { useEffect, useMemo } from "react";
 import { darkTheme, lightTheme } from "../theme/themes";
 
 const useThemeControl = () => {
-  const { systemTheme, isDark } = useAppSelector((state) => state.theme);
-  const { themePreference, isAppActive } = useAppSelector(
-    (state) => state.system
+  const { systemTheme, themePreference, isDark } = useAppSelector(
+    (state) => state.theme
   );
+  const { isAppActive } = useAppSelector((state) => state.system);
   const dispatch = useAppDispatch();
 
   // refresh system theme in state
