@@ -2,7 +2,7 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 // Define a type for the slice state
-interface PlayScreenState {
+interface ActiveTurnState {
   timerCount?: number; // the number displayed on the timer, if used
   pIndexInput: number; // the char index in the prompt the player is trying to select
   pIndex: number; // the active char index in effect for the prompt
@@ -10,15 +10,15 @@ interface PlayScreenState {
 }
 
 // This is the initial state of the slice
-const initialState: PlayScreenState = {
+const initialState: ActiveTurnState = {
   // timerCount: 10,
   pIndexInput: 1,
   pIndex: 1,
   wordInput: "",
 };
 
-export const playScreenSlice = createSlice({
-  name: "play",
+export const activeTurnSlice = createSlice({
+  name: "activeTurn",
   initialState,
   reducers: {
     decrementTimerCount: (state) => {
@@ -36,7 +36,7 @@ export const playScreenSlice = createSlice({
 
 // Action creators are generated for each case reducer function
 export const { decrementTimerCount, handlePromptInput, setWordInput } =
-  playScreenSlice.actions;
+  activeTurnSlice.actions;
 
 // We export the reducer function so that it can be added to the store
-export default playScreenSlice.reducer;
+export default activeTurnSlice.reducer;

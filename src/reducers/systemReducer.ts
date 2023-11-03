@@ -3,21 +3,21 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { AppStateStatus } from "react-native";
 
 // Define a type for the slice state
-interface SettingsState {
+interface SystemState {
   appState: AppStateStatus;
   isAppActive: boolean;
   isMuted: boolean;
 }
 
 // This is the initial state of the slice
-const initialState: SettingsState = {
+const initialState: SystemState = {
   appState: "active",
   isAppActive: true,
   isMuted: false,
 };
 
-export const settingsSlice = createSlice({
-  name: "settings",
+export const systemSlice = createSlice({
+  name: "system",
   initialState,
   reducers: {
     // toggle the user's audio mute status
@@ -34,7 +34,7 @@ export const settingsSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { toggleIsMuted, setAppState } = settingsSlice.actions;
+export const { toggleIsMuted, setAppState } = systemSlice.actions;
 
 // We export the reducer function so that it can be added to the store
-export default settingsSlice.reducer;
+export default systemSlice.reducer;

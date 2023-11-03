@@ -12,17 +12,17 @@ import { useAppDispatch, useAppSelector } from "../../../../hooks/reduxHooks";
 import {
   handlePromptInput,
   setWordInput,
-} from "../../../../reducers/playScreenReducer";
+} from "../../../../reducers/activeTurnReducer";
 
 export type Props = {};
 
 const PlayerTurnFrame = ({}: Props) => {
   const styles = useStyles(createStyles);
 
-  // game and play state
+  // game and activeTurn state
   const dispatch = useAppDispatch();
   const game = useAppSelector((state) => state.game);
-  const play = useAppSelector((state) => state.play);
+  const activeTurn = useAppSelector((state) => state.activeTurn);
 
   // the input timeout for auto-merges (for voice typing)
   const [autoMergeTimeout, setAutoMergeTimeout] = useState<NodeJS.Timeout>();
@@ -75,17 +75,17 @@ const PlayerTurnFrame = ({}: Props) => {
 
   // // the prompt string pieces which are used/unused
   const usedPrompt = useMemo(
-    () => prompt.slice(play.pIndex),
-    [prompt, play.pIndex]
+    () => prompt.slice(activeTurn.pIndex),
+    [prompt, activeTurn.pIndex]
   );
   const unusedPrompt = useMemo(
-    () => prompt.slice(0, play.pIndex),
-    [prompt, play.pIndex]
+    () => prompt.slice(0, activeTurn.pIndex),
+    [prompt, activeTurn.pIndex]
   );
 
   // adjust word input into a compatible prompt portion (for voice typing)
   const autoMerge = (str?: string) => {
-    let text = str || play.wordInput;
+    let text = str || activeTurn.wordInput;
 
     for (let i = 1; i < prompt.length; i++) {
       const possiblePrompt = prompt.slice(i);
@@ -103,7 +103,7 @@ const PlayerTurnFrame = ({}: Props) => {
 
   const onChangeGameTextTextInput = (str: string) => {
     // assume an input change of more than one letter at a time might be a whole word
-    if (Math.abs(str.length - play.wordInput.length) > 1) {
+    if (Math.abs(str.length - activeTurn.wordInput.length) > 1) {
       clearTimeout(autoMergeTimeout);
       const timeout = setTimeout(() => autoMerge(str), 300);
       setAutoMergeTimeout(timeout);
@@ -116,7 +116,10 @@ const PlayerTurnFrame = ({}: Props) => {
     <Pressable onPress={toggleInputFocus} style={styles.container}>
       <View style={styles.playWord(isWordSplit)}>
         <PhantomText
-          text={usedPrompt + (play.wordInput === "" ? "_" : play.wordInput)}
+          text={
+            usedPrompt +
+            (activeTurn.wordInput === "" ? "_" : activeTurn.wordInput)
+          }
           fontSize={wordFontSize}
           idealFontSize={30}
           onSizingTextLayout={onSizingTextLayout}
@@ -129,7 +132,7 @@ const PlayerTurnFrame = ({}: Props) => {
         <GameTextInput
           inputRef={playerInputRef}
           multilineInputRef={multilineInputRef}
-          value={play.wordInput}
+          value={activeTurn.wordInput}
           onChangeText={onChangeGameTextTextInput}
           fontSize={wordFontSize}
           multiline={isWordSplit}
@@ -138,14 +141,14 @@ const PlayerTurnFrame = ({}: Props) => {
       </View>
       <PromptGestureHandler
         promptLength={prompt.length}
-        pIndex={play.pIndex}
+        pIndex={activeTurn.pIndex}
         updatePromptInput={updatePromptInput}
       >
         <View style={styles.promptInputArea}>
           <PromptText
             usedPrompt={usedPrompt}
             unusedPrompt={unusedPrompt}
-            pIndexInput={play.pIndexInput}
+            pIndexInput={activeTurn.pIndexInput}
           />
         </View>
       </PromptGestureHandler>

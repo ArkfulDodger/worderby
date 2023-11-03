@@ -17,7 +17,7 @@ export type Props = {};
 const GameHeader = ({}: Props) => {
   const styles = useStyles(createStyles);
   const game = useAppSelector((state) => state.game);
-  const play = useAppSelector((state) => state.play);
+  const activeTurn = useAppSelector((state) => state.activeTurn);
 
   // update the worderbyte any time the starting word or turns change
   const worderbyte = useMemo(
@@ -38,7 +38,7 @@ const GameHeader = ({}: Props) => {
 
           <View style={styles.centerContainer}>
             <TurnCounter isPlayer />
-            <TimerBlock count={play.timerCount} />
+            <TimerBlock count={activeTurn.timerCount} />
             <TurnCounter />
           </View>
 
