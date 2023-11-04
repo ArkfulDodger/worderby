@@ -6,3 +6,7 @@ export const TURNS_PER_GAME = ROUNDS_PER_GAME * 2;
 export const PROMPT_LETTER_VALUE = 10;
 export const ADDED_LETTER_VALUE = 1;
 export const MAX_ADDED_SCORE = 10;
+
+// timer variables
+export const TIMER_COUNT = 10;
+export const TIMER_MS_PER_COUNT = 1000;
