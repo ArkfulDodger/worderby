@@ -3,6 +3,7 @@ import { AppTheme } from "../../../../utils/types";
 
 interface StaticStyles {
   container: ViewStyle;
+  playWordArea: ViewStyle;
   promptInputArea: ViewStyle;
 }
 
@@ -20,6 +21,12 @@ export const createStyles = (theme: AppTheme): Styles => {
     container: {
       flex: 1,
     },
+    playWordArea: {
+      flex: 2,
+      paddingHorizontal: 15,
+      alignItems: "center",
+      justifyContent: "center",
+    },
     promptInputArea: {
       alignItems: "center",
       justifyContent: "center",
@@ -31,10 +38,6 @@ export const createStyles = (theme: AppTheme): Styles => {
 
   const dynamicStyles: DynamicStyles = {
     playWord: (split?: boolean) => ({
-      flex: 2,
-      paddingHorizontal: 15,
-      alignItems: "center",
-      justifyContent: "center",
       flexDirection: split ? "column" : "row",
     }),
     stolenLetters: (size: number) => ({
