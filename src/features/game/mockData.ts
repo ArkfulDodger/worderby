@@ -1,11 +1,11 @@
 import { Turn } from "../../reducers/gameReducer";
 
-const staticDate = new Date().toISOString();
+export const staticDate = new Date().toISOString();
 
 // longest English word (for testing): pneumonoultramicroscopicsilicovolcanoconiosis
 
 const playerTurn1: Turn = {
-  isPlayerWord: true,
+  isPlayer: true,
   turnNumber: 1,
   startedAt: staticDate,
   playedAt: staticDate,
@@ -14,7 +14,7 @@ const playerTurn1: Turn = {
 };
 
 const opponentTurn2: Turn = {
-  isPlayerWord: false,
+  isPlayer: false,
   turnNumber: 2,
   startedAt: staticDate,
   playedAt: staticDate,
@@ -23,7 +23,7 @@ const opponentTurn2: Turn = {
 };
 
 const playerTurn3: Turn = {
-  isPlayerWord: true,
+  isPlayer: true,
   turnNumber: 3,
   startedAt: staticDate,
   playedAt: staticDate,
@@ -32,7 +32,7 @@ const playerTurn3: Turn = {
 };
 
 const opponentTurn4: Turn = {
-  isPlayerWord: false,
+  isPlayer: false,
   turnNumber: 4,
   startedAt: staticDate,
   playedAt: staticDate,
@@ -41,7 +41,7 @@ const opponentTurn4: Turn = {
 };
 
 const playerTurn5: Turn = {
-  isPlayerWord: true,
+  isPlayer: true,
   turnNumber: 5,
   startedAt: staticDate,
   playedAt: staticDate,
@@ -50,7 +50,7 @@ const playerTurn5: Turn = {
 };
 
 const opponentTurn6: Turn = {
-  isPlayerWord: false,
+  isPlayer: false,
   turnNumber: 6,
   startedAt: staticDate,
   playedAt: staticDate,
