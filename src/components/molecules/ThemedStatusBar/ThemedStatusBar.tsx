@@ -1,8 +1,8 @@
 // import { ButtonProps, Button as PaperButton } from "react-native-paper";
 
 import { StatusBar, StatusBarProps } from "expo-status-bar";
-import { useAppSelector } from "../../hooks/reduxHooks";
-import { selectIsDark } from "../../reducers/themeReducer";
+import { useAppSelector } from "../../../hooks/reduxHooks";
+import { selectIsDark } from "../../../reducers/themeReducer";
 
 export type Props = StatusBarProps;
 

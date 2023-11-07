@@ -6,7 +6,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import useStyles from "../../../hooks/useStyles";
 import { createStyles } from "./AppWrapper.styles";
 import useThemeControl from "../../../hooks/useThemeControl";
-import ThemedStatusBar from "../../../components/ThemedStatusBar";
+import ThemedStatusBar from "../../../components/molecules/ThemedStatusBar";
 import useAppState from "../../../hooks/useAppState";
 
 type Props = {
