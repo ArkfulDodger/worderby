@@ -22,7 +22,7 @@ export type Props = TextInputProps & {
 // Dynamically switches between a single or multiline input based on split word state
 // for single line, displays "false" non-flickering input facade over invisible active text input
 const GameTextInput = ({ fontSize = 30, style, value, ...props }: Props) => {
-  const styles = useStyles(createStyles, fontSize, [fontSize]);
+  const styles = useStyles(createStyles, fontSize);
   const { colors } = useTheme() as AppTheme;
 
   useBlurOnKeyboardDismiss();

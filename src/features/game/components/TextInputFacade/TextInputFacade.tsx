@@ -22,7 +22,7 @@ const TextInputFacade = ({
   caretIndex,
   style,
 }: Props) => {
-  const styles = useStyles(createStyles, fontSize, [fontSize]);
+  const styles = useStyles(createStyles, fontSize);
   const scaleFactor = PixelRatio.getFontScale();
 
   // the caret to display on the text input

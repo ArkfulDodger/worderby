@@ -18,7 +18,7 @@ export type Props = {
 // isPlayer prop determines styling layout and content source
 const PlayerScoreBlock = ({ isPlayer = false, style }: Props) => {
   const scaleFactor = PixelRatio.getFontScale();
-  const styles = useStyles(createStyles, isPlayer, [isPlayer, scaleFactor]);
+  const styles = useStyles(createStyles, isPlayer, [scaleFactor]);
   const score = useAppSelector(
     isPlayer ? selectUserScore : selectOpponentScore
   );
