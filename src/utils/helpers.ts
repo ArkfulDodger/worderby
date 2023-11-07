@@ -158,3 +158,13 @@ export const isPlayersTurn = (turnsPlayed: number, isPlayerFirst: boolean) => {
 
   return thereAreTurnsLeft && oddTurnIsNext === playerHasOddTurns;
 };
+
+// return a styleSheet number (like padding, margin, etc) as a number
+export const getStyleNumberValue = (value?: string | number) => {
+  // return zero if not present
+  if (!value) return 0;
+  // return the number if already a number
+  else if (typeof value === "number") return value;
+  // return the parsed int if a string
+  else return parseInt(value);
+};

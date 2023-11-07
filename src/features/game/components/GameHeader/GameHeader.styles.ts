@@ -1,7 +1,7 @@
 import { StyleSheet, TextStyle, ViewStyle } from "react-native";
 import { AppTheme } from "../../../../utils/types";
 
-export interface Styles {
+interface Styles {
   outerHeaderContainer: ViewStyle;
   innerHeaderContainer: ViewStyle;
   headerContent: ViewStyle;

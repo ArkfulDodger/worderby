@@ -4,16 +4,14 @@ import {
   Platform,
 } from "react-native";
 
-export type Props = KeyboardAvoidingViewProps;
-
 // a KeyboardAvoidingView which defaults its behavior based on platform
-const KeyboardAvoidingView = (props: Props) => {
-  const buttonProps: Props = {
+const KeyboardAvoidingView = (props: KeyboardAvoidingViewProps) => {
+  const keyboardAvoidingViewProps: KeyboardAvoidingViewProps = {
     behavior: Platform.OS === "ios" ? "padding" : "height",
     ...props,
   };
 
-  return <NativeKeyboardAvoidingView {...buttonProps} />;
+  return <NativeKeyboardAvoidingView {...keyboardAvoidingViewProps} />;
 };
 
 export default KeyboardAvoidingView;

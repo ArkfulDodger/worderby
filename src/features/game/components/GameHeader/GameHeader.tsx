@@ -9,11 +9,9 @@ import TimerBlock from "../TimerBlock";
 import { useAppSelector } from "../../../../hooks/reduxHooks";
 import { selectWorderbyte } from "../../gameSelectors";
 
-export type Props = {};
-
 // The header component for the game cycle
 // Includes player displays (name & avatar), scores, turn counters, timer, and worderbyte
-const GameHeader = ({}: Props) => {
+const GameHeader = () => {
   const styles = useStyles(createStyles);
   const worderbyte = useAppSelector(selectWorderbyte);
 

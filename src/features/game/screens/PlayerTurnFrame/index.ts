@@ -1,8 +1,8 @@
 import PlayerTurnFrame from "./PlayerTurnFrame";
 export default PlayerTurnFrame;
 
-export { Props as PlayBlockProps } from "./PlayerTurnFrame";
+export { Props as PlayerTurnFrameProps } from "./PlayerTurnFrame";
 export {
-  Styles as PlayBlockStyles,
-  createStyles as createPlayBlockStyles,
+  Styles as PlayerTurnFrameStyles,
+  createStyles as createPlayerTurnFrameStyles,
 } from "./PlayerTurnFrame.styles";

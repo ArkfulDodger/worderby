@@ -7,10 +7,8 @@ import { useAppDispatch, useAppSelector } from "../../../../hooks/reduxHooks";
 import { selectIsMuted, toggleIsMuted } from "../../../../slices/systemSlice";
 import useGameButtonProps from "../../hooks/useGameButtonProps";
 
-export type Props = {};
-
 // the footer for the game cycle
-const GameFooter = ({}: Props) => {
+const GameFooter = () => {
   const styles = useStyles(createStyles);
   const dispatch = useAppDispatch();
   const isMuted = useAppSelector(selectIsMuted);
