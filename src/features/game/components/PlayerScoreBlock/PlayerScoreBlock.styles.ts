@@ -13,7 +13,7 @@ interface DynamicStyles {
   // define dynamic style types
 }
 
-export interface Styles extends StaticStyles, DynamicStyles {}
+interface Styles extends StaticStyles, DynamicStyles {}
 
 export const createStyles = (theme: AppTheme, isPlayer: boolean): Styles => {
   const staticStyles = StyleSheet.create<StaticStyles>({
@@ -32,7 +32,8 @@ export const createStyles = (theme: AppTheme, isPlayer: boolean): Styles => {
       marginRight: isPlayer ? 10 : 0,
     },
     playerName: {
-      //
+      flex: 1,
+      textAlign: isPlayer ? "left" : "right",
     },
   });
 
