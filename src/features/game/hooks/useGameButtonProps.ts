@@ -4,11 +4,13 @@ import { RoundPhase } from "../enums";
 import { useDispatch } from "react-redux";
 import { startTurn } from "../../../slices/gameSlice";
 import {
+  selectActiveTurn,
   selectCanAttemptSubmit,
   selectCanStartTurn,
   selectGameLoading,
   selectRoundPhase,
 } from "../gameSelectors";
+import usePlayTurn from "./usePlayTurn";
 
 // get props for the primary game button based on phase and state
 const useGameButtonProps = () => {
@@ -17,6 +19,8 @@ const useGameButtonProps = () => {
   const loading = useAppSelector(selectGameLoading);
   const canAttemptSubmit = useAppSelector(selectCanAttemptSubmit);
   const canStartTurn = useAppSelector(selectCanStartTurn);
+  const activeTurn = useAppSelector(selectActiveTurn);
+  const { attemptWord } = usePlayTurn();
 
   // the text to display on the button
   const buttonText = useMemo(() => {
@@ -49,7 +53,7 @@ const useGameButtonProps = () => {
       default:
         break;
     }
-  }, [phase]);
+  }, [phase, activeTurn]);
 
   const isButtonDisabled = useMemo(() => {
     switch (phase) {
@@ -63,7 +67,7 @@ const useGameButtonProps = () => {
   }, [phase, loading, canAttemptSubmit, canStartTurn]);
 
   // TODO: submit button logic
-  const onSubmitPress = () => console.log("submit pressed");
+  const onSubmitPress = () => attemptWord();
 
   // start next round on start press
   const onStartPress = () => dispatch(startTurn());

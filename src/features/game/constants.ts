@@ -10,3 +10,4 @@ export const MAX_ADDED_SCORE = 10;
 // timer variables
 export const TIMER_COUNT = 10;
 export const TIMER_MS_PER_COUNT = 1000;
+export const MAX_PENALTY = -15;

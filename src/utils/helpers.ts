@@ -1,7 +1,10 @@
 import {
   ADDED_LETTER_VALUE,
   MAX_ADDED_SCORE,
+  MAX_PENALTY,
   PROMPT_LETTER_VALUE,
+  TIMER_COUNT,
+  TIMER_MS_PER_COUNT,
   TURNS_PER_GAME,
 } from "../features/game/constants";
 import { Turn } from "../slices/gameSlice";
@@ -167,4 +170,40 @@ export const getStyleNumberValue = (value?: string | number) => {
   else if (typeof value === "number") return value;
   // return the parsed int if a string
   else return parseInt(value);
+};
+
+const calculateTimeDifferenceInMilliseconds = (
+  startedAt: string,
+  playedAt: string
+): number => {
+  const startedDate = new Date(startedAt);
+  const playedDate = new Date(playedAt);
+
+  // Ensure the parsing was successful
+  if (isNaN(startedDate.getTime()) || isNaN(playedDate.getTime())) {
+    throw new Error("Invalid date format");
+  }
+
+  // Calculate the time difference in milliseconds
+  const timeDifference = playedDate.getTime() - startedDate.getTime();
+
+  return timeDifference;
+};
+
+export const getTurnPenalty = (startedAt: string, playedAt: string) => {
+  const turnMilliseconds = calculateTimeDifferenceInMilliseconds(
+    startedAt,
+    playedAt
+  );
+
+  // Divide the play time by the milliseconds per count
+  const completedTurnCounts = Math.floor(turnMilliseconds / TIMER_MS_PER_COUNT);
+
+  // get penalty clamped bewteen 0 and the max (a negative)
+  const penalty = Math.min(
+    MAX_PENALTY,
+    Math.max(0, TIMER_COUNT - completedTurnCounts)
+  );
+
+  return penalty;
 };

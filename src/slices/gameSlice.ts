@@ -26,7 +26,7 @@ export type Turn = {
 // a turn which is actively in progress
 export type ActiveTurn = {
   turnNumber: number; // the active turn number
-  startTime?: string; // the ISO timestamp when the user's turn began (when prompt loads on screen)
+  startTime: string; // the ISO timestamp when the user's turn began (when prompt loads on screen)
   timerCount?: number; // the number displayed on the timer, if used
   pIndexInput: number; // the char index in the prompt the player is trying to select
   wordInput: string; // the additional input the user has typed
@@ -108,6 +108,7 @@ const gameSlice = createSlice({
           state.isPlayerFirst
         )
       ) {
+        state.isLoading = false;
         return;
       }
 
@@ -123,6 +124,8 @@ const gameSlice = createSlice({
       if (newTurns.length >= TURNS_PER_GAME) {
         state.isEnded = true;
       }
+
+      state.isLoading = false;
     },
 
     // decrement the timer (if active turn and timer in use)
@@ -158,6 +161,7 @@ const gameSlice = createSlice({
           timerCount: state.mode === GameMode.Casual ? undefined : TIMER_COUNT,
           pIndexInput: Math.min(1, prompt.length - 1),
           wordInput: "",
+          startTime: new Date().toISOString(),
         };
       }
     },
@@ -182,6 +186,10 @@ const gameSlice = createSlice({
     setIsWordSplit: (state, action: PayloadAction<boolean>) => {
       if (state.activeTurn) state.activeTurn.isWordSplit = action.payload;
     },
+
+    setIsLoading: (state, action: PayloadAction<boolean>) => {
+      state.isLoading = action.payload;
+    },
   },
 });
 
@@ -198,6 +206,7 @@ export const {
   setInputFocus,
   toggleInputFocus,
   setIsWordSplit,
+  setIsLoading,
 } = gameSlice.actions;
 
 // We export the reducer function so that it can be added to the store

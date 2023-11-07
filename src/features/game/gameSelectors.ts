@@ -28,6 +28,7 @@ export const selectInputFocus = (state: RootState) =>
   !!state.game.activeTurn?.inputFocused;
 export const selectIsWordSplit = (state: RootState) =>
   !!state.game.activeTurn?.isWordSplit;
+export const selectActiveTurn = (state: RootState) => state.game.activeTurn;
 
 // special selector for getting whether or not it is the player's turn
 export const selectIsPlayerTurn = (state: RootState) =>
@@ -114,7 +115,7 @@ export const selectUsedUnusedPrompt = (state: RootState) => {
 // can the current word input be submitted (is at least one character)
 export const selectCanAttemptSubmit = (state: RootState) => {
   const wordInput = selectWordInput(state);
-  return !!wordInput && wordInput.length > 1;
+  return !!wordInput && wordInput.length > 0;
 };
 
 // can the user initiate their next turn
