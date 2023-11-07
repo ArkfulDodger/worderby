@@ -26,6 +26,8 @@ export const selectWordInput = (state: RootState) =>
   state.game.activeTurn?.wordInput;
 export const selectInputFocus = (state: RootState) =>
   !!state.game.activeTurn?.inputFocused;
+export const selectIsWordSplit = (state: RootState) =>
+  !!state.game.activeTurn?.isWordSplit;
 
 // special selector for getting whether or not it is the player's turn
 export const selectIsPlayerTurn = (state: RootState) =>

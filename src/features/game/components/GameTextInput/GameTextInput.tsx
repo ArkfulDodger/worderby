@@ -1,170 +1,66 @@
-import {
-  NativeSyntheticEvent,
-  PixelRatio,
-  Platform,
-  Text,
-  TextInput,
-  TextInputProps,
-  TextInputSelectionChangeEventData,
-  View,
-  ViewStyle,
-} from "react-native";
+import { Platform, TextInput, TextInputProps, View } from "react-native";
 import useStyles from "../../../../hooks/useStyles";
 import { createStyles } from "./GameTextInput.styles";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect } from "react";
 import { useTheme } from "react-native-paper";
 import { AppTheme } from "../../../../utils/types";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/reduxHooks";
 import useAutoMerge from "../../hooks/useAutoMerge";
-import { setInputFocus, setWordInput } from "../../../../reducers/gameReducer";
-import { selectInputFocus } from "../../gameSelectors";
+import { setWordInput } from "../../../../reducers/gameReducer";
+import { selectIsWordSplit } from "../../gameSelectors";
+import TextInputFacade from "../TextInputFacade";
+import useGameInputFocus from "../../hooks/useGameInputFocus";
 import useBlurOnKeyboardDismiss from "../../hooks/useBlurOnKeyboardDismiss";
+import useGameInputLayout from "../../hooks/useGameInputLayout";
+import useCaretControl from "../../hooks/useCaretControl";
 
 export type Props = TextInputProps & {
-  containerStyle?: ViewStyle;
   fontSize?: number;
 };
 
 // The text input component used during gameplay
-const GameTextInput = ({
-  containerStyle,
-  fontSize = 30,
-  style,
-  value,
-  multiline,
-  ...props
-}: Props) => {
-  const dispatch = useAppDispatch();
-  const { checkInputForAutoMerge } = useAutoMerge();
-  useBlurOnKeyboardDismiss();
-
+// Dynamically switches between a single or multiline input based on split word state
+// for single line, displays "false" non-flickering input facade over invisible active text input
+const GameTextInput = ({ fontSize = 30, style, value, ...props }: Props) => {
   const styles = useStyles(createStyles, fontSize, [fontSize]);
   const { colors } = useTheme() as AppTheme;
-  const scaleFactor = PixelRatio.getFontScale();
-  const inputFocused = useAppSelector(selectInputFocus);
 
-  // refs
-  const inputRef = useRef<TextInput>(null);
-  const multilineInputRef = useRef<TextInput>(null);
-
-  // focus or blur the player text input
-  const focusInput = () =>
-    multiline && multilineInputRef.current
-      ? multilineInputRef.current.focus()
-      : inputRef.current?.focus();
-  const blurInput = () =>
-    multiline && multilineInputRef.current
-      ? multilineInputRef.current.blur()
-      : inputRef.current?.blur();
-
-  useEffect(() => {
-    // select the input ref currently in use based on whether the word is split
-    const activeInputRef = multiline ? multilineInputRef : inputRef;
-
-    // focus or blur the input to match the current state
-    if (!inputFocused && activeInputRef.current?.isFocused()) blurInput();
-    else if (inputFocused && !activeInputRef.current?.isFocused()) focusInput();
-    0;
-  }, [inputFocused]);
-
-  // the height of the text, including padding
-  const [textHeight, setTextHeight] = useState<number>();
-
-  // whether to show the caret
-  const [caretIndex, setCaretIndex] = useState(0);
-  const [isCaretVisible, setIsCaretVisible] = useState(false);
-  const showCaret = () => setIsCaretVisible(true);
-  const hideCaret = () => setIsCaretVisible(false);
-  const handleSelectionChange = (
-    e: NativeSyntheticEvent<TextInputSelectionChangeEventData>
-  ) => {
-    let isCaretSinglePosition =
-      e.nativeEvent.selection.start === e.nativeEvent.selection.end;
-
-    if (isCaretSinglePosition) {
-      !isCaretVisible && showCaret();
-      setCaretIndex(e.nativeEvent.selection.start);
-    } else if (!isCaretSinglePosition && isCaretVisible) {
-      hideCaret();
-    }
-  };
-
-  const onFocus = () => {
-    showCaret();
-    if (!inputFocused) dispatch(setInputFocus(true));
-  };
-
-  const onBlur = () => {
-    hideCaret();
-    if (inputFocused) dispatch(setInputFocus(false));
-  };
-
-  // focus input on android after first render (keyboard layout bug if immediate focus)
-  const [hasRendered, setHasRendered] = useState(false);
-  const onComponentRender = () => {
-    if (!hasRendered) setHasRendered(true);
-  };
-
-  const [canFocus, setCanFocus] = useState(false);
+  useBlurOnKeyboardDismiss();
+  const dispatch = useAppDispatch();
+  const multiline = useAppSelector(selectIsWordSplit);
+  const { checkInputForAutoMerge } = useAutoMerge();
+  const { textHeight, onTextHeightLayout, hasRendered, onComponentRender } =
+    useGameInputLayout();
+  const { caretIndex, isCaretVisible, handleSelectionChange } =
+    useCaretControl();
+  const {
+    inputRef,
+    multilineInputRef,
+    canFocus,
+    enableFocus,
+    focusStateOnInputFocus,
+    blurStateOnFullInputBlur,
+  } = useGameInputFocus();
 
   // once all necessary components have measured and rendered, allow input focus
+  // avoids layout error from keyboard being open prior to measuring
   useEffect(() => {
-    if (inputRef.current && hasRendered && textHeight && !canFocus) {
-      setCanFocus(true);
-      setTimeout(() => {
-        dispatch(setInputFocus(true));
-        // inputRef.current?.focus();
-      }, 1);
-    }
-  }, [inputRef.current, hasRendered, textHeight]);
+    if (hasRendered && textHeight && !canFocus) enableFocus();
+  }, [hasRendered, textHeight]);
 
-  // when multiline or focus settings change, focus the appropriate input
-  useEffect(() => {
-    if (canFocus) {
-      dispatch(setInputFocus(true));
-      // if (multiline) multilineInputRef.current?.focus();
-      // else inputRef.current?.focus();
-    }
-  }, [multiline]);
-
-  // the descent of the font (half the distance for android)
-  const descent = useMemo(() => {
-    if (textHeight) {
-      let heightDifference = textHeight - fontSize * scaleFactor;
-      if (heightDifference > 0) {
-        return Platform.OS === "ios"
-          ? heightDifference
-          : heightDifference * 0.5;
-      }
-      return undefined;
-    }
-    return undefined;
-  }, [textHeight, fontSize]);
-
-  // the caret to display on the text input
-  const caret = isCaretVisible && (
-    <View>
-      <View style={styles.caret(textHeight)} />
-    </View>
-  );
-
-  const handleChangeText = (text: string) => {
-    // ensure only English alphabet characters (lower case) are submitted
-    let validatedText = text.replace(/[^a-zA-Z]/g, "").toLowerCase();
-
-    // initiate checks for whole word entry and potential auto-merges
+  // on text change, validate, check whole-word entry, and update input in state
+  const onChangeText = (text: string) => {
+    let validatedText = text.replace(/[^a-zA-Z]/g, "").toLowerCase(); // ensure only English alphabet characters (lower case)
     checkInputForAutoMerge(validatedText);
-
-    // update word input in state
     dispatch(setWordInput(validatedText));
   };
 
-  // the base props utilized by the text input
+  // the base props utilized by both text inputs
   const inputBaseProps: Partial<TextInputProps> = {
     value: value,
-    onBlur: onBlur,
-    onChangeText: handleChangeText,
-    onFocus: onFocus,
+    onChangeText: onChangeText,
+    onFocus: focusStateOnInputFocus,
+    onBlur: blurStateOnFullInputBlur,
     autoFocus: false,
     autoCapitalize: "none",
     autoComplete: "off",
@@ -181,20 +77,16 @@ const GameTextInput = ({
   };
 
   return (
-    <View onLayout={onComponentRender} style={containerStyle}>
+    <View onLayout={onComponentRender} style={styles.container(multiline)}>
       {!multiline && (
-        <>
-          {descent && <View style={styles.underline(descent)} />}
-          <View style={styles.mockInputContainer(textHeight)}>
-            <Text selectable={false} style={[styles.text, style]}>
-              {value?.slice(0, caretIndex) || ""}
-            </Text>
-            {caret}
-            <Text selectable={false} style={[styles.text, style]}>
-              {value?.slice(caretIndex) || ""}
-            </Text>
-          </View>
-        </>
+        <TextInputFacade
+          value={value}
+          textHeight={textHeight}
+          fontSize={fontSize}
+          isCaretVisible={isCaretVisible}
+          caretIndex={caretIndex}
+          style={style}
+        />
       )}
       <TextInput
         {...inputBaseProps}
@@ -210,7 +102,7 @@ const GameTextInput = ({
         caretHidden={true}
         cursorColor={!multiline ? colors.outline : "transparent"}
         onSelectionChange={multiline ? undefined : handleSelectionChange}
-        onLayout={(e) => setTextHeight(e.nativeEvent.layout.height)}
+        onLayout={onTextHeightLayout}
         {...props}
       />
       <TextInput

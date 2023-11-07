@@ -30,7 +30,8 @@ export type ActiveTurn = {
   timerCount?: number; // the number displayed on the timer, if used
   pIndexInput: number; // the char index in the prompt the player is trying to select
   wordInput: string; // the additional input the user has typed
-  inputFocused?: boolean;
+  inputFocused?: boolean; // whether the player input is focused
+  isWordSplit?: boolean; // whether the input needs to be split for length
 };
 
 // the master state of the currently open game in the app
@@ -167,7 +168,8 @@ export const gameSlice = createSlice({
     },
 
     toggleInputFocus: (state) => {
-      if (state.activeTurn) state.activeTurn.inputFocused = !state.activeTurn.inputFocused;
+      if (state.activeTurn)
+        state.activeTurn.inputFocused = !state.activeTurn.inputFocused;
     },
 
     // record a start timestamp for the active turn (only if it hasn't already been set)
@@ -175,6 +177,10 @@ export const gameSlice = createSlice({
       if (state.activeTurn && !state.activeTurn.startTime) {
         state.activeTurn.startTime = new Date().toISOString();
       }
+    },
+
+    setIsWordSplit: (state, action: PayloadAction<boolean>) => {
+      if (state.activeTurn) state.activeTurn.isWordSplit = action.payload;
     },
   },
 });
@@ -190,7 +196,8 @@ export const {
   startTurn,
   recordStartTime,
   setInputFocus,
-  toggleInputFocus
+  toggleInputFocus,
+  setIsWordSplit,
 } = gameSlice.actions;
 
 // We export the reducer function so that it can be added to the store

@@ -5,8 +5,15 @@ import PhantomText from "../PhantomText";
 import { Text } from "react-native-paper";
 import GameTextInput from "../GameTextInput";
 import { useAppSelector } from "../../../../hooks/reduxHooks";
-import { selectUsedUnusedPrompt, selectWordInput } from "../../gameSelectors";
+import {
+  selectIsWordSplit,
+  selectUsedUnusedPrompt,
+  selectWordInput,
+} from "../../gameSelectors";
 import useResizingFont from "../../../../hooks/useResizingFont";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { setIsWordSplit } from "../../../../reducers/gameReducer";
 
 export type Props = {};
 
@@ -14,15 +21,17 @@ export type Props = {};
 // uses phantom text to determine when the word needs to be split
 const PlayWordText = ({}: Props) => {
   const styles = useStyles(createStyles);
+  const dispatch = useDispatch();
   const { usedPrompt } = useAppSelector(selectUsedUnusedPrompt);
   const wordInput = useAppSelector(selectWordInput);
-  const {
-    fontSize,
-    onTextLayout,
-    onSizeUpLayout,
-    onIdealSizeLayout,
-    isAtMin: isWordSplit,
-  } = useResizingFont({ elastic: true, minFontSize: 20, startingFontSize: 30 });
+  const isWordSplit = useAppSelector(selectIsWordSplit);
+  const { fontSize, onTextLayout, onSizeUpLayout, onIdealSizeLayout, isAtMin } =
+    useResizingFont({ elastic: true, minFontSize: 20, startingFontSize: 30 });
+
+  // update word split state
+  useEffect(() => {
+    dispatch(setIsWordSplit(isAtMin));
+  }, [isAtMin]);
 
   return (
     <View style={styles.playWord(isWordSplit)}>
@@ -37,12 +46,7 @@ const PlayWordText = ({}: Props) => {
       <View style={styles.stolenContainer(isWordSplit)}>
         <Text style={styles.stolenLetters(fontSize)}>{usedPrompt}</Text>
       </View>
-      <GameTextInput
-        value={wordInput}
-        fontSize={fontSize}
-        multiline={isWordSplit}
-        containerStyle={styles.inputContainer(isWordSplit)}
-      />
+      <GameTextInput value={wordInput} fontSize={fontSize} />
     </View>
   );
 };
