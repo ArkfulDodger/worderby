@@ -4,6 +4,7 @@ import { AppTheme } from "../../../../utils/types";
 export interface Styles {
   container: ViewStyle;
   keyboardAwareContainer: ViewStyle;
+  frameContainer: ViewStyle;
 }
 
 export const createStyles = (theme: AppTheme): Styles => {
@@ -12,6 +13,9 @@ export const createStyles = (theme: AppTheme): Styles => {
       flex: 1,
     },
     keyboardAwareContainer: {
+      flex: 1,
+    },
+    frameContainer: {
       flex: 1,
     },
   });
