@@ -67,7 +67,6 @@ const useGameInputFocus = () => {
 
   // when input focus state changes, focus/blur accordingly
   useEffect(() => {
-    console.log("input focus changed to:", inputFocused);
     focusBlurWithState();
   }, [inputFocused]);
 

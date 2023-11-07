@@ -1,7 +1,7 @@
-import { Keyboard } from "react-native";
+import { useEffect } from "react";
 import { useAppDispatch } from "../../../hooks/reduxHooks";
 import { setInputFocus } from "../../../slices/gameSlice";
-import { useEffect } from "react";
+import { Keyboard } from "react-native";
 
 // ensures the game text input is blurred when the keyboard is dismissed
 const useBlurOnKeyboardDismiss = () => {
@@ -9,7 +9,6 @@ const useBlurOnKeyboardDismiss = () => {
 
   // blur text input if currently focused
   const blurTextInput = () => {
-    console.log("blur called");
     dispatch(setInputFocus(false));
   };
 
