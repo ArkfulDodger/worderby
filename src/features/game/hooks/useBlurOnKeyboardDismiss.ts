@@ -11,7 +11,8 @@ const useBlurOnKeyboardDismiss = () => {
 
   // blur text input if currently focused
   const blurTextInput = () => {
-    if (inputFocused) dispatch(setInputFocus(false));
+    console.log("blur called");
+    dispatch(setInputFocus(false));
   };
 
   // Add event listener for the keyboard
