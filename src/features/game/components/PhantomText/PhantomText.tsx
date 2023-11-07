@@ -6,9 +6,9 @@ import {
 } from "react-native";
 import useStyles from "../../../../hooks/useStyles";
 import { createStyles } from "./PhantomText.styles";
-import metrics from "../../../../utils/metrics";
 
-export type Props = {
+type Props = {
+  width?: number;
   text: string;
   fontSize: number;
   idealFontSize: number;
@@ -24,7 +24,9 @@ export type Props = {
 };
 
 // invisible text which uses useResizingFont callbacks for font size calculation
+// do not run layout calculations until a width has been established
 const PhantomText = ({
+  width,
   text,
   fontSize,
   idealFontSize,
@@ -32,47 +34,25 @@ const PhantomText = ({
   onLargerSizingTextLayout,
   onIdealSizingTextLayout,
 }: Props) => {
-  const styles = useStyles(createStyles);
+  const styles = useStyles(createStyles, { width, fontSize, idealFontSize });
 
   return (
-    <View
-      style={{
-        position: "absolute",
-        backgroundColor: "transparent",
-        width: metrics.screenWidth - 30,
-        alignItems: "center",
-      }}
-    >
+    <View style={styles.container}>
       <Text
-        onTextLayout={onSizingTextLayout}
-        style={{
-          position: "absolute",
-          color: "transparent",
-          opacity: 0.3,
-          fontSize: fontSize,
-        }}
+        onTextLayout={width ? onSizingTextLayout : undefined}
+        style={[styles.text, styles.currentText]}
       >
         {text}
       </Text>
       <Text
-        onTextLayout={onLargerSizingTextLayout}
-        style={{
-          position: "absolute",
-          color: "transparent",
-          opacity: 0.3,
-          fontSize: fontSize + 1,
-        }}
+        onTextLayout={width ? onLargerSizingTextLayout : undefined}
+        style={[styles.text, styles.sizeUpText]}
       >
         {text}
       </Text>
       <Text
-        onTextLayout={onIdealSizingTextLayout}
-        style={{
-          position: "absolute",
-          color: "transparent",
-          opacity: 0.3,
-          fontSize: idealFontSize,
-        }}
+        onTextLayout={width ? onIdealSizingTextLayout : undefined}
+        style={[styles.text, styles.idealText]}
       >
         {text}
       </Text>

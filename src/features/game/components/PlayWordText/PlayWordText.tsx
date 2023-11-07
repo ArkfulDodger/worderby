@@ -15,11 +15,13 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setIsWordSplit } from "../../../../slices/gameSlice";
 
-export type Props = {};
+export type Props = {
+  maxWidth?: number; // the calculated width the text can fill
+};
 
 // the displayed play word (combined used prompt and text input)
 // uses phantom text to determine when the word needs to be split
-const PlayWordText = ({}: Props) => {
+const PlayWordText = ({ maxWidth }: Props) => {
   const styles = useStyles(createStyles);
   const dispatch = useDispatch();
   const { usedPrompt } = useAppSelector(selectUsedUnusedPrompt);
@@ -36,6 +38,7 @@ const PlayWordText = ({}: Props) => {
   return (
     <View style={styles.playWord(isWordSplit)}>
       <PhantomText
+        width={maxWidth}
         text={usedPrompt + (wordInput === "" ? "_" : wordInput)}
         fontSize={fontSize}
         idealFontSize={30}

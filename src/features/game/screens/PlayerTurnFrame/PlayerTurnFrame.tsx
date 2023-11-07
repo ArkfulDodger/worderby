@@ -1,6 +1,6 @@
 import { Pressable, View } from "react-native";
 import useStyles from "../../../../hooks/useStyles";
-import { createStyles } from "./PlayerTurnFrame.styles";
+import { PLAY_AREA_PADDING, createStyles } from "./PlayerTurnFrame.styles";
 import PromptGestureHandler from "../../components/PromptGestureHandler";
 import PromptText from "../../components/PromptText";
 import { useEffect } from "react";
@@ -12,6 +12,7 @@ import {
   toggleInputFocus,
 } from "../../../../slices/gameSlice";
 import PlayWordText from "../../components/PlayWordText";
+import useComponentWidth from "../../../../hooks/useComponentWidth";
 
 export type Props = {};
 
@@ -20,6 +21,7 @@ const PlayerTurnFrame = ({}: Props) => {
   const styles = useStyles(createStyles);
   const dispatch = useAppDispatch();
   const prompt = useAppSelector(selectPrompt);
+  const { onLayout, width } = useComponentWidth(PLAY_AREA_PADDING);
 
   // ensure inputs reset when prompt changes
   useEffect(() => {
@@ -33,8 +35,8 @@ const PlayerTurnFrame = ({}: Props) => {
 
   return (
     <Pressable onPress={onPress} style={styles.container}>
-      <View style={styles.playWordArea}>
-        <PlayWordText />
+      <View onLayout={onLayout} style={styles.playWordArea}>
+        <PlayWordText maxWidth={width} />
       </View>
       <PromptGestureHandler>
         <View style={styles.promptInputArea}>

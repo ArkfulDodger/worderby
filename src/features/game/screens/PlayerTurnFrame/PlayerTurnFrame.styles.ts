@@ -16,6 +16,8 @@ interface DynamicStyles {
 
 export interface Styles extends StaticStyles, DynamicStyles {}
 
+export const PLAY_AREA_PADDING = 15;
+
 export const createStyles = (theme: AppTheme): Styles => {
   const staticStyles = StyleSheet.create<StaticStyles>({
     container: {
@@ -23,7 +25,7 @@ export const createStyles = (theme: AppTheme): Styles => {
     },
     playWordArea: {
       flex: 2,
-      paddingHorizontal: 15,
+      paddingHorizontal: PLAY_AREA_PADDING,
       alignItems: "center",
       justifyContent: "center",
     },
@@ -32,7 +34,7 @@ export const createStyles = (theme: AppTheme): Styles => {
       justifyContent: "center",
       backgroundColor: theme.colors.primaryContainer,
       flex: 1,
-      paddingHorizontal: 15,
+      paddingHorizontal: PLAY_AREA_PADDING,
     },
   });
 
