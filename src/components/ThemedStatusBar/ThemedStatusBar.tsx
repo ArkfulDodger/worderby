@@ -2,14 +2,15 @@
 
 import { StatusBar, StatusBarProps } from "expo-status-bar";
 import { useAppSelector } from "../../hooks/reduxHooks";
+import { selectIsDark } from "../../reducers/themeReducer";
 
 export type Props = StatusBarProps;
 
 const ThemedStatusBar = (props: Props) => {
-	const { isDark } = useAppSelector((state) => state.theme);
+  const isDark = useAppSelector(selectIsDark);
 
   const statusBarProps: Props = {
-		style: isDark ? "light" : "dark",
+    style: isDark ? "light" : "dark",
     ...props,
   };
 

@@ -3,8 +3,11 @@ import useStyles from "../../../../hooks/useStyles";
 import { createStyles } from "./PlayerScoreBlock.styles";
 import { Avatar, Text } from "react-native-paper";
 import { useAppSelector } from "../../../../hooks/reduxHooks";
-import { getGameScore } from "../../../../utils/helpers";
-import { useMemo } from "react";
+import {
+  selectOpponent,
+  selectOpponentScore,
+  selectUserScore,
+} from "../../gameSelectors";
 
 export type Props = {
   isPlayer?: boolean;
@@ -14,19 +17,17 @@ export type Props = {
 const PlayerScoreBlock = ({ isPlayer = false, style }: Props) => {
   const scaleFactor = PixelRatio.getFontScale();
   const styles = useStyles(createStyles, isPlayer, [isPlayer, scaleFactor]);
-  const game = useAppSelector((state) => state.game);
+  const score = useAppSelector(
+    isPlayer ? selectUserScore : selectOpponentScore
+  );
+  const opponent = useAppSelector(selectOpponent);
 
+  // the size of the avatar (scaling with text scale)
   const avatarSize = 20 * scaleFactor;
 
-  // get player/opponent score
-  const score = useMemo(
-    () => getGameScore(game.turns, isPlayer),
-    [game.turns, isPlayer]
-  );
-
   // get player/opponent name and avatar
-  const name = isPlayer ? "Name" : game.opponent.name;
-  const avatar = isPlayer ? undefined : game.opponent.avatar;
+  const name = isPlayer ? "Name" : opponent.name;
+  const avatar = isPlayer ? undefined : opponent.avatar;
 
   return (
     <View style={[styles.container, style]}>

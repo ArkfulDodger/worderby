@@ -7,8 +7,7 @@ import { View } from "react-native";
 import TurnCounter from "../TurnCounter";
 import TimerBlock from "../TimerBlock";
 import { useAppSelector } from "../../../../hooks/reduxHooks";
-import { useMemo } from "react";
-import { getWorderbyte } from "../../../../utils/helpers";
+import { selectWorderbyte } from "../../gameSelectors";
 
 export type Props = {};
 
@@ -16,13 +15,7 @@ export type Props = {};
 // Includes player displays (name & avatar), scores, turn counters, timer, and worderbyte
 const GameHeader = ({}: Props) => {
   const styles = useStyles(createStyles);
-  const game = useAppSelector((state) => state.game);
-
-  // update the worderbyte any time the starting word or turns change
-  const worderbyte = useMemo(
-    () => getWorderbyte(game.startingWord, game.turns),
-    [game.startingWord, game.turns]
-  );
+  const worderbyte = useAppSelector(selectWorderbyte);
 
   // play the worderbyte audio
   const playWorderbyte = () => {

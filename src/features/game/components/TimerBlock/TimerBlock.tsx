@@ -3,17 +3,24 @@ import useStyles from "../../../../hooks/useStyles";
 import { createStyles } from "./TimerBlock.styles";
 import { Text } from "react-native-paper";
 import { useAppSelector } from "../../../../hooks/reduxHooks";
+import { selectTimerCount, selectMode } from "../../gameSelectors";
+import { GameMode } from "../../enums";
+import { useMemo } from "react";
 
 export type Props = {};
 
 const TimerBlock = ({}: Props) => {
   const styles = useStyles(createStyles);
-  const mode = useAppSelector((state) => state.game.mode);
-  const count = useAppSelector((state) => state.activeTurn.timerCount);
+  const mode = useAppSelector(selectMode);
+  const count = useAppSelector(selectTimerCount);
+  const isTimerUsed = useMemo(
+    () => mode === GameMode.Competitive && count !== undefined,
+    [mode, count]
+  );
 
   return (
     <View style={styles.container}>
-      <Text style={styles.counter}>{mode === "competitive" ? count : "∞"}</Text>
+      <Text style={styles.counter}>{isTimerUsed ? count : "∞"}</Text>
     </View>
   );
 };

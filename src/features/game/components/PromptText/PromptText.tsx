@@ -2,30 +2,30 @@ import { Text } from "react-native-paper";
 import useStyles from "../../../../hooks/useStyles";
 import { createStyles } from "./PromptText.styles";
 import useResizingFont from "../../../../hooks/useResizingFont";
+import { useAppSelector } from "../../../../hooks/reduxHooks";
+import { selectPIndexInput, selectUsedUnusedPrompt } from "../../gameSelectors";
 
-export type Props = {
-  usedPrompt: string;
-  unusedPrompt: string;
-  pIndexInput: number;
-};
+export type Props = {};
 
-const PromptText = ({ usedPrompt, unusedPrompt, pIndexInput }: Props) => {
+const PromptText = ({}: Props) => {
   const styles = useStyles(createStyles);
-  const {
-    isFontSized: isPromptSized,
-    fontSize: promptFontSize,
-    onTextLayout: onPromptTextLayout,
-  } = useResizingFont({ minFontSize: 15, startingFontSize: 20 });
+
+  const pIndexInput = useAppSelector(selectPIndexInput) || 1;
+  const { unusedPrompt, usedPrompt } = useAppSelector(selectUsedUnusedPrompt);
+  const { isFontSized, fontSize, onTextLayout } = useResizingFont({
+    minFontSize: 15,
+    startingFontSize: 20,
+  });
 
   return (
     <Text
-      onTextLayout={onPromptTextLayout}
-      style={styles.prompt(promptFontSize, isPromptSized)}
+      onTextLayout={onTextLayout}
+      style={styles.prompt(fontSize, isFontSized)}
     >
       <Text
-        onTextLayout={onPromptTextLayout}
+        onTextLayout={onTextLayout}
         style={
-          pIndexInput === 0 ? styles.unusable : styles.unused(!isPromptSized)
+          pIndexInput === 0 ? styles.unusable : styles.unused(!isFontSized)
         }
       >
         {unusedPrompt}
