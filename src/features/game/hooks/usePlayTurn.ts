@@ -26,8 +26,6 @@ const usePlayTurn = () => {
       return true;
     }
 
-    console.log("wordInput:", wordInput);
-
     // confirm usedPrompt and wordInput are usable
     if (!wordInput || wordInput.length < 1) {
       console.error("Attempt Word Error:", "Must add at least one letter.");
@@ -50,8 +48,6 @@ const usePlayTurn = () => {
 
     // start loading
     dispatch(setIsLoading(true));
-
-    console.log("wordInput:", wordInput);
 
     // check errors
     if (!activeTurn || isAttemptWordError())
