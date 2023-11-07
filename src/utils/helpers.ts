@@ -23,6 +23,7 @@ export const getPermittedTurns = (
   }
 };
 
+// get the current worderbyte given a startig word and played turns
 export const getWorderbyte = (startingWord: string, turns: Turn[]) => {
   // set the worderbyte as the starting word
   let worderbyte = startingWord;

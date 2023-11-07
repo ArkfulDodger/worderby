@@ -40,8 +40,9 @@ export const selectIsActivePlayerTurn = (state: RootState) => {
 
 // Memoized: select the turns the player is currently able to view
 export const selectPermittedTurns = createSelector(
-  [selectIsActivePlayerTurn, selectTurns],
-  (isActivePlayerTurn, turns) => getPermittedTurns(turns, isActivePlayerTurn)
+  [selectIsActivePlayerTurn, selectTurns, selectIsEnded],
+  (isActivePlayerTurn, turns, isEnded) =>
+    getPermittedTurns(turns, isActivePlayerTurn, isEnded)
 );
 
 // Memoized: select the user-player's current game score
