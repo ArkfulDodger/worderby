@@ -4,7 +4,11 @@ import { createStyles } from "./GameFooter.styles";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Button from "../../../../components/atoms/Button";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/reduxHooks";
-import { toggleIsMuted } from "../../../../reducers/systemReducer";
+import {
+  selectIsMuted,
+  toggleIsMuted,
+} from "../../../../reducers/systemReducer";
+import useGameButtonProps from "../../hooks/useGameButtonProps";
 
 export type Props = {};
 
@@ -12,13 +16,11 @@ export type Props = {};
 const GameFooter = ({}: Props) => {
   const styles = useStyles(createStyles);
   const dispatch = useAppDispatch();
-  const isMuted = useAppSelector((state) => state.system.isMuted);
+  const isMuted = useAppSelector(selectIsMuted);
+  const { onButtonPress, buttonText, isButtonDisabled } = useGameButtonProps();
 
   // toggle mute on mute press
   const onMutePress = () => dispatch(toggleIsMuted());
-
-  // TODO: submit button logic
-  const onSubmitPress = () => console.log("submit pressed");
 
   // TODO: home button logic
   const onHomePress = () => console.log("home pressed");
@@ -27,7 +29,9 @@ const GameFooter = ({}: Props) => {
     <Surface style={styles.footerContainer}>
       <SafeAreaView edges={["bottom"]} style={styles.footerContent}>
         <IconButton onPress={onHomePress} icon="home" />
-        <Button onPress={onSubmitPress}>SUBMIT</Button>
+        <Button onPress={onButtonPress} disabled={isButtonDisabled}>
+          {buttonText}
+        </Button>
         <IconButton
           onPress={onMutePress}
           icon={isMuted ? "volume-off" : "volume-high"}
