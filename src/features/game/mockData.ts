@@ -1,4 +1,4 @@
-import { Turn } from "../../reducers/gameReducer";
+import { Turn } from "../../slices/gameSlice";
 
 export const staticDate = new Date().toISOString();
 

@@ -2,7 +2,7 @@
 
 import { StatusBar, StatusBarProps } from "expo-status-bar";
 import { useAppSelector } from "../../../hooks/reduxHooks";
-import { selectIsDark } from "../../../reducers/themeReducer";
+import { selectIsDark } from "../../../slices/themeSlice";
 
 export type Props = StatusBarProps;
 

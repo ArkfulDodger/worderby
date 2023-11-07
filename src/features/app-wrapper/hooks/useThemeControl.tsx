@@ -1,11 +1,8 @@
 import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
-import {
-  refreshSystemTheme,
-  selectIsDark,
-} from "../../../reducers/themeReducer";
+import { refreshSystemTheme, selectIsDark } from "../../../slices/themeSlice";
 import { useEffect, useMemo } from "react";
 import { darkTheme, lightTheme } from "../../../theme/themes";
-import { selectIsAppActive } from "../../../reducers/systemReducer";
+import { selectIsAppActive } from "../../../slices/systemSlice";
 
 // updates system theme on app focus
 // returns active theme object based on current dark mode state

@@ -1,7 +1,7 @@
 import { Pressable, View } from "react-native";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/reduxHooks";
 import { Text } from "react-native-paper";
-import { toggleDarkMode } from "../../../../reducers/themeReducer";
+import { toggleDarkMode } from "../../../../slices/themeSlice";
 import useStyles from "../../../../hooks/useStyles";
 import { createStyles } from "./TestScreen.styles";
 import { useCallback } from "react";

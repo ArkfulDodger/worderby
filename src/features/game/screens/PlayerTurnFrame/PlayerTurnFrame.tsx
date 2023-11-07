@@ -10,7 +10,7 @@ import {
   handlePromptInput,
   setWordInput,
   toggleInputFocus,
-} from "../../../../reducers/gameReducer";
+} from "../../../../slices/gameSlice";
 import PlayWordText from "../../components/PlayWordText";
 
 export type Props = {};

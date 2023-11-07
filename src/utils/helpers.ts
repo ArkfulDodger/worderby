@@ -4,15 +4,17 @@ import {
   PROMPT_LETTER_VALUE,
   TURNS_PER_GAME,
 } from "../features/game/constants";
-import { Turn } from "../reducers/gameReducer";
+import { Turn } from "../slices/gameSlice";
 
 // retrieves the turns the user is permitted to see displayed
+// cannot see data from latest opponent turn until starting their own turn or game end
 export const getPermittedTurns = (
   turns: Turn[],
-  isActivePlayerTurn: boolean
+  isActivePlayerTurn: boolean,
+  isEnded: boolean
 ) => {
-  // if the player is actively taking a turn, all turns may be viewed
-  if (isActivePlayerTurn) return turns;
+  // if the player is actively taking a turn or game is over, all turns may be viewed
+  if (isActivePlayerTurn || isEnded) return turns;
   // if not actively taking a turn, the user can't see the most recent turn unless it is their own
   else {
     return turns

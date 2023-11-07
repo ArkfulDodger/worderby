@@ -4,10 +4,7 @@ import { createStyles } from "./GameFooter.styles";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Button from "../../../../components/atoms/Button";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/reduxHooks";
-import {
-  selectIsMuted,
-  toggleIsMuted,
-} from "../../../../reducers/systemReducer";
+import { selectIsMuted, toggleIsMuted } from "../../../../slices/systemSlice";
 import useGameButtonProps from "../../hooks/useGameButtonProps";
 
 export type Props = {};

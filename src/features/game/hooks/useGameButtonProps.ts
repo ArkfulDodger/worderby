@@ -2,7 +2,7 @@ import { useCallback, useMemo } from "react";
 import { useAppSelector } from "../../../hooks/reduxHooks";
 import { RoundPhase } from "../enums";
 import { useDispatch } from "react-redux";
-import { startTurn } from "../../../reducers/gameReducer";
+import { startTurn } from "../../../slices/gameSlice";
 import {
   selectCanAttemptSubmit,
   selectCanStartTurn,

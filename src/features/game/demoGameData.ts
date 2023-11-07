@@ -1,4 +1,4 @@
-import { GameState } from "../../reducers/gameReducer";
+import { GameState } from "../../slices/gameSlice";
 import { GameMode } from "./enums";
 
 // This is the initial state of the demo game

@@ -7,7 +7,7 @@ import { ReactNode, useMemo, useState } from "react";
 import metrics from "../../../../utils/metrics";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/reduxHooks";
 import { selectPIndex, selectPrompt } from "../../gameSelectors";
-import { handlePromptInput } from "../../../../reducers/gameReducer";
+import { handlePromptInput } from "../../../../slices/gameSlice";
 
 export type Props = {
   children?: ReactNode;

@@ -13,7 +13,7 @@ import {
 import useResizingFont from "../../../../hooks/useResizingFont";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { setIsWordSplit } from "../../../../reducers/gameReducer";
+import { setIsWordSplit } from "../../../../slices/gameSlice";
 
 export type Props = {};
 
