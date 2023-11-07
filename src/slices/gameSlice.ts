@@ -78,7 +78,7 @@ const initialState: GameState = {
   startingWord: initialWord,
   turns: initialTurns,
   initialRestrictions: [],
-  activeTurn: initialActiveTurn,
+  // activeTurn: initialActiveTurn,
 };
 
 const gameSlice = createSlice({

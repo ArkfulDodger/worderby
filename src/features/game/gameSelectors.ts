@@ -56,12 +56,6 @@ export const selectOpponentScore = createSelector(
   (turns) => getGameScore(turns, false)
 );
 
-// selects the worderbyte the player is allowed to see
-export const selectWorderbyte = createSelector(
-  [selectPermittedTurns, selectStartingWord],
-  (permittedTurns, startingWord) => getWorderbyte(startingWord, permittedTurns)
-);
-
 // selects the current prompt, or nothing if there is no active turn
 export const selectPrompt = createSelector(
   [
@@ -84,14 +78,27 @@ export const selectPIndex = (state: RootState) => {
 // select the current game phase the player is in
 export const selectRoundPhase = (state: RootState) => {
   const isActivePlayerTurn = selectIsActivePlayerTurn(state);
+  const isPlayersTurn = selectIsPlayerTurn(state);
+  const noTurns = selectTurns(state).length === 0;
 
   // if the game has ended (for any reason), show the results
   if (state.game.isEnded) return RoundPhase.Results;
   // if it is the player's turn, and there is an active turn in state, show the player turn frame
   else if (isActivePlayerTurn) return RoundPhase.PlayerTurn;
+  // if its the first turn, play is to the player, but they have not begun yet, show new game
+  else if (noTurns && isPlayersTurn) return RoundPhase.NewGame;
   // otherwise, show the opponent turn frame
   else return RoundPhase.OpponentTurn;
 };
+
+// selects the worderbyte the player is allowed to see
+export const selectWorderbyte = createSelector(
+  [selectPermittedTurns, selectStartingWord, selectRoundPhase],
+  (permittedTurns, startingWord, phase) =>
+    phase === RoundPhase.NewGame
+      ? ""
+      : getWorderbyte(startingWord, permittedTurns)
+);
 
 // select the prompt substrings which are used/unused
 export const selectUsedUnusedPrompt = (state: RootState) => {

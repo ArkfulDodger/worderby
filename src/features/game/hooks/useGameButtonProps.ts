@@ -24,6 +24,7 @@ const useGameButtonProps = () => {
       case RoundPhase.PlayerTurn:
         return "SUBMIT";
       case RoundPhase.OpponentTurn:
+      case RoundPhase.NewGame:
         return "BEGIN";
       case RoundPhase.Results:
         return "CONTINUE";
@@ -39,6 +40,7 @@ const useGameButtonProps = () => {
         onSubmitPress();
         break;
       case RoundPhase.OpponentTurn:
+      case RoundPhase.NewGame:
         onStartPress();
         break;
       case RoundPhase.Results:
