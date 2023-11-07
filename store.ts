@@ -1,7 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import themeReducer from "./src/reducers/themeReducer";
 import gameReducer from "./src/reducers/gameReducer";
-import activeTurnReducer from "./src/reducers/activeTurnReducer";
 import systemReducer from "./src/reducers/systemReducer";
 
 export const store = configureStore({
@@ -9,7 +8,6 @@ export const store = configureStore({
     system: systemReducer,
     theme: themeReducer,
     game: gameReducer,
-    activeTurn: activeTurnReducer,
   },
 });
 
