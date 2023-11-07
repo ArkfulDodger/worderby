@@ -9,23 +9,15 @@ import { useAppDispatch, useAppSelector } from "../../../../hooks/reduxHooks";
 import { selectPIndex, selectPrompt } from "../../gameSelectors";
 import { handlePromptInput } from "../../../../slices/gameSlice";
 
-export type Props = {
+type Props = {
   children?: ReactNode;
-  // pIndex: number;
-  // updatePromptInput: (index: number) => void;
-  // focusInput: () => void;
 };
 
 // max/min pixels a user can swipe to change letters, regardless of word length
 const MAX_PPL = 40;
 const MIN_PPL = 10;
 
-const PromptGestureHandler = ({
-  children,
-}: // pIndex,
-// updatePromptInput,
-// focusInput,
-Props) => {
+const PromptGestureHandler = ({ children }: Props) => {
   const dispatch = useAppDispatch();
   const promptLength = useAppSelector(selectPrompt).length;
   const pIndex = useAppSelector(selectPIndex);

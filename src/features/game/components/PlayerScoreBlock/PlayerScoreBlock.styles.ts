@@ -13,7 +13,7 @@ interface DynamicStyles {
   // define dynamic style types
 }
 
-export interface Styles extends StaticStyles, DynamicStyles {}
+interface Styles extends StaticStyles, DynamicStyles {}
 
 export const createStyles = (theme: AppTheme, isPlayer: boolean): Styles => {
   const staticStyles = StyleSheet.create<StaticStyles>({

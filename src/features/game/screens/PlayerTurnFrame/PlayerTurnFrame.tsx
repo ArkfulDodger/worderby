@@ -14,7 +14,7 @@ import {
 import PlayWordText from "../../components/PlayWordText";
 import useComponentWidth from "../../../../hooks/useComponentWidth";
 
-export type Props = {};
+type Props = {};
 
 // the game frame displaying the Player Turn Phase
 const PlayerTurnFrame = ({}: Props) => {

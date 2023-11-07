@@ -9,7 +9,7 @@ import { useAppSelector } from "../../../../hooks/reduxHooks";
 import { selectRoundPhase } from "../../gameSelectors";
 import { RoundPhase } from "../../enums";
 
-export type Props = {};
+type Props = {};
 
 // a full-screen component for playing the actual game cycle
 const GamePage = ({}: Props) => {

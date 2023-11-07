@@ -5,7 +5,7 @@ import useResizingFont from "../../../../hooks/useResizingFont";
 import { useAppSelector } from "../../../../hooks/reduxHooks";
 import { selectPIndexInput, selectUsedUnusedPrompt } from "../../gameSelectors";
 
-export type Props = {};
+type Props = {};
 
 // the displayed text of the prompt word, showing which letters are selected
 const PromptText = ({}: Props) => {

@@ -8,7 +8,7 @@ import {
   selectTurns,
 } from "../../gameSelectors";
 
-export type Props = {
+type Props = {
   isPlayer?: boolean;
 };
 

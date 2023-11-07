@@ -81,7 +81,7 @@ const initialState: GameState = {
   activeTurn: initialActiveTurn,
 };
 
-export const gameSlice = createSlice({
+const gameSlice = createSlice({
   name: "game",
   initialState,
   reducers: {

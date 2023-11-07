@@ -11,7 +11,7 @@ interface DynamicStyles {
   mockInputContainer: (height?: number) => ViewStyle;
 }
 
-export interface Styles extends StaticStyles, DynamicStyles {}
+interface Styles extends StaticStyles, DynamicStyles {}
 
 export const createStyles = (theme: AppTheme, fontSize: number): Styles => {
   const scaleFactor = PixelRatio.getFontScale();

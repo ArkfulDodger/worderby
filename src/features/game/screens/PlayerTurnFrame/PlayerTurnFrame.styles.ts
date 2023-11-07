@@ -14,7 +14,7 @@ interface DynamicStyles {
   inputContainer: (isSplit: boolean) => ViewStyle;
 }
 
-export interface Styles extends StaticStyles, DynamicStyles {}
+interface Styles extends StaticStyles, DynamicStyles {}
 
 export const PLAY_AREA_PADDING = 15;
 

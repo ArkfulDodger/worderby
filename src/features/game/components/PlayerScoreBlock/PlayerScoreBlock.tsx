@@ -9,7 +9,7 @@ import {
   selectUserScore,
 } from "../../gameSelectors";
 
-export type Props = {
+type Props = {
   isPlayer?: boolean;
   style?: StyleProp<ViewStyle>;
 };

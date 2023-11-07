@@ -14,7 +14,7 @@ import useBlurOnKeyboardDismiss from "../../hooks/useBlurOnKeyboardDismiss";
 import useGameInputLayout from "../../hooks/useGameInputLayout";
 import useCaretControl from "../../hooks/useCaretControl";
 
-export type Props = TextInputProps & {
+type Props = TextInputProps & {
   fontSize?: number;
 };
 

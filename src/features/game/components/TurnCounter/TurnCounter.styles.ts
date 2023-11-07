@@ -9,7 +9,7 @@ interface DynamicStyles {
   dot: (current?: boolean) => ViewStyle;
 }
 
-export interface Styles extends StaticStyles, DynamicStyles {}
+interface Styles extends StaticStyles, DynamicStyles {}
 
 export const createStyles = (theme: AppTheme): Styles => {
   const scaleFactor = PixelRatio.getFontScale();

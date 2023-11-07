@@ -1,14 +1,11 @@
 import { Turn } from "../../slices/gameSlice";
-
-export const staticDate = new Date().toISOString();
-
-// longest English word (for testing): pneumonoultramicroscopicsilicovolcanoconiosis
+import { STATIC_DATE } from "../../utils/constants";
 
 const playerTurn1: Turn = {
   isPlayer: true,
   turnNumber: 1,
-  startedAt: staticDate,
-  playedAt: staticDate,
+  startedAt: STATIC_DATE,
+  playedAt: STATIC_DATE,
   word: "order",
   pNum: 3,
 };
@@ -16,8 +13,8 @@ const playerTurn1: Turn = {
 const opponentTurn2: Turn = {
   isPlayer: false,
   turnNumber: 2,
-  startedAt: staticDate,
-  playedAt: staticDate,
+  startedAt: STATIC_DATE,
+  playedAt: STATIC_DATE,
   word: "derby",
   pNum: 3,
 };
@@ -25,8 +22,8 @@ const opponentTurn2: Turn = {
 const playerTurn3: Turn = {
   isPlayer: true,
   turnNumber: 3,
-  startedAt: staticDate,
-  playedAt: staticDate,
+  startedAt: STATIC_DATE,
+  playedAt: STATIC_DATE,
   word: "byte",
   pNum: 2,
 };
@@ -34,8 +31,8 @@ const playerTurn3: Turn = {
 const opponentTurn4: Turn = {
   isPlayer: false,
   turnNumber: 4,
-  startedAt: staticDate,
-  playedAt: staticDate,
+  startedAt: STATIC_DATE,
+  playedAt: STATIC_DATE,
   word: "test",
   pNum: 2,
 };
@@ -43,8 +40,8 @@ const opponentTurn4: Turn = {
 const playerTurn5: Turn = {
   isPlayer: true,
   turnNumber: 5,
-  startedAt: staticDate,
-  playedAt: staticDate,
+  startedAt: STATIC_DATE,
+  playedAt: STATIC_DATE,
   word: "establish",
   pNum: 3,
 };
@@ -52,8 +49,8 @@ const playerTurn5: Turn = {
 const opponentTurn6: Turn = {
   isPlayer: false,
   turnNumber: 6,
-  startedAt: staticDate,
-  playedAt: staticDate,
+  startedAt: STATIC_DATE,
+  playedAt: STATIC_DATE,
   word: "ship",
   pNum: 2,
 };

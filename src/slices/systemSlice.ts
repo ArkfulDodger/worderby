@@ -15,7 +15,7 @@ const initialState: SystemState = {
   isMuted: false,
 };
 
-export const systemSlice = createSlice({
+const systemSlice = createSlice({
   name: "system",
   initialState,
   reducers: {

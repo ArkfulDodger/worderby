@@ -4,7 +4,7 @@ import { createStyles } from "./TextInputFacade.styles";
 import { PixelRatio, Platform, StyleProp, TextStyle, View } from "react-native";
 import { Text } from "react-native-paper";
 
-export type Props = {
+type Props = {
   fontSize: number;
   isCaretVisible: boolean;
   caretIndex: number;

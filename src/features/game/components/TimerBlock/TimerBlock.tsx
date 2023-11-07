@@ -7,7 +7,7 @@ import { selectTimerCount, selectMode } from "../../gameSelectors";
 import { GameMode } from "../../enums";
 import { useMemo } from "react";
 
-export type Props = {};
+type Props = {};
 
 // the header block which displays the timer or non-timer display
 const TimerBlock = ({}: Props) => {

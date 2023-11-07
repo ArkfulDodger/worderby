@@ -15,7 +15,7 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setIsWordSplit } from "../../../../slices/gameSlice";
 
-export type Props = {
+type Props = {
   maxWidth?: number; // the calculated width the text can fill
 };
 
