@@ -1,6 +1,7 @@
 // Import the createSlice API from Redux Toolkit
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { Appearance, ColorSchemeName } from "react-native";
+import { RootState } from "../../store";
 
 // Define a type for the slice state
 interface ThemeState {
@@ -60,6 +61,8 @@ export const themeSlice = createSlice({
 
 // Action creators are generated for each case reducer function
 export const { refreshSystemTheme, setThemePreference } = themeSlice.actions;
+
+export const selectIsDark = (state: RootState) => state.theme.isDark;
 
 // We export the reducer function so that it can be added to the store
 export default themeSlice.reducer;
