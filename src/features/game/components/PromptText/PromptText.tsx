@@ -7,6 +7,7 @@ import { selectPIndexInput, selectUsedUnusedPrompt } from "../../gameSelectors";
 
 export type Props = {};
 
+// the displayed text of the prompt word, showing which letters are selected
 const PromptText = ({}: Props) => {
   const styles = useStyles(createStyles);
 

@@ -9,10 +9,13 @@ import { useMemo } from "react";
 
 export type Props = {};
 
+// the header block which displays the timer or non-timer display
 const TimerBlock = ({}: Props) => {
   const styles = useStyles(createStyles);
   const mode = useAppSelector(selectMode);
   const count = useAppSelector(selectTimerCount);
+
+  // TODO: phase also factors into timer use
   const isTimerUsed = useMemo(
     () => mode === GameMode.Competitive && count !== undefined,
     [mode, count]

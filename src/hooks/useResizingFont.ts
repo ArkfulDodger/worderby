@@ -7,6 +7,7 @@ type Props = {
   startingFontSize?: number;
 };
 
+// used to dynamically resize font so text will remain on a single line
 const useResizingFont = ({
   elastic,
   minFontSize = 0,

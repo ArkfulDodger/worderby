@@ -14,6 +14,8 @@ export type Props = {
   style?: StyleProp<ViewStyle>;
 };
 
+// displays the score, name, and avatar for a player in the game cycle
+// isPlayer prop determines styling layout and content source
 const PlayerScoreBlock = ({ isPlayer = false, style }: Props) => {
   const scaleFactor = PixelRatio.getFontScale();
   const styles = useStyles(createStyles, isPlayer, [isPlayer, scaleFactor]);

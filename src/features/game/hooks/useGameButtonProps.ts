@@ -10,7 +10,7 @@ import {
   selectRoundPhase,
 } from "../gameSelectors";
 
-// get props for the primary game button
+// get props for the primary game button based on phase and state
 const useGameButtonProps = () => {
   const dispatch = useDispatch();
   const phase = useAppSelector(selectRoundPhase);

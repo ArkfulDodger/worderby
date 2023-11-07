@@ -6,6 +6,7 @@ import { selectIsDark } from "../../reducers/themeReducer";
 
 export type Props = StatusBarProps;
 
+// status bar component which will update its style to fit dark/light theme
 const ThemedStatusBar = (props: Props) => {
   const isDark = useAppSelector(selectIsDark);
 

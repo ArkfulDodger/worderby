@@ -23,6 +23,7 @@ export type Props = {
   ) => void;
 };
 
+// invisible text which uses useResizingFont callbacks for font size calculation
 const PhantomText = ({
   text,
   fontSize,

@@ -3,6 +3,7 @@ import { AppState } from "react-native";
 import { useAppDispatch } from "./reduxHooks";
 import { setAppState } from "../reducers/systemReducer";
 
+// hook that ensures the app state updates with changes while the parent is mounted
 const useAppState = () => {
   const dispatch = useAppDispatch();
 
