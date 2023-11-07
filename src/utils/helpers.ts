@@ -200,9 +200,9 @@ export const getTurnPenalty = (startedAt: string, playedAt: string) => {
   const completedTurnCounts = Math.floor(turnMilliseconds / TIMER_MS_PER_COUNT);
 
   // get penalty clamped bewteen 0 and the max (a negative)
-  const penalty = Math.min(
+  const penalty = Math.max(
     MAX_PENALTY,
-    Math.max(0, TIMER_COUNT - completedTurnCounts)
+    Math.min(0, TIMER_COUNT - completedTurnCounts)
   );
 
   return penalty;
