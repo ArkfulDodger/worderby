@@ -1,5 +1,7 @@
 // raw data from the back end
 
+import { GameMode } from "./enums";
+
 export type RawWorderbotData = {
   version: number;
   title: string;
@@ -13,11 +15,9 @@ export type RawPlayerData = {
   bot_version?: number;
 };
 
-export type OnlineGameMode = "casual" | "competitive";
-
 export type RawGameData = {
   id: number;
-  mode: OnlineGameMode;
+  mode: GameMode;
   is_single_player: boolean;
   player1_id: string;
   player2_id: string;
