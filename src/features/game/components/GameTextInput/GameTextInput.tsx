@@ -1,151 +1,125 @@
-import {
-  NativeSyntheticEvent,
-  Platform,
-  Text,
-  TextInput,
-  TextInputProps,
-  TextInputSelectionChangeEventData,
-  View,
-  ViewStyle,
-} from "react-native";
+import { Platform, TextInput, TextInputProps, View } from "react-native";
 import useStyles from "../../../../hooks/useStyles";
 import { createStyles } from "./GameTextInput.styles";
-import { useMemo, useState } from "react";
+import { useEffect } from "react";
+import { useTheme } from "react-native-paper";
+import { AppTheme } from "../../../../utils/types";
+import { useAppDispatch, useAppSelector } from "../../../../hooks/reduxHooks";
+import useAutoMerge from "../../hooks/useAutoMerge";
+import { setWordInput } from "../../../../slices/gameSlice";
+import { selectIsWordSplit } from "../../gameSelectors";
+import TextInputFacade from "../TextInputFacade";
+import useGameInputFocus from "../../hooks/useGameInputFocus";
+import useBlurOnKeyboardDismiss from "../../hooks/useBlurOnKeyboardDismiss";
+import useGameInputLayout from "../../hooks/useGameInputLayout";
+import useCaretControl from "../../hooks/useCaretControl";
 
-export type Props = TextInputProps & {
-  containerStyle?: ViewStyle;
-  inputRef: React.RefObject<TextInput>;
+type Props = TextInputProps & {
   fontSize?: number;
 };
 
-const GameTextInput = ({
-  containerStyle,
-  inputRef,
-  fontSize = 30,
-  style,
-  value,
-  onChangeText,
-  ...props
-}: Props) => {
-  const styles = useStyles(createStyles, fontSize, [fontSize]);
+// The text input component used during gameplay
+// Dynamically switches between a single or multiline input based on split word state
+// for single line, displays "false" non-flickering input facade over invisible active text input
+const GameTextInput = ({ fontSize = 30, style, value, ...props }: Props) => {
+  const styles = useStyles(createStyles, fontSize);
+  const { colors } = useTheme() as AppTheme;
 
-  // the height of the text, including padding
-  const [textHeight, setTextHeight] = useState<number>();
+  useBlurOnKeyboardDismiss();
+  const dispatch = useAppDispatch();
+  const multiline = useAppSelector(selectIsWordSplit);
+  const { checkInputForAutoMerge } = useAutoMerge();
+  const { textHeight, onTextHeightLayout, hasRendered, onComponentRender } =
+    useGameInputLayout();
+  const { caretIndex, isCaretVisible, handleSelectionChange } =
+    useCaretControl();
+  const {
+    inputRef,
+    multilineInputRef,
+    canFocus,
+    enableFocus,
+    focusStateOnInputFocus,
+    blurStateOnFullInputBlur,
+  } = useGameInputFocus();
 
-  // whether to show the caret
-  const [caretIndex, setCaretIndex] = useState(0);
-  const [isCaretVisible, setIsCaretVisible] = useState(true);
-  const showCaret = () => setIsCaretVisible(true);
-  const hideCaret = () => setIsCaretVisible(false);
-  const handleSelectionChange = (
-    e: NativeSyntheticEvent<TextInputSelectionChangeEventData>
-  ) => {
-    let isCaretSinglePosition =
-      e.nativeEvent.selection.start === e.nativeEvent.selection.end;
+  // once all necessary components have measured and rendered, allow input focus
+  // avoids layout error from keyboard being open prior to measuring
+  useEffect(() => {
+    if (hasRendered && textHeight && !canFocus) enableFocus();
+  }, [hasRendered, textHeight]);
 
-    if (isCaretSinglePosition) {
-      !isCaretVisible && showCaret();
-      setCaretIndex(e.nativeEvent.selection.start);
-    } else if (!isCaretSinglePosition && isCaretVisible) {
-      hideCaret();
-    }
+  // on text change, validate, check whole-word entry, and update input in state
+  const onChangeText = (text: string) => {
+    let validatedText = text.replace(/[^a-zA-Z]/g, "").toLowerCase(); // ensure only English alphabet characters (lower case)
+    checkInputForAutoMerge(validatedText);
+    dispatch(setWordInput(validatedText));
   };
 
-  // the descent of the font (half the distance for android)
-  const descent = useMemo(() => {
-    if (textHeight) {
-      let heightDifference = textHeight - fontSize;
-      if (heightDifference > 0) {
-        return Platform.OS === "ios"
-          ? heightDifference
-          : heightDifference * 0.5;
-      }
-      return undefined;
-    }
-    return undefined;
-  }, [textHeight, fontSize]);
-
-  const caret = isCaretVisible && (
-    <View>
-      <View style={styles.caret(textHeight)} />
-    </View>
-  );
-
-  // notes for caret animation
-
-  // useEffect(() => {
-  //   let caretTimeout: NodeJS.Timeout;
-
-  //   if (children && scrollIndex >= children.length) {
-  //     setIsCaretOn(false);
-  //   } else {
-  //     caretTimeout = setTimeout(() => {
-  //       setIsCaretOn((prev) => !prev);
-  //     }, 700);
-  //   }
-
-  //   return () => {
-  //     clearTimeout(caretTimeout);
-  //   };
-  // }, [isCaretOn, scrollIndex]);
-
-  // const caret = (
-  //   <Animated.View
-  //     entering={FadeIn}
-  //     exiting={FadeOut.duration(600)}
-  //     style={styles.caretContainer}
-  //   >
-  //     <Text style={styles.caret}>{"   "}</Text>
-  //   </Animated.View>
-  // );
-
-  // ensures only English alphabet characters (lower case) are submitted
-  const handleChangeText = (text: string) => {
-    let validatedText = text.replace(/[^a-zA-Z]/g, "").toLowerCase();
-
-    if (onChangeText) {
-      return onChangeText(validatedText);
-    } else {
-      return validatedText;
-    }
+  // the base props utilized by both text inputs
+  const inputBaseProps: Partial<TextInputProps> = {
+    value: value,
+    onChangeText: onChangeText,
+    onFocus: focusStateOnInputFocus,
+    onBlur: blurStateOnFullInputBlur,
+    autoFocus: false,
+    autoCapitalize: "none",
+    autoComplete: "off",
+    autoCorrect: false,
+    blurOnSubmit: false,
+    contextMenuHidden: true,
+    disableFullscreenUI: true, // android
+    enablesReturnKeyAutomatically: true, // ios
+    importantForAutofill: "no", // android
+    keyboardType: "ascii-capable", // ios
+    maxLength: 44, // longest english word is 45 letters
+    returnKeyType: "go",
+    selectTextOnFocus: false,
   };
 
   return (
-    <View style={containerStyle}>
-      {descent && <View style={styles.underline(descent)} />}
-      <View style={styles.mockInputContainer(textHeight)}>
-        <Text selectable={false} style={[styles.text, style]}>
-          {value?.slice(0, caretIndex) || ""}
-        </Text>
-        {caret}
-        <Text selectable={false} style={[styles.text, style]}>
-          {value?.slice(caretIndex) || ""}
-        </Text>
-      </View>
+    <View onLayout={onComponentRender} style={styles.container(multiline)}>
+      {!multiline && (
+        <TextInputFacade
+          value={value}
+          textHeight={textHeight}
+          fontSize={fontSize}
+          isCaretVisible={isCaretVisible}
+          caretIndex={caretIndex}
+          style={style}
+        />
+      )}
       <TextInput
+        {...inputBaseProps}
         ref={inputRef}
-        value={value}
-        style={[styles.text, style, styles.hiddenInput]}
-        autoCapitalize="none"
-        autoComplete="off"
-        autoCorrect={false}
-        autoFocus
-        blurOnSubmit={false}
+        multiline={false}
+        numberOfLines={1}
+        style={[
+          styles.text,
+          style,
+          styles.hiddenInput,
+          multiline ? styles.hiddenOffscreen : undefined,
+        ]}
         caretHidden={true}
-        contextMenuHidden={true}
-        cursorColor={"transparent"}
-        disableFullscreenUI // android
-        enablesReturnKeyAutomatically // ios
-        importantForAutofill="no" // android
-        keyboardType="ascii-capable" // ios
-        maxLength={50} // longest english word is 45 letters
-        onBlur={hideCaret}
-        onChangeText={handleChangeText}
-        onFocus={showCaret}
-        onLayout={(e) => setTextHeight(e.nativeEvent.layout.height)}
-        onSelectionChange={handleSelectionChange}
-        returnKeyType="go"
-        selectTextOnFocus={false}
+        cursorColor={!multiline ? colors.outline : "transparent"}
+        onSelectionChange={multiline ? undefined : handleSelectionChange}
+        onLayout={onTextHeightLayout}
+        {...props}
+      />
+      <TextInput
+        {...inputBaseProps}
+        ref={multilineInputRef}
+        multiline={true}
+        numberOfLines={multiline ? 3 : 1}
+        style={[
+          styles.text,
+          style,
+          styles.multiline,
+          Platform.OS === "ios" ? styles.multilineIosPadding : undefined,
+          !multiline ? styles.hiddenOffscreen : undefined,
+        ]}
+        caretHidden={!multiline}
+        cursorColor={multiline ? colors.outline : "transparent"}
+        onSelectionChange={multiline ? handleSelectionChange : undefined}
         {...props}
       />
     </View>

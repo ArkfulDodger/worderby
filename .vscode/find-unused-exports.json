@@ -1,0 +1,16 @@
+{
+  "ignore": {
+    "files": [
+      "/Users/noahreece/Development/code/projects/worderby/App.tsx",
+      "/Users/noahreece/Development/code/projects/worderby/src/features/dev/screens/TestScreen/index.ts",
+      "/Users/noahreece/Development/code/projects/worderby/src/features/game/constants.ts",
+      "/Users/noahreece/Development/code/projects/worderby/src/features/game/gameSelectors.ts",
+      "/Users/noahreece/Development/code/projects/worderby/src/features/game/types.ts",
+      "/Users/noahreece/Development/code/projects/worderby/src/hooks/useAndroidBottomInset.ts",
+      "/Users/noahreece/Development/code/projects/worderby/src/theme/fonts.ts",
+      "/Users/noahreece/Development/code/projects/worderby/src/theme/gradients.ts",
+      "/Users/noahreece/Development/code/projects/worderby/src/utils/constants.ts",
+      "/Users/noahreece/Development/code/projects/worderby/src/utils/helpers.ts"
+    ]
+  }
+}

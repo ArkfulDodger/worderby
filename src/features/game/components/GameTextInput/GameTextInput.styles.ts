@@ -1,36 +1,58 @@
-import { StyleSheet, TextStyle, ViewStyle } from "react-native";
+import { PixelRatio, StyleSheet, TextStyle, ViewStyle } from "react-native";
 import { AppTheme } from "../../../../utils/types";
+import metrics from "../../../../utils/metrics";
 
 interface StaticStyles {
   text: TextStyle;
   hiddenInput: TextStyle;
+  hiddenOffscreen: TextStyle;
+  multiline: TextStyle;
+  multilineIosPadding: TextStyle;
 }
 
 interface DynamicStyles {
+  container: (isSplit: boolean) => ViewStyle;
   underline: (offset: number) => ViewStyle;
   caret: (height?: number) => ViewStyle;
   mockInputContainer: (height?: number) => ViewStyle;
 }
 
-export interface Styles extends StaticStyles, DynamicStyles {}
+interface Styles extends StaticStyles, DynamicStyles {}
 
 export const createStyles = (theme: AppTheme, fontSize: number): Styles => {
+  const scaleFactor = PixelRatio.getFontScale();
+
   const staticStyles = StyleSheet.create<StaticStyles>({
     text: {
       fontSize: fontSize,
-      marginHorizontal: 0,
-      paddingHorizontal: 0,
-      // minWidth: fontSize * 0.6,
     },
     hiddenInput: {
       position: "absolute",
       color: "transparent",
     },
+    hiddenOffscreen: {
+      position: "absolute",
+      transform: [{ translateX: metrics.screenWidth }],
+      opacity: 0,
+    },
+    multilineIosPadding: {
+      padding: 5,
+      paddingBottom: 10,
+      paddingTop: 14,
+    },
+    multiline: {
+      textAlign: "right",
+      textAlignVertical: "top",
+      textDecorationLine: "underline",
+    },
   });
 
   const dynamicStyles: DynamicStyles = {
+    container: (isSplit) => ({
+      alignSelf: isSplit ? "flex-end" : "center",
+    }),
     mockInputContainer: (height) => ({
-      minWidth: fontSize * 0.6,
+      minWidth: fontSize * scaleFactor * 0.6,
       height: height,
       flexDirection: "row",
     }),
@@ -38,7 +60,8 @@ export const createStyles = (theme: AppTheme, fontSize: number): Styles => {
       zIndex: -1,
       position: "absolute",
       borderBottomColor: theme.colors.text,
-      borderBottomWidth: StyleSheet.hairlineWidth,
+      // borderBottomWidth: StyleSheet.hairlineWidth,
+      borderBottomWidth: 1 * scaleFactor,
       left: 0,
       right: 0,
       bottom: offset - fontSize * 0.1,
@@ -48,7 +71,7 @@ export const createStyles = (theme: AppTheme, fontSize: number): Styles => {
       height: height,
       opacity: height ? 1 : 0,
       borderRightColor: theme.colors.outline,
-      borderRightWidth: 2,
+      borderRightWidth: 2 * scaleFactor,
     }),
   };
 

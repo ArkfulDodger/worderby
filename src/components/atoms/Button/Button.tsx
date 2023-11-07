@@ -1,9 +1,7 @@
 import { ButtonProps, Button as PaperButton } from "react-native-paper";
 
-export type Props = ButtonProps;
-
-const Button = (props: Props) => {
-  const buttonProps: Props = {
+const Button = (props: ButtonProps) => {
+  const buttonProps: ButtonProps = {
     mode: "contained",
     uppercase: false,
     ...props,

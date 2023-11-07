@@ -1,18 +1,23 @@
 import { Pressable, View } from "react-native";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/reduxHooks";
 import { Text } from "react-native-paper";
-import { toggleDarkMode } from "../../../../reducers/themeReducer";
 import useStyles from "../../../../hooks/useStyles";
 import { createStyles } from "./TestScreen.styles";
+import { useCallback } from "react";
+import {
+  selectIsDark,
+  setThemePreference,
+} from "../../../../slices/themeSlice";
 
+// screen to use for testing
 const TestScreen = () => {
   const styles = useStyles(createStyles);
   const dispatch = useAppDispatch();
-  const isDark = useAppSelector((state) => state.theme.isDark);
+  const isDark = useAppSelector(selectIsDark);
 
-  const toggleTheme = () => {
-    dispatch(toggleDarkMode());
-  };
+  const toggleTheme = useCallback(() => {
+    dispatch(setThemePreference(isDark ? "light" : "dark"));
+  }, []);
 
   return (
     <View style={styles.container}>
