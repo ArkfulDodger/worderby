@@ -1,5 +1,6 @@
 import {
   ADDED_LETTER_VALUE,
+  ALLOW_TIMER_BONUS,
   MAX_ADDED_SCORE,
   MIN_TIMER,
   PROMPT_LETTER_VALUE,
@@ -67,7 +68,7 @@ export const getPrompt = (
 };
 
 // get the score from a given turn, optionally subtracting any penalty
-export const getTurnScore = (turn: Turn, useTimerBonus?: boolean) => {
+export const getTurnScore = (turn: Turn, factorTime?: boolean) => {
   // get the base score
   let baseScore =
     turn.pNum * PROMPT_LETTER_VALUE +
@@ -76,8 +77,13 @@ export const getTurnScore = (turn: Turn, useTimerBonus?: boolean) => {
       (turn.word.length - turn.pNum) * ADDED_LETTER_VALUE
     );
 
-  // subtract penalty if needed, or just return base score
-  return useTimerBonus ? baseScore + (turn.endTimer || 0) : baseScore;
+  // get the timer score, only allowing positiv value if timer bonus is on
+  let timeScore = ALLOW_TIMER_BONUS
+    ? turn.endTimer || 0
+    : Math.min(0, turn.endTimer || 0);
+
+  // provide score, including timeScore if needed
+  return factorTime ? baseScore + timeScore : baseScore;
 };
 
 // get the current game score for the player or opponent
