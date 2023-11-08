@@ -113,12 +113,15 @@ const gameSlice = createSlice({
       }
 
       // get updated turns array with new turn, ensure in turn order
-      const newTurns = [...state.turns, action.payload].sort(
+      const newTurns = [...state.turns, newTurn].sort(
         (a, b) => a.turnNumber - b.turnNumber
       );
 
       // set the turns in state
       state.turns = newTurns;
+
+      // // clear the active turn in state
+      state.activeTurn = undefined;
 
       // if that was the last turn, end the game and clear the prompt
       if (newTurns.length >= TURNS_PER_GAME) {
@@ -163,6 +166,8 @@ const gameSlice = createSlice({
           wordInput: "",
           startTime: new Date().toISOString(),
         };
+      } else {
+        console.error("Start Turn Error:", "Not the player's turn yet.");
       }
     },
 
