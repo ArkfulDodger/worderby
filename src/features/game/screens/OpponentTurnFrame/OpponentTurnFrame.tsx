@@ -19,9 +19,13 @@ const OpponentTurnFrame = ({}: Props) => {
     minFontSize: 20,
     startingFontSize: 30,
   });
-  const stolenLetters = lastPlayerTurn.word.slice(0, 1 - lastPlayerTurn.pNum);
-  const addedLetters = lastPlayerTurn.word.slice(1 - lastPlayerTurn.pNum);
+  const stolenLetters = lastPlayerTurn.word.slice(0, lastPlayerTurn.pNum);
+  const addedLetters = lastPlayerTurn.word.slice(lastPlayerTurn.pNum);
   const score = useMemo(() => getTurnScore(lastPlayerTurn), [lastPlayerTurn]);
+
+  // useEffect(() => {
+  //   console.log("last player turn:", JSON.stringify(lastPlayerTurn, null, 2));
+  // }, [lastPlayerTurn]);
 
   return (
     <View style={styles.container}>
