@@ -1,7 +1,7 @@
 import {
   ADDED_LETTER_VALUE,
   MAX_ADDED_SCORE,
-  MAX_PENALTY,
+  MIN_TIMER,
   PROMPT_LETTER_VALUE,
   TIMER_COUNT,
   TIMER_MS_PER_COUNT,
@@ -67,7 +67,7 @@ export const getPrompt = (
 };
 
 // get the score from a given turn, optionally subtracting any penalty
-export const getTurnScore = (turn: Turn, usePenalty?: boolean) => {
+export const getTurnScore = (turn: Turn, useTimerBonus?: boolean) => {
   // get the base score
   let baseScore =
     turn.pNum * PROMPT_LETTER_VALUE +
@@ -77,7 +77,7 @@ export const getTurnScore = (turn: Turn, usePenalty?: boolean) => {
     );
 
   // subtract penalty if needed, or just return base score
-  return usePenalty ? baseScore - (turn.penalty || 0) : baseScore;
+  return useTimerBonus ? baseScore + (turn.endTimer || 0) : baseScore;
 };
 
 // get the current game score for the player or opponent
@@ -175,13 +175,14 @@ export const getStyleNumberValue = (value?: string | number) => {
 const calculateTimeDifferenceInMilliseconds = (
   startedAt: string,
   playedAt: string
-): number => {
+) => {
   const startedDate = new Date(startedAt);
   const playedDate = new Date(playedAt);
 
   // Ensure the parsing was successful
   if (isNaN(startedDate.getTime()) || isNaN(playedDate.getTime())) {
-    throw new Error("Invalid date format");
+    console.error("Timer Bonus Error", "Invalid date format");
+    return undefined;
   }
 
   // Calculate the time difference in milliseconds
@@ -190,20 +191,31 @@ const calculateTimeDifferenceInMilliseconds = (
   return timeDifference;
 };
 
-export const getTurnPenalty = (startedAt: string, playedAt: string) => {
+// calculate end timer from the provided timestamps, or fall back to timer count from state
+export const getEndTimer = (
+  startedAt: string,
+  playedAt: string,
+  timerCount?: number
+) => {
   const turnMilliseconds = calculateTimeDifferenceInMilliseconds(
     startedAt,
     playedAt
   );
 
+  // if time cannot be calculated, use time from state
+  if (!turnMilliseconds) {
+    if (timerCount) return timerCount;
+    else {
+      console.error("Timer Error:", "Missing time and time stamp");
+      return 0;
+    }
+  }
+
   // Divide the play time by the milliseconds per count
   const completedTurnCounts = Math.floor(turnMilliseconds / TIMER_MS_PER_COUNT);
 
-  // get penalty clamped bewteen 0 and the max (a negative)
-  const penalty = Math.max(
-    MAX_PENALTY,
-    Math.min(0, TIMER_COUNT - completedTurnCounts)
-  );
+  // get endTimer clamped bewteen min and start time
+  const endTimer = Math.max(MIN_TIMER, TIMER_COUNT - completedTurnCounts);
 
-  return penalty;
+  return endTimer;
 };

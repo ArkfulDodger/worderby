@@ -20,7 +20,7 @@ export type Turn = {
   playedAt: string;
   word: string;
   pNum: number;
-  penalty?: number;
+  endTimer?: number;
 };
 
 // a turn which is actively in progress

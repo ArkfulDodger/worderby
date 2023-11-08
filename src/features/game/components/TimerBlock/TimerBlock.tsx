@@ -17,7 +17,7 @@ const TimerBlock = ({}: Props) => {
 
   // TODO: phase also factors into timer use
   const isTimerUsed = useMemo(
-    () => mode === GameMode.Competitive && count !== undefined,
+    () => mode !== GameMode.Casual && count !== undefined,
     [mode, count]
   );
 

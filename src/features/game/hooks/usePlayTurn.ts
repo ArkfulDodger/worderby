@@ -1,6 +1,6 @@
 import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
 import { Turn, playNewTurn, setIsLoading } from "../../../slices/gameSlice";
-import { getTurnPenalty } from "../../../utils/helpers";
+import { getEndTimer } from "../../../utils/helpers";
 import { GameMode } from "../enums";
 import {
   selectActiveTurn,
@@ -45,6 +45,7 @@ const usePlayTurn = () => {
   const attemptWord = () => {
     // note the timestamp
     const timestamp = new Date().toISOString();
+    const timerCount = activeTurn?.timerCount;
 
     // start loading
     dispatch(setIsLoading(true));
@@ -59,10 +60,11 @@ const usePlayTurn = () => {
     // TODO: confirm word exists
 
     // calculate penalty
-    const turnPenalty =
+    const endTimer =
       mode === GameMode.Casual
         ? undefined
-        : getTurnPenalty(activeTurn.startTime, timestamp);
+        : getEndTimer(activeTurn.startTime, "", timerCount);
+    // : getEndTimer(activeTurn.startTime, timestamp, timerCount);
 
     // make turn object
     const turn: Turn = {
@@ -72,7 +74,7 @@ const usePlayTurn = () => {
       playedAt: timestamp,
       word: word,
       pNum: usedPrompt.length,
-      penalty: turnPenalty,
+      endTimer: endTimer,
     };
 
     // play turn
