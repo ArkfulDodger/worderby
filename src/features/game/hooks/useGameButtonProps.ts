@@ -27,9 +27,9 @@ const useGameButtonProps = () => {
     switch (phase) {
       case RoundPhase.PlayerTurn:
         return "SUBMIT";
-      case RoundPhase.OpponentTurn:
       case RoundPhase.NewGame:
         return "BEGIN";
+      case RoundPhase.OpponentTurn:
       case RoundPhase.Results:
         return "CONTINUE";
       default:

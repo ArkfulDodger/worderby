@@ -8,6 +8,7 @@ import {
   isPlayersTurn,
 } from "../../utils/helpers";
 import { RoundPhase } from "./enums";
+import { Turn } from "../../slices/gameSlice";
 
 // simple state selectors
 export const selectIsEnded = (state: RootState) => state.game.isEnded;
@@ -131,3 +132,20 @@ export const selectPlayWord = (state: RootState) => {
   const { usedPrompt } = selectUsedUnusedPrompt(state);
   return usedPrompt + state.game.activeTurn?.wordInput || "";
 };
+
+// select the last word played by the player
+export const selectLastPlayerTurn = createSelector(
+  [selectTurns],
+  (turns: Turn[]) => {
+    const result = turns.reduce((mostRecentTurn: Turn, turn: Turn) => {
+      if (
+        turn.isPlayer &&
+        (!mostRecentTurn || turn.turnNumber > mostRecentTurn.turnNumber)
+      ) {
+        return turn;
+      }
+      return mostRecentTurn;
+    }, turns[0]);
+    return result;
+  }
+);

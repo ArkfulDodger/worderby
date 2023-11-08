@@ -9,6 +9,7 @@ import { useAppSelector } from "../../../../hooks/reduxHooks";
 import { selectRoundPhase } from "../../gameSelectors";
 import { RoundPhase } from "../../enums";
 import NewGameFrame from "../NewGameFrame";
+import OpponentTurnFrame from "../OpponentTurnFrame";
 
 type Props = {};
 
@@ -24,7 +25,7 @@ const GamePage = ({}: Props) => {
         <View style={styles.frameContainer}>
           {phase === RoundPhase.NewGame && <NewGameFrame />}
           {phase === RoundPhase.PlayerTurn && <PlayerTurnFrame />}
-          {phase === RoundPhase.OpponentTurn && <View />}
+          {phase === RoundPhase.OpponentTurn && <OpponentTurnFrame />}
           {phase === RoundPhase.Results && <View />}
         </View>
       </KeyboardAvoidingView>
