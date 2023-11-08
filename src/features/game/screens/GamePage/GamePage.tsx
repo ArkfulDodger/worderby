@@ -10,6 +10,7 @@ import { selectRoundPhase } from "../../gameSelectors";
 import { RoundPhase } from "../../enums";
 import NewGameFrame from "../NewGameFrame";
 import OpponentTurnFrame from "../OpponentTurnFrame";
+import useWorderbot from "../../hooks/useWorderbot";
 
 type Props = {};
 
@@ -17,6 +18,9 @@ type Props = {};
 const GamePage = ({}: Props) => {
   const styles = useStyles(createStyles);
   const phase = useAppSelector(selectRoundPhase);
+
+  // enable worderbot (only used if single player)
+  useWorderbot();
 
   return (
     <View style={styles.container}>

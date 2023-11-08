@@ -13,6 +13,8 @@ import { Turn } from "../../slices/gameSlice";
 // simple state selectors
 export const selectIsEnded = (state: RootState) => state.game.isEnded;
 export const selectOpponent = (state: RootState) => state.game.opponent;
+export const selectIsSinglePlayer = (state: RootState) =>
+  state.game.isSinglePlayer;
 export const selectMode = (state: RootState) => state.game.mode;
 export const selectTurns = (state: RootState) => state.game.turns;
 export const selectStartingWord = (state: RootState) => state.game.startingWord;
@@ -35,9 +37,25 @@ export const selectActiveTurn = (state: RootState) => state.game.activeTurn;
 export const selectIsPlayerTurn = (state: RootState) =>
   isPlayersTurn(state.game.turns.length, state.game.isPlayerFirst);
 
+// select whether or not is a worderbot turn (opponent turn in single player)
+export const selectIsWorderbotTurn = (state: RootState) => {
+  const isPlayerTurn = selectIsPlayerTurn(state);
+  const isSinglePlayer = selectIsSinglePlayer(state);
+
+  return isSinglePlayer && !isPlayerTurn;
+};
+
+// selects the current turn (whether actively started or not)
+export const selectCurrentTurnNumber = (state: RootState) =>
+  selectTurns(state).length + 1;
+
 // special selector for getting whether or not the player is actively playing their turn
 export const selectIsActivePlayerTurn = (state: RootState) => {
-  return selectIsPlayerTurn(state) && !!state.game.activeTurn;
+  return (
+    selectIsPlayerTurn(state) &&
+    !!state.game.activeTurn &&
+    state.game.activeTurn.turnNumber === selectCurrentTurnNumber(state)
+  );
 };
 
 // Memoized: select the turns the player is currently able to view

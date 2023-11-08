@@ -10,6 +10,8 @@ import { useMemo } from "react";
 
 type Props = {};
 
+// the frame displayed during the opponent's turn
+// shows the word just played and the score earned
 const OpponentTurnFrame = ({}: Props) => {
   const styles = useStyles(createStyles);
   const lastPlayerTurn = useAppSelector(selectLastPlayerTurn);
