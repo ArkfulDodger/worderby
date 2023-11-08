@@ -14,7 +14,7 @@ type Props = {
 };
 
 // max/min pixels a user can swipe to change letters, regardless of word length
-const MAX_PPL = 40;
+const MAX_PPL = 60;
 const MIN_PPL = 10;
 
 const PromptGestureHandler = ({ children }: Props) => {
