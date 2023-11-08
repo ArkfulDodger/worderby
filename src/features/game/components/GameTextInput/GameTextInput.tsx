@@ -68,7 +68,7 @@ const GameTextInput = ({ fontSize = 30, style, value, ...props }: Props) => {
     autoCapitalize: "none",
     autoComplete: "off",
     autoCorrect: false,
-    blurOnSubmit: false,
+    blurOnSubmit: multiline,
     contextMenuHidden: true,
     disableFullscreenUI: true, // android
     enablesReturnKeyAutomatically: true, // ios
