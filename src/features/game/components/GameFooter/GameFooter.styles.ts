@@ -17,6 +17,7 @@ export const createStyles = (theme: AppTheme): Styles => {
       flexDirection: "row",
       justifyContent: "space-evenly",
       alignItems: "center",
+      paddingVertical: 5,
     },
   });
 
