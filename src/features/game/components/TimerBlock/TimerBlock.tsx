@@ -23,7 +23,7 @@ const TimerBlock = ({}: Props) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.counter}>{isTimerUsed ? count : "∞"}</Text>
+      <Text style={styles.counter}>{isTimerUsed ? count : "W"}</Text>
     </View>
   );
 };

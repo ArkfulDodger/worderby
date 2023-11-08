@@ -4,9 +4,10 @@ import { createStyles } from "./OpponentTurnFrame.styles";
 import { Text } from "react-native-paper";
 import { useAppSelector } from "../../../../hooks/reduxHooks";
 import { selectLastPlayerTurn } from "../../gameSelectors";
-import useResizingFont from "../../../../hooks/useResizingFont";
 import { getTurnScore } from "../../../../utils/helpers";
 import { useMemo } from "react";
+import PlayedWordText from "../../components/PlayedWordText";
+import PlayedWordScoreBreakdown from "../../components/PlayedWordScoreBreakdown";
 
 type Props = {};
 
@@ -15,30 +16,22 @@ type Props = {};
 const OpponentTurnFrame = ({}: Props) => {
   const styles = useStyles(createStyles);
   const lastPlayerTurn = useAppSelector(selectLastPlayerTurn);
-  const { isFontSized, fontSize, onTextLayout } = useResizingFont({
-    minFontSize: 20,
-    startingFontSize: 30,
-  });
-  const stolenLetters = lastPlayerTurn.word.slice(0, lastPlayerTurn.pNum);
-  const addedLetters = lastPlayerTurn.word.slice(lastPlayerTurn.pNum);
-  const score = useMemo(() => getTurnScore(lastPlayerTurn), [lastPlayerTurn]);
-
-  // useEffect(() => {
-  //   console.log("last player turn:", JSON.stringify(lastPlayerTurn, null, 2));
-  // }, [lastPlayerTurn]);
+  const score = useMemo(
+    () => getTurnScore(lastPlayerTurn, true),
+    [lastPlayerTurn]
+  );
 
   return (
     <View style={styles.container}>
-      <Text
-        onTextLayout={onTextLayout}
-        style={styles.text(fontSize, isFontSized)}
-      >
-        <Text onTextLayout={onTextLayout} style={styles.stolen}>
-          {stolenLetters}
-        </Text>
-        {addedLetters}
-      </Text>
-      <Text>+{score}</Text>
+      <View style={styles.wordContainer}>
+        <Text style={styles.labelText}>You Played:</Text>
+        <PlayedWordText />
+      </View>
+      <View style={styles.scoreContainer}>
+        <Text style={styles.labelText}>You Scored:</Text>
+        <PlayedWordScoreBreakdown />
+        <Text style={styles.scoreText}>{score}</Text>
+      </View>
     </View>
   );
 };
