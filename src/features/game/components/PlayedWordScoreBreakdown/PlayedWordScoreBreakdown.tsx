@@ -41,11 +41,11 @@ const PlayedWordScoreBreakdown = ({}: Props) => {
           <Text style={styles.timerText(lastPlayerTurn.endTimer)}>
             {lastPlayerTurn.endTimer > 0 ? "+" : ""}
             {lastPlayerTurn.endTimer}
+            <MaterialCommunityIcons
+              style={styles.timerIcon(lastPlayerTurn.endTimer)}
+              name="timer-outline"
+            />
           </Text>
-          <MaterialCommunityIcons
-            style={styles.timerIcon}
-            name="timer-outline"
-          />
         </View>
       )}
     </View>

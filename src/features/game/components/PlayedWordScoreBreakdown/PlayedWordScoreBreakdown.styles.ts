@@ -7,11 +7,11 @@ interface StaticStyles {
   letterScore: TextStyle;
   letterScoreContainer: ViewStyle;
   timerContainer: ViewStyle;
-  timerIcon: TextStyle;
   maxText: TextStyle;
 }
 
 interface DynamicStyles {
+  timerIcon: (count: number) => TextStyle;
   timerText: (count: number) => TextStyle;
 }
 
@@ -44,11 +44,6 @@ export const createStyles = (theme: AppTheme): Styles => {
     timerContainer: {
       justifyContent: "center",
     },
-    timerIcon: {
-      position: "absolute",
-      right: -FONT_SIZE * 0.9 * scaleFactor,
-      fontSize: FONT_SIZE * 0.8 * scaleFactor,
-    },
     maxText: {
       fontStyle: "italic",
       fontSize: 12,
@@ -56,6 +51,10 @@ export const createStyles = (theme: AppTheme): Styles => {
   });
 
   const dynamicStyles: DynamicStyles = {
+    timerIcon: (count) => ({
+      fontSize: FONT_SIZE * 0.8 * scaleFactor,
+      color: count > 0 ? "green" : count < 0 ? "red" : theme.colors.text,
+    }),
     timerText: (count) => ({
       fontSize: FONT_SIZE,
       fontWeight: "bold",
