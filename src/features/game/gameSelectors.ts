@@ -7,11 +7,12 @@ import {
   getWorderbyte,
   isPlayersTurn,
 } from "../../utils/helpers";
-import { RoundPhase } from "./enums";
+import { GameEndType, GameResult, RoundPhase } from "./enums";
 import { Turn } from "../../slices/gameSlice";
 
 // simple state selectors
-export const selectIsEnded = (state: RootState) => state.game.isEnded;
+export const selectEndType = (state: RootState) => state.game.endType;
+export const selectIsEnded = (state: RootState) => !!state.game.endType;
 export const selectOpponent = (state: RootState) => state.game.opponent;
 export const selectIsSinglePlayer = (state: RootState) =>
   state.game.isSinglePlayer;
@@ -103,7 +104,7 @@ export const selectRoundPhase = (state: RootState) => {
   const noTurns = selectTurns(state).length === 0;
 
   // if the game has ended (for any reason), show the results
-  if (state.game.isEnded) return RoundPhase.Results;
+  if (!!state.game.endType) return RoundPhase.Results;
   // if it is the player's turn, and there is an active turn in state, show the player turn frame
   else if (isActivePlayerTurn) return RoundPhase.PlayerTurn;
   // if its the first turn, play is to the player, but they have not begun yet, show new game
@@ -166,5 +167,28 @@ export const selectLastPlayerTurn = createSelector(
       return mostRecentTurn;
     }, turns[0]);
     return result;
+  }
+);
+
+// select the result of the game based on the score and end state
+export const selectGameResult = createSelector(
+  [selectEndType, selectUserScore, selectOpponentScore],
+  (endType, playerScore, opponentScore) => {
+    switch (endType) {
+      case undefined:
+        return GameResult.Ongoing;
+      case GameEndType.Unknown:
+        return GameResult.Unknown;
+      case GameEndType.OpponentQuit:
+        return GameResult.OpponentQuit;
+      case GameEndType.PlayerQuit:
+        return GameResult.PlayerQuit;
+      case GameEndType.Completed:
+        if (playerScore === opponentScore) return GameResult.Draw;
+        else if (playerScore > opponentScore) return GameResult.Win;
+        else return GameResult.Lose;
+      default:
+        return GameResult.Unknown;
+    }
   }
 );

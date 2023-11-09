@@ -6,6 +6,7 @@ import { selectStartingWord, selectTurns } from "../../gameSelectors";
 import { Turn } from "../../../../slices/gameSlice";
 import TurnListItem from "../../components/TurnListItem";
 import { Text } from "react-native-paper";
+import VictoryMessage from "../../components/VictoryMessage";
 
 type Props = {};
 
@@ -19,9 +20,10 @@ const ResultsFrame = ({}: Props) => {
   );
 
   return (
-    <View>
-      {/* <VictoryMessage /> */}
+    <View style={styles.container}>
+      <VictoryMessage />
       <FlatList
+        style={styles.list}
         data={turns}
         renderItem={renderTurnListItem}
         contentContainerStyle={styles.listContainer}

@@ -9,7 +9,6 @@ export const initialDemoState: GameState = {
   streakCount: 0,
   isSinglePlayer: true,
   isPlayerFirst: true,
-  isEnded: false,
   opponent: {
     name: "Worderbot",
     avatar: "",

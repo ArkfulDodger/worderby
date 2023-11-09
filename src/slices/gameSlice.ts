@@ -4,7 +4,7 @@ import { mockTurns } from "../features/game/mockData";
 import { TIMER_COUNT, TURNS_PER_GAME } from "../features/game/constants";
 import { getPrompt, isPlayersTurn, isTurnPlayable } from "../utils/helpers";
 import { initialDemoState } from "../features/game/demoGameData";
-import { GameMode } from "../features/game/enums";
+import { GameEndType, GameMode } from "../features/game/enums";
 
 // Define types for the slice state
 export type Player = {
@@ -41,7 +41,7 @@ export type GameState = {
   streakCount: number;
   isSinglePlayer: boolean;
   isPlayerFirst: boolean;
-  isEnded: boolean;
+  endType?: GameEndType;
   opponent: Player;
   startingWord: string;
   turns: Turn[];
@@ -70,7 +70,6 @@ const initialState: GameState = {
   streakCount: 0,
   isSinglePlayer: true,
   isPlayerFirst: isPlayerFirst,
-  isEnded: false,
   opponent: {
     name: "Worderbot",
     avatar: "",
@@ -88,11 +87,6 @@ const gameSlice = createSlice({
     // load the demo game into state
     loadDemoGame: (state) => {
       state = initialDemoState;
-    },
-
-    // bring an immediate end to the current game
-    endGame: (state) => {
-      state.isEnded = true;
     },
 
     // add a turn to the current game
@@ -125,7 +119,7 @@ const gameSlice = createSlice({
 
       // if that was the last turn, end the game and clear the prompt
       if (newTurns.length >= TURNS_PER_GAME) {
-        state.isEnded = true;
+        state.endType = GameEndType.Completed;
       }
 
       state.isLoading = false;
@@ -201,7 +195,6 @@ const gameSlice = createSlice({
 // Action creators are generated for each case reducer function
 export const {
   loadDemoGame,
-  endGame,
   playNewTurn,
   decrementTimerCount,
   handlePromptInput,
