@@ -67,6 +67,16 @@ export const getPrompt = (
   }
 };
 
+// get the timer score bonus/penalty for the end timer for a turn
+export const getTimerScore = (endTimer?: number) => {
+  // get the timer score, only allowing positiv value if timer bonus is on
+  let timeScore = ALLOW_TIMER_BONUS
+    ? endTimer || 0
+    : Math.min(0, endTimer || 0);
+
+  return timeScore;
+};
+
 // get the score from a given turn, optionally subtracting any penalty
 export const getTurnScore = (turn: Turn, factorTime?: boolean) => {
   // get the base score
@@ -77,13 +87,10 @@ export const getTurnScore = (turn: Turn, factorTime?: boolean) => {
       (turn.word.length - turn.pNum) * ADDED_LETTER_VALUE
     );
 
-  // get the timer score, only allowing positiv value if timer bonus is on
-  let timeScore = ALLOW_TIMER_BONUS
-    ? turn.endTimer || 0
-    : Math.min(0, turn.endTimer || 0);
+  let timerScore = getTimerScore(turn.endTimer);
 
   // provide score, including timeScore if needed
-  return factorTime ? baseScore + timeScore : baseScore;
+  return factorTime ? baseScore + timerScore : baseScore;
 };
 
 // get the current game score for the player or opponent

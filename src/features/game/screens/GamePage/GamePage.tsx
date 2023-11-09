@@ -11,6 +11,7 @@ import { RoundPhase } from "../../enums";
 import NewGameFrame from "../NewGameFrame";
 import OpponentTurnFrame from "../OpponentTurnFrame";
 import useWorderbot from "../../hooks/useWorderbot";
+import ResultsFrame from "../ResultsFrame";
 
 type Props = {};
 
@@ -30,7 +31,7 @@ const GamePage = ({}: Props) => {
           {phase === RoundPhase.NewGame && <NewGameFrame />}
           {phase === RoundPhase.PlayerTurn && <PlayerTurnFrame />}
           {phase === RoundPhase.OpponentTurn && <OpponentTurnFrame />}
-          {phase === RoundPhase.Results && <View />}
+          {phase === RoundPhase.Results && <ResultsFrame />}
         </View>
       </KeyboardAvoidingView>
       <GameFooter />
