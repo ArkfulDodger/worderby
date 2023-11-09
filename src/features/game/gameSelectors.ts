@@ -39,10 +39,11 @@ export const selectIsPlayerTurn = (state: RootState) =>
 
 // select whether or not is a worderbot turn (opponent turn in single player)
 export const selectIsWorderbotTurn = (state: RootState) => {
+  const isEnded = selectIsEnded(state);
   const isPlayerTurn = selectIsPlayerTurn(state);
   const isSinglePlayer = selectIsSinglePlayer(state);
 
-  return isSinglePlayer && !isPlayerTurn;
+  return !isEnded && isSinglePlayer && !isPlayerTurn;
 };
 
 // selects the current turn (whether actively started or not)
