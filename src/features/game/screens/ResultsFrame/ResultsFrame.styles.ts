@@ -1,9 +1,10 @@
-import { StyleSheet, TextStyle } from "react-native";
+import { StyleSheet, TextStyle, ViewStyle } from "react-native";
 import { AppTheme } from "../../../../utils/types";
 import { RESULT_WORD_FONT_SIZE } from "../../components/TurnListItem/TurnListItem.styles";
 
 interface Styles {
   startingWord: TextStyle;
+  listContainer: ViewStyle;
 }
 
 export const createStyles = (theme: AppTheme): Styles => {
@@ -13,6 +14,9 @@ export const createStyles = (theme: AppTheme): Styles => {
       fontSize: RESULT_WORD_FONT_SIZE,
       minHeight: RESULT_WORD_FONT_SIZE * 2.5,
       color: theme.colors.secondary,
+    },
+    listContainer: {
+      padding: 15,
     },
   });
 };

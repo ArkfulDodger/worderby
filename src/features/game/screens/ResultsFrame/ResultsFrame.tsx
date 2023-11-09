@@ -24,6 +24,7 @@ const ResultsFrame = ({}: Props) => {
       <FlatList
         data={turns}
         renderItem={renderTurnListItem}
+        contentContainerStyle={styles.listContainer}
         ListHeaderComponent={() => (
           <Text style={styles.startingWord}>{startingWord}</Text>
         )}
