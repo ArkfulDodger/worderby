@@ -26,7 +26,7 @@ const useWorderbot = () => {
     if (isWorderbotTurn) {
       timeout = setTimeout(() => {
         playWorderbotTurn();
-      }, 3000);
+      }, 1000);
     }
 
     return () => {
