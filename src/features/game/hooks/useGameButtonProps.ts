@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useAppSelector } from "../../../hooks/reduxHooks";
 import { RoundPhase } from "../enums";
 import { useDispatch } from "react-redux";
@@ -22,6 +22,13 @@ const useGameButtonProps = () => {
   const activeTurn = useAppSelector(selectActiveTurn);
   const { attemptWord } = usePlayTurn();
 
+  const [newGameModalVisible, setNewGameModalVisible] = useState(false);
+  const showNewGameModal = () => setNewGameModalVisible(true);
+  const hideNewGameModal = () => setNewGameModalVisible(false);
+  useEffect(() => {
+    hideNewGameModal();
+  }, [phase]);
+
   // the text to display on the button
   const buttonText = useMemo(() => {
     switch (phase) {
@@ -30,8 +37,9 @@ const useGameButtonProps = () => {
       case RoundPhase.NewGame:
         return "BEGIN";
       case RoundPhase.OpponentTurn:
-      case RoundPhase.Results:
         return "CONTINUE";
+      case RoundPhase.Results:
+        return "PLAY AGAIN";
       default:
         return "LOADING";
     }
@@ -73,9 +81,15 @@ const useGameButtonProps = () => {
   const onStartPress = () => dispatch(startTurn());
 
   // continue past the results screen to either quit or start a new game
-  const onContinuePress = () => console.log("continue pressed");
+  const onContinuePress = () => showNewGameModal();
 
-  return { onButtonPress, isButtonDisabled, buttonText };
+  return {
+    onButtonPress,
+    isButtonDisabled,
+    buttonText,
+    newGameModalVisible,
+    hideNewGameModal,
+  };
 };
 
 export default useGameButtonProps;
