@@ -19,6 +19,10 @@ const PlayedWordText = ({}: Props) => {
     display: isFontSized,
   });
   const lastPlayerTurn = useAppSelector(selectLastPlayerTurn);
+
+  // escape if no last player turn exists
+  if (!lastPlayerTurn) return null;
+
   const stolenLetters = lastPlayerTurn.word.slice(0, lastPlayerTurn.pNum);
   const addedLetters = lastPlayerTurn.word.slice(lastPlayerTurn.pNum);
 
