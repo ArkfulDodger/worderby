@@ -3,7 +3,7 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { mockTurns } from "../features/game/mockData";
 import { TIMER_COUNT, TURNS_PER_GAME } from "../features/game/constants";
 import { getPrompt, isPlayersTurn, isTurnPlayable } from "../utils/helpers";
-import { initialDemoState } from "../features/game/demoGameData";
+import { demoWorderbot, initialDemoState } from "../features/game/demoGameData";
 import { GameEndType, GameMode } from "../features/game/enums";
 
 // Define types for the slice state
@@ -70,10 +70,7 @@ const initialState: GameState = {
   streakCount: 0,
   isSinglePlayer: true,
   isPlayerFirst: isPlayerFirst,
-  opponent: {
-    name: "Worderbot",
-    avatar: "",
-  },
+  opponent: demoWorderbot,
   startingWord: initialWord,
   turns: initialTurns,
   initialRestrictions: [],
@@ -87,6 +84,27 @@ const gameSlice = createSlice({
     // load the demo game into state
     loadDemoGame: (state) => {
       state = initialDemoState;
+    },
+
+    // load the game object
+    loadGame: (state, action: PayloadAction<GameState>) => {
+      console.log(
+        "Loading Game in state:",
+        JSON.stringify(action.payload, null, 2)
+      );
+      state.id = action.payload.id;
+      state.mode = action.payload.mode;
+      state.streakCount = action.payload.streakCount;
+      state.isSinglePlayer = action.payload.isSinglePlayer;
+      state.isPlayerFirst = action.payload.isPlayerFirst;
+      state.endType = action.payload.endType;
+      state.opponent = action.payload.opponent;
+      state.startingWord = action.payload.startingWord;
+      state.turns = action.payload.turns;
+      state.initialRestrictions = action.payload.initialRestrictions;
+      state.activeTurn = action.payload.activeTurn;
+      state.isLoading = action.payload.isLoading;
+      // state = {...action.payload};
     },
 
     // add a turn to the current game
@@ -195,6 +213,7 @@ const gameSlice = createSlice({
 // Action creators are generated for each case reducer function
 export const {
   loadDemoGame,
+  loadGame,
   playNewTurn,
   decrementTimerCount,
   handlePromptInput,

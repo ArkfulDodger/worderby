@@ -13,6 +13,11 @@ import { Turn } from "../../slices/gameSlice";
 // simple state selectors
 export const selectEndType = (state: RootState) => state.game.endType;
 export const selectIsEnded = (state: RootState) => !!state.game.endType;
+export const selectStreakCount = (state: RootState) => state.game.streakCount;
+export const selectInitialRestrictions = (state: RootState) =>
+  state.game.initialRestrictions;
+export const selectIsPlayerFirst = (state: RootState) =>
+  state.game.isPlayerFirst;
 export const selectOpponent = (state: RootState) => state.game.opponent;
 export const selectIsSinglePlayer = (state: RootState) =>
   state.game.isSinglePlayer;
@@ -157,15 +162,18 @@ export const selectPlayWord = (state: RootState) => {
 export const selectLastPlayerTurn = createSelector(
   [selectTurns],
   (turns: Turn[]) => {
-    const result = turns.reduce((mostRecentTurn: Turn, turn: Turn) => {
-      if (
-        turn.isPlayer &&
-        (!mostRecentTurn || turn.turnNumber > mostRecentTurn.turnNumber)
-      ) {
-        return turn;
-      }
-      return mostRecentTurn;
-    }, turns[0]);
+    const result: Turn | undefined = turns.reduce(
+      (mostRecentTurn: Turn | undefined, turn: Turn) => {
+        if (
+          turn.isPlayer &&
+          (!mostRecentTurn || turn.turnNumber > mostRecentTurn.turnNumber)
+        ) {
+          return turn;
+        }
+        return mostRecentTurn;
+      },
+      undefined
+    );
     return result;
   }
 );
@@ -190,5 +198,13 @@ export const selectGameResult = createSelector(
       default:
         return GameResult.Unknown;
     }
+  }
+);
+
+export const selectRestrictions = createSelector(
+  [selectInitialRestrictions, selectTurns],
+  (initialRestrictions, turns) => {
+    const newRestrictions = turns.map((turn) => turn.word.slice(turn.pNum));
+    return [...initialRestrictions, ...newRestrictions].sort();
   }
 );

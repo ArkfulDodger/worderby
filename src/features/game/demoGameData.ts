@@ -1,6 +1,11 @@
-import { GameState } from "../../slices/gameSlice";
+import { GameState, Player } from "../../slices/gameSlice";
 import { STATIC_DATE } from "../../utils/constants";
 import { GameMode } from "./enums";
+
+export const demoWorderbot: Player = {
+  name: "Worderbot",
+  avatar: "",
+};
 
 // This is the initial state of the demo game
 export const initialDemoState: GameState = {
@@ -9,10 +14,7 @@ export const initialDemoState: GameState = {
   streakCount: 0,
   isSinglePlayer: true,
   isPlayerFirst: true,
-  opponent: {
-    name: "Worderbot",
-    avatar: "",
-  },
+  opponent: demoWorderbot,
   startingWord: "word",
   turns: [],
   initialRestrictions: [],
