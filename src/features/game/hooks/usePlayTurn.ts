@@ -1,6 +1,6 @@
 import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
 import { Turn, playNewTurn, setIsLoading } from "../../../slices/gameSlice";
-import { getEndTimer } from "../../../utils/helpers";
+import { deriveStartTimeFromTimer, getEndTimer } from "../../../utils/helpers";
 import { GameMode } from "../enums";
 import {
   selectActiveTurn,
@@ -59,18 +59,27 @@ const usePlayTurn = () => {
 
     // TODO: confirm word exists
 
-    // calculate penalty
-    const endTimer =
-      mode === GameMode.Casual
-        ? undefined
-        : getEndTimer(activeTurn.startTime, "", timerCount);
-    // : getEndTimer(activeTurn.startTime, timestamp, timerCount);
+    // calculate final endTimer and startedAt values
+    let endTimer = timerCount;
+    let finalStartTime = activeTurn.startTime;
+
+    if (finalStartTime) {
+      // if there is a start time, calculate the official end timer
+      endTimer =
+        mode === GameMode.Casual
+          ? undefined
+          : getEndTimer(finalStartTime, timestamp, timerCount);
+    } else {
+      // if there is no start time, calculate it from the last known timer count
+      // will assume the default TIMER_COUNT if no timer count is found/provided, as for casual games
+      finalStartTime = deriveStartTimeFromTimer(timestamp, timerCount);
+    }
 
     // make turn object
     const turn: Turn = {
       isPlayer: true,
       turnNumber: activeTurn.turnNumber,
-      startedAt: activeTurn.startTime,
+      startedAt: finalStartTime,
       playedAt: timestamp,
       word: word,
       pNum: usedPrompt.length,

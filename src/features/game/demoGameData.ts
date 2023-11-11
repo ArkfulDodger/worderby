@@ -1,5 +1,4 @@
 import { GameState, Player } from "../../slices/gameSlice";
-import { STATIC_DATE } from "../../utils/constants";
 import { GameMode } from "./enums";
 
 export const demoWorderbot: Player = {
@@ -23,6 +22,5 @@ export const initialDemoState: GameState = {
     timerCount: 10,
     pIndexInput: 1,
     wordInput: "",
-    startTime: STATIC_DATE,
   },
 };

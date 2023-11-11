@@ -232,3 +232,26 @@ export const getEndTimer = (
 
   return endTimer;
 };
+
+// use the final timer value to calculate an approximate start time
+export const deriveStartTimeFromTimer = (
+  playedAt: string,
+  timerCount?: number
+) => {
+  // Convert playedAt to milliseconds since epoch
+  const playedAtMs: number = new Date(playedAt).getTime();
+
+  // Calculate the time difference in milliseconds
+  const timeDifferenceMs: number = timerCount
+    ? timerCount * TIMER_MS_PER_COUNT
+    : TIMER_COUNT * TIMER_MS_PER_COUNT;
+
+  // Calculate the new timestamp
+  const newTimestampMs: number = playedAtMs - timeDifferenceMs;
+
+  // Create a new Date object with the calculated timestamp
+  const newTimestamp: Date = new Date(newTimestampMs);
+
+  // Return the new timestamp in ISO format
+  return newTimestamp.toISOString();
+};

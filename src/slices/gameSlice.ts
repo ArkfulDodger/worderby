@@ -1,7 +1,11 @@
 // Import the createSlice API from Redux Toolkit
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { mockTurns } from "../features/game/mockData";
-import { TIMER_COUNT, TURNS_PER_GAME } from "../features/game/constants";
+import {
+  MIN_TIMER,
+  TIMER_COUNT,
+  TURNS_PER_GAME,
+} from "../features/game/constants";
 import { getPrompt, isPlayersTurn, isTurnPlayable } from "../utils/helpers";
 import { demoWorderbot, initialDemoState } from "../features/game/demoGameData";
 import { GameEndType, GameMode } from "../features/game/enums";
@@ -26,7 +30,7 @@ export type Turn = {
 // a turn which is actively in progress
 export type ActiveTurn = {
   turnNumber: number; // the active turn number
-  startTime: string; // the ISO timestamp when the user's turn began (when prompt loads on screen)
+  startTime?: string; // the ISO timestamp when the user's turn began (when prompt loads on screen)
   timerCount?: number; // the number displayed on the timer, if used
   pIndexInput: number; // the char index in the prompt the player is trying to select
   wordInput: string; // the additional input the user has typed
@@ -145,7 +149,11 @@ const gameSlice = createSlice({
 
     // decrement the timer (if active turn and timer in use)
     decrementTimerCount: (state) => {
-      if (state.activeTurn?.timerCount) state.activeTurn.timerCount -= 1;
+      if (state.activeTurn?.timerCount !== undefined)
+        state.activeTurn.timerCount = Math.max(
+          MIN_TIMER,
+          state.activeTurn.timerCount - 1
+        );
     },
 
     // set the prompt input to the given index
@@ -176,7 +184,7 @@ const gameSlice = createSlice({
           timerCount: state.mode === GameMode.Casual ? undefined : TIMER_COUNT,
           pIndexInput: Math.min(1, prompt.length - 1),
           wordInput: "",
-          startTime: new Date().toISOString(),
+          startTime: undefined,
         };
       } else {
         console.error("Start Turn Error:", "Not the player's turn yet.");
@@ -194,7 +202,7 @@ const gameSlice = createSlice({
     },
 
     // record a start timestamp for the active turn (only if it hasn't already been set)
-    recordStartTime: (state) => {
+    recordStartTimeIfEmpty: (state) => {
       if (state.activeTurn && !state.activeTurn.startTime) {
         state.activeTurn.startTime = new Date().toISOString();
       }
@@ -219,7 +227,7 @@ export const {
   handlePromptInput,
   setWordInput,
   startTurn,
-  recordStartTime,
+  recordStartTimeIfEmpty,
   setInputFocus,
   toggleInputFocus,
   setIsWordSplit,
