@@ -7,7 +7,7 @@ import {
   getWorderbyte,
   isPlayersTurn,
 } from "../../utils/helpers";
-import { GameEndType, GameResult, RoundPhase } from "./enums";
+import { GameEndType, GameMode, GameResult, RoundPhase } from "./enums";
 import { Turn } from "../../slices/gameSlice";
 
 // simple state selectors
@@ -38,6 +38,8 @@ export const selectInputFocus = (state: RootState) =>
 export const selectIsWordSplit = (state: RootState) =>
   !!state.game.activeTurn?.isWordSplit;
 export const selectActiveTurn = (state: RootState) => state.game.activeTurn;
+export const selectStartTime = (state: RootState) =>
+  state.game.activeTurn?.startTime;
 
 // special selector for getting whether or not it is the player's turn
 export const selectIsPlayerTurn = (state: RootState) =>
@@ -201,10 +203,23 @@ export const selectGameResult = createSelector(
   }
 );
 
+// select the current active restrictions list
 export const selectRestrictions = createSelector(
   [selectInitialRestrictions, selectTurns],
   (initialRestrictions, turns) => {
     const newRestrictions = turns.map((turn) => turn.word.slice(turn.pNum));
     return [...initialRestrictions, ...newRestrictions].sort();
+  }
+);
+
+// select whether the timer is in active use
+export const selectIsTimerInUse = createSelector(
+  [selectTimerCount, selectMode, selectRoundPhase],
+  (count, mode, phase) => {
+    return (
+      count !== undefined &&
+      mode !== GameMode.Casual &&
+      phase === RoundPhase.PlayerTurn
+    );
   }
 );
