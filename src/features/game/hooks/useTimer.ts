@@ -23,13 +23,10 @@ const useTimer = () => {
 
   // start the timer for the countdown
   const startTimer = () => {
-    console.log("start timer called. interval:", timerInterval);
     // ignore call if timer already running
     if (timerInterval) return;
 
     const id = setInterval(() => {
-      console.log("interval hit");
-      console.log("timerCount:", timerCount);
       if (timerCount !== undefined && timerCount > MIN_TIMER)
         dispatch(decrementTimerCount());
       else stopTimer(id);
