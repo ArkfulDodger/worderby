@@ -86,29 +86,13 @@ const gameSlice = createSlice({
   initialState,
   reducers: {
     // load the demo game into state
-    loadDemoGame: (state) => {
-      state = initialDemoState;
+    loadDemoGame: () => {
+      return initialDemoState;
     },
 
     // load the game object
     loadGame: (state, action: PayloadAction<GameState>) => {
-      console.log(
-        "Loading Game in state:",
-        JSON.stringify(action.payload, null, 2)
-      );
-      state.id = action.payload.id;
-      state.mode = action.payload.mode;
-      state.streakCount = action.payload.streakCount;
-      state.isSinglePlayer = action.payload.isSinglePlayer;
-      state.isPlayerFirst = action.payload.isPlayerFirst;
-      state.endType = action.payload.endType;
-      state.opponent = action.payload.opponent;
-      state.startingWord = action.payload.startingWord;
-      state.turns = action.payload.turns;
-      state.initialRestrictions = action.payload.initialRestrictions;
-      state.activeTurn = action.payload.activeTurn;
-      state.isLoading = action.payload.isLoading;
-      // state = {...action.payload};
+      return action.payload;
     },
 
     // add a turn to the current game
