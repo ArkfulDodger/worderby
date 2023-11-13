@@ -140,6 +140,13 @@ const gameSlice = createSlice({
         );
     },
 
+    //set the timer count
+    setTimerCount: (state, action: PayloadAction<number>) => {
+      if (state.activeTurn?.timerCount !== undefined) {
+        state.activeTurn.timerCount = action.payload;
+      }
+    },
+
     // set the prompt input to the given index
     handlePromptInput: (state, action: PayloadAction<number>) => {
       if (state.activeTurn) state.activeTurn.pIndexInput = action.payload;
@@ -216,6 +223,7 @@ export const {
   toggleInputFocus,
   setIsWordSplit,
   setIsLoading,
+  setTimerCount,
 } = gameSlice.actions;
 
 // We export the reducer function so that it can be added to the store
