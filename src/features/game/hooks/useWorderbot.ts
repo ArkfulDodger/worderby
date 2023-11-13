@@ -44,6 +44,7 @@ const useWorderbot = () => {
       playedAt: new Date().toISOString(),
       word: DEMO_WORDERBOT_WORDS[turnNumber].word,
       pNum: DEMO_WORDERBOT_WORDS[turnNumber].pNum,
+      endTimer: 0, // ensure no timer bonus for bot
     };
 
     dispatch(playNewTurn(newTurn));
