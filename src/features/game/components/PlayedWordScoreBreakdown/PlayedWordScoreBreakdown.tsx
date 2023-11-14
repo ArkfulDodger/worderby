@@ -16,6 +16,9 @@ type Props = {};
 const PlayedWordScoreBreakdown = ({}: Props) => {
   const styles = useStyles(createStyles);
   const lastPlayerTurn = useAppSelector(selectLastPlayerTurn);
+
+  if (!lastPlayerTurn) return null;
+
   const stolenLetters = lastPlayerTurn.word.slice(0, lastPlayerTurn.pNum);
   const addedLetters = lastPlayerTurn.word.slice(lastPlayerTurn.pNum);
 
@@ -36,7 +39,7 @@ const PlayedWordScoreBreakdown = ({}: Props) => {
           )}
         </Text>
       </View>
-      {lastPlayerTurn.endTimer && (
+      {!!lastPlayerTurn.endTimer && (
         <View style={styles.timerContainer}>
           <Text style={styles.timerText(lastPlayerTurn.endTimer)}>
             {lastPlayerTurn.endTimer > 0 ? "+" : ""}
