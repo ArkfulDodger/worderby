@@ -6,12 +6,11 @@ import {
   selectStartTime,
   selectIsTimerInUse,
 } from "../../gameSelectors";
-import Animated from "react-native-reanimated";
-import CircularProgressBar from "../../../../components/molecules/CircularProgressBar";
 import { PixelRatio, View } from "react-native";
 import { Text } from "react-native-paper";
 import { useEffect } from "react";
 import useAnimatedTimer from "../../hooks/useAnimatedTimer";
+import CircularProgressBar from "../../../../components/molecules/CircularProgressBar";
 
 type Props = {};
 
@@ -35,7 +34,7 @@ const TimerBlock = ({}: Props) => {
   }, [startTime]);
 
   return (
-    <Animated.View style={[styles.container]}>
+    <View style={[styles.container]}>
       {isTimerInUse && (
         <View style={{ position: "absolute" }}>
           <CircularProgressBar
@@ -46,7 +45,7 @@ const TimerBlock = ({}: Props) => {
         </View>
       )}
       <Text style={styles.counter}>{isTimerInUse ? count : "W"}</Text>
-    </Animated.View>
+    </View>
   );
 };
 
