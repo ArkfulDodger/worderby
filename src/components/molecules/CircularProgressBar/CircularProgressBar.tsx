@@ -64,13 +64,12 @@ const CircularProgressBar = ({ radius, progress, timer }: Props) => {
           fill="transparent"
         />
         <AnimatedCircle
-          strokeDasharray={circumference}
           animatedProps={animatedProps}
+          strokeDasharray={circumference}
           strokeLinecap={"round"}
           cx={radius}
           cy={radius}
           r={R}
-          // stroke="blue"
           strokeWidth={6}
           fill="transparent"
         />
