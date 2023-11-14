@@ -11,7 +11,7 @@ import CircularProgressBar from "../../../../components/molecules/CircularProgre
 import { PixelRatio, View } from "react-native";
 import { Text } from "react-native-paper";
 import { useEffect } from "react";
-import useTimer from "../../hooks/useTimer";
+import useAnimatedTimer from "../../hooks/useAnimatedTimer";
 
 type Props = {};
 
@@ -24,22 +24,27 @@ const TimerBlock = ({}: Props) => {
   const isTimerInUse = useAppSelector(selectIsTimerInUse);
   const scaleFactor = PixelRatio.getFontScale();
   const size = 50 * scaleFactor;
-  const { startTimer } = useTimer();
-
+  const { progress, startTimer, timerValue } = useAnimatedTimer();
 
   // when a new start time is set, start the timer
   // will not start a new timer if one is already in effect
   useEffect(() => {
-    if (isTimerInUse && startTime) startTimer();
+    if (isTimerInUse && startTime) {
+      startTimer();
+    }
   }, [startTime]);
 
   return (
     <Animated.View style={[styles.container]}>
-      <View style={{ position: "absolute" }}>
-        <CircularProgressBar
-          radius={size * 0.5 - 1}
-        />
-      </View>
+      {isTimerInUse && (
+        <View style={{ position: "absolute" }}>
+          <CircularProgressBar
+            radius={size * 0.5 - 1}
+            progress={progress}
+            timer={timerValue}
+          />
+        </View>
+      )}
       <Text style={styles.counter}>{isTimerInUse ? count : "W"}</Text>
     </Animated.View>
   );
