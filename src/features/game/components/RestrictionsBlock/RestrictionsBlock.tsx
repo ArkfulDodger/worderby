@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { LayoutChangeEvent, Pressable, View } from "react-native";
 import useStyles from "../../../../hooks/useStyles";
 import { createStyles } from "./RestrictionsBlock.styles";
 import { useAppSelector } from "../../../../hooks/reduxHooks";
@@ -8,6 +8,11 @@ import useSelfReplacingTimeout from "../../../../hooks/useSelfReplacingTimeout";
 import RestrictionTextItem, {
   RestrictionTextItemProps,
 } from "../RestrictionTextItem";
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+} from "react-native-reanimated";
+import { RESTRICTION_ITEM_HEIGHT } from "../RestrictionTextItem/RestrictionTextItem.styles";
 
 type Props = {};
 
@@ -88,12 +93,32 @@ const RestrictionsBlock = ({}: Props) => {
     [restritionItems]
   );
 
+  const containerHeight = useSharedValue(RESTRICTION_ITEM_HEIGHT * 2);
+
+  const containerStyles = useAnimatedStyle(() => ({
+    height: containerHeight.value,
+  }));
+
+  const [isCentered, setIsCentered] = useState(false);
+
+  const onLayout = (e: LayoutChangeEvent) => {
+    if (e.nativeEvent.layout.height >= RESTRICTION_ITEM_HEIGHT * 2) {
+      setIsCentered(false);
+    } else {
+      setIsCentered(true);
+    }
+  };
+
   return (
-    <View>
-      <View style={styles.list}>{blockedEndings}</View>
-      <View style={styles.list}>{regularEndings}</View>
-      <View style={styles.list}>{fadedEndings}</View>
-    </View>
+    <Pressable>
+      <Animated.View style={[styles.container(isCentered), containerStyles]}>
+        <View onLayout={onLayout}>
+          <View style={styles.list}>{blockedEndings}</View>
+          <View style={styles.list}>{regularEndings}</View>
+          <View style={styles.list}>{fadedEndings}</View>
+        </View>
+      </Animated.View>
+    </Pressable>
   );
 };
 
