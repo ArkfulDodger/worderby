@@ -255,3 +255,11 @@ export const deriveStartTimeFromTimer = (
   // Return the new timestamp in ISO format
   return newTimestamp.toISOString();
 };
+
+// get from a string array an array of only its unique values
+export const getUniqueStringArray = (array: string[]) => {
+  const newArray = array.filter((value, index, self) => {
+    return self.indexOf(value) === index;
+  });
+  return newArray;
+};
