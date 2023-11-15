@@ -1,6 +1,6 @@
 import useStyles from "../../../../hooks/useStyles";
 import { createStyles } from "./TimerBlock.styles";
-import { useAppDispatch, useAppSelector } from "../../../../hooks/reduxHooks";
+import { useAppSelector } from "../../../../hooks/reduxHooks";
 import {
   selectTimerCount,
   selectStartTime,
@@ -11,38 +11,39 @@ import { Text } from "react-native-paper";
 import { useEffect } from "react";
 import useAnimatedTimer from "../../hooks/useAnimatedTimer";
 import CircularProgressBar from "../../../../components/molecules/CircularProgressBar";
+import { selectIsAppActive } from "../../../../slices/systemSlice";
 
 type Props = {};
 
 // the header block which displays the timer or non-timer display
 const TimerBlock = ({}: Props) => {
   const styles = useStyles(createStyles);
-  const dispatch = useAppDispatch();
   const count = useAppSelector(selectTimerCount);
   const startTime = useAppSelector(selectStartTime);
   const isTimerInUse = useAppSelector(selectIsTimerInUse);
-  const scaleFactor = PixelRatio.getFontScale();
-  const size = 50 * scaleFactor;
+  const isAppActive = useAppSelector(selectIsAppActive);
   const { progress, startTimer, timerValue } = useAnimatedTimer();
 
+  const scaleFactor = PixelRatio.getFontScale();
+  const size = 50 * scaleFactor;
+
   // when a new start time is set, start the timer
-  // will not start a new timer if one is already in effect
+  // restarts the timer when app is refocused (catching up to present)
   useEffect(() => {
-    if (isTimerInUse && startTime) {
+    if (isTimerInUse && isAppActive && startTime) {
       startTimer();
     }
-  }, [startTime]);
+  }, [startTime, isAppActive]);
 
   return (
     <View style={[styles.container]}>
       {isTimerInUse && (
-        <View style={{ position: "absolute" }}>
-          <CircularProgressBar
-            radius={size * 0.5 - 1}
-            progress={progress}
-            timer={timerValue}
-          />
-        </View>
+        <CircularProgressBar
+          radius={size * 0.5}
+          progress={progress}
+          timer={timerValue}
+          style={styles.timerCircle}
+        />
       )}
       <Text style={styles.counter}>{isTimerInUse ? count : "W"}</Text>
     </View>
