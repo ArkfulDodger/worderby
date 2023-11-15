@@ -8,6 +8,10 @@ import KeyboardAvoidingView from "../../../../components/atoms/KeyboardAvoidingV
 import { useAppSelector } from "../../../../hooks/reduxHooks";
 import { selectRoundPhase } from "../../gameSelectors";
 import { RoundPhase } from "../../enums";
+import NewGameFrame from "../NewGameFrame";
+import OpponentTurnFrame from "../OpponentTurnFrame";
+import useWorderbot from "../../hooks/useWorderbot";
+import ResultsFrame from "../ResultsFrame";
 
 type Props = {};
 
@@ -16,14 +20,18 @@ const GamePage = ({}: Props) => {
   const styles = useStyles(createStyles);
   const phase = useAppSelector(selectRoundPhase);
 
+  // enable worderbot (only used if single player)
+  useWorderbot();
+
   return (
     <View style={styles.container}>
       <KeyboardAvoidingView style={styles.keyboardAwareContainer}>
         <GameHeader />
         <View style={styles.frameContainer}>
+          {phase === RoundPhase.NewGame && <NewGameFrame />}
           {phase === RoundPhase.PlayerTurn && <PlayerTurnFrame />}
-          {phase === RoundPhase.OpponentTurn && <View />}
-          {phase === RoundPhase.Results && <View />}
+          {phase === RoundPhase.OpponentTurn && <OpponentTurnFrame />}
+          {phase === RoundPhase.Results && <ResultsFrame />}
         </View>
       </KeyboardAvoidingView>
       <GameFooter />
