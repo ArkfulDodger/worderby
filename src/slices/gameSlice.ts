@@ -143,7 +143,14 @@ const gameSlice = createSlice({
     //set the timer count
     setTimerCount: (state, action: PayloadAction<number>) => {
       if (state.activeTurn?.timerCount !== undefined) {
-        state.activeTurn.timerCount = action.payload;
+        let validatedTime = Math.min(
+          TIMER_COUNT,
+          Math.max(MIN_TIMER, action.payload)
+        );
+        if (state.activeTurn.timerCount !== validatedTime) {
+          console.log("-------- SET TIMER ENACTED:", validatedTime);
+          state.activeTurn.timerCount = validatedTime;
+        }
       }
     },
 
