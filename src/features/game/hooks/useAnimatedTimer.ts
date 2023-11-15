@@ -1,5 +1,6 @@
 import {
   Easing,
+  cancelAnimation,
   runOnJS,
   useAnimatedReaction,
   useDerivedValue,
@@ -11,6 +12,7 @@ import { useCallback } from "react";
 import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
 import { setTimerCount } from "../../../slices/gameSlice";
 import { selectStartTime } from "../gameSelectors";
+import { calculateTimeDifferenceInMilliseconds } from "../../../utils/helpers";
 
 const useAnimatedTimer = () => {
   const dispatch = useAppDispatch();
@@ -31,11 +33,30 @@ const useAnimatedTimer = () => {
 
   // triggers the start of the timer and animation
   const startTimer = useCallback(() => {
+    // get the milliseconds which have passed since the turn began
+    const timeSinceStart = startTime
+      ? calculateTimeDifferenceInMilliseconds(startTime) || 0
+      : 0;
+
+    // get the floating point counts (not ms) remaining on the timer
+    const initialValue = Math.min(
+      TIMER_COUNT,
+      Math.max(MIN_TIMER, TIMER_COUNT - timeSinceStart / TIMER_MS_PER_COUNT)
+    );
+
+    // stop any active animation on the timer value
+    cancelAnimation(timerValue);
+
+    // set the timer to the initial value
+    timerValue.value = initialValue;
+    dispatch(setTimerCount(Math.ceil(initialValue)));
+
+    // start animating the value to the minimum over the remaining time on the timer
     timerValue.value = withTiming(MIN_TIMER, {
-      duration: (TIMER_COUNT - MIN_TIMER) * TIMER_MS_PER_COUNT,
+      duration: (initialValue - MIN_TIMER) * TIMER_MS_PER_COUNT,
       easing: Easing.linear,
     });
-  }, []);
+  }, [startTime]);
 
   // updated the timer in state to the passed number
   const updateTimer = (newTime: number) => {
