@@ -8,15 +8,17 @@ import {
   withTiming,
 } from "react-native-reanimated";
 import { MIN_TIMER, TIMER_COUNT, TIMER_MS_PER_COUNT } from "../constants";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
 import { setTimerCount } from "../../../slices/gameSlice";
-import { selectStartTime } from "../gameSelectors";
+import { selectRoundPhase, selectStartTime } from "../gameSelectors";
 import { calculateTimeDifferenceInMilliseconds } from "../../../utils/helpers";
+import { RoundPhase } from "../enums";
 
 const useAnimatedTimer = () => {
   const dispatch = useAppDispatch();
   const startTime = useAppSelector(selectStartTime);
+  const phase = useAppSelector(selectRoundPhase);
 
   // The precise animated count on the timer
   const timerValue = useSharedValue(TIMER_COUNT);
@@ -70,6 +72,18 @@ const useAnimatedTimer = () => {
       if (oldResult !== newResult) runOnJS(updateTimer)(newResult);
     }
   );
+
+  // reset timerValue when phase progresses past play phase
+  useEffect(() => {
+    // if not the player turn, cancel active animations and reset the timer
+    if (phase !== RoundPhase.PlayerTurn) {
+      cancelAnimation(timerValue);
+      timerValue.value = TIMER_COUNT;
+    }
+
+    // cancel any active animation on component dismount
+    return () => cancelAnimation(timerValue);
+  }, [phase]);
 
   return { progress, startTimer, timerValue };
 };
