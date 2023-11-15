@@ -7,13 +7,14 @@ import Animated, {
   useAnimatedProps,
   useDerivedValue,
 } from "react-native-reanimated";
-import { ColorValue } from "react-native";
+import { ColorValue, StyleProp, ViewStyle } from "react-native";
 import { TIMER_COUNT } from "../../../features/game/constants";
 
 type Props = {
   radius: number;
   progress: SharedValue<number>;
   timer: SharedValue<number>;
+  style?: StyleProp<ViewStyle>;
 };
 
 // Create an animated version of the Circle Component
@@ -28,7 +29,7 @@ const NEGATIVE_COLOR_FADED = "#e37685";
 // a circular progress bar which loops over itself over the course of a timer countdown
 // Renders an actively progressing circle svg above a backdrop circle to "fade out" the previous
 // progress bar will change color when progressing to negative values
-const CircularProgressBar = ({ radius, progress, timer }: Props) => {
+const CircularProgressBar = ({ radius, progress, timer, style }: Props) => {
   // the width of the progress bar line
   const strokeWidth = 6;
 
@@ -39,8 +40,8 @@ const CircularProgressBar = ({ radius, progress, timer }: Props) => {
   const circumference = 2 * Math.PI * R;
 
   // which color (positive/negative) is in place for the given circle
-  const isActiveCirclePositive = useDerivedValue(() => timer.value > -1);
-  const isBackCirclePositive = useDerivedValue(() => timer.value > -2);
+  const isActiveCirclePositive = useDerivedValue(() => timer.value > 0);
+  const isBackCirclePositive = useDerivedValue(() => timer.value > -1);
 
   // the color of the active stroke, which "fades" over each progress interval
   const strokeColor = useDerivedValue<ColorValue | undefined>(() =>
@@ -105,7 +106,7 @@ const CircularProgressBar = ({ radius, progress, timer }: Props) => {
   );
 
   return (
-    <Svg height={radius * 2} width={radius * 2}>
+    <Svg height={radius * 2} width={radius * 2} style={style}>
       <G rotation="-90" origin={`${radius},${radius}`}>
         <AnimatedCircle
           animatedProps={underAnimatedProps}
