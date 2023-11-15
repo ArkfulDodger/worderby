@@ -7,13 +7,15 @@ import { View } from "react-native";
 import TurnCounter from "../TurnCounter";
 import TimerBlock from "../TimerBlock";
 import { useAppSelector } from "../../../../hooks/reduxHooks";
-import { selectWorderbyte } from "../../gameSelectors";
+import { selectRoundPhase, selectWorderbyte } from "../../gameSelectors";
+import { RoundPhase } from "../../enums";
 
 // The header component for the game cycle
 // Includes player displays (name & avatar), scores, turn counters, timer, and worderbyte
 const GameHeader = () => {
   const styles = useStyles(createStyles);
   const worderbyte = useAppSelector(selectWorderbyte);
+  const phase = useAppSelector(selectRoundPhase);
 
   // play the worderbyte audio
   const playWorderbyte = () => {
@@ -36,12 +38,14 @@ const GameHeader = () => {
         </SafeAreaView>
       </Surface>
 
-      <TouchableRipple
-        onPress={playWorderbyte}
-        style={styles.worderbyteContainer}
-      >
-        <Text style={styles.worderbyte}>{worderbyte}</Text>
-      </TouchableRipple>
+      {phase !== RoundPhase.NewGame && (
+        <TouchableRipple
+          onPress={playWorderbyte}
+          style={styles.worderbyteContainer}
+        >
+          <Text style={styles.worderbyte}>{worderbyte}</Text>
+        </TouchableRipple>
+      )}
     </Surface>
   );
 };

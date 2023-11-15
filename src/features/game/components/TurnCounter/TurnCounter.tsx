@@ -4,6 +4,7 @@ import { createStyles } from "./TurnCounter.styles";
 import { useAppSelector } from "../../../../hooks/reduxHooks";
 import {
   selectIsActivePlayerTurn,
+  selectIsEnded,
   selectIsPlayerTurn,
   selectTurns,
 } from "../../gameSelectors";
@@ -16,6 +17,7 @@ type Props = {
 const TurnCounter = ({ isPlayer }: Props) => {
   const styles = useStyles(createStyles);
   const turns = useAppSelector(selectTurns);
+  const isEnded = useAppSelector(selectIsEnded);
   const isActivePlayerTurn = useAppSelector(selectIsActivePlayerTurn);
   const isOpponentsTurn = !useAppSelector(selectIsPlayerTurn);
 
@@ -34,7 +36,7 @@ const TurnCounter = ({ isPlayer }: Props) => {
   }
 
   // render the active dot for the active player
-  if (isPlayer ? isActivePlayerTurn : isOpponentsTurn) {
+  if (!isEnded && (isPlayer ? isActivePlayerTurn : isOpponentsTurn)) {
     dots.push(dot(turns.length, true));
   }
 

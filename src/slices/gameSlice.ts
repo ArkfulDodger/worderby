@@ -1,10 +1,14 @@
 // Import the createSlice API from Redux Toolkit
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { mockTurns } from "../features/game/mockData";
-import { TIMER_COUNT, TURNS_PER_GAME } from "../features/game/constants";
+import {
+  MIN_TIMER,
+  TIMER_COUNT,
+  TURNS_PER_GAME,
+} from "../features/game/constants";
 import { getPrompt, isPlayersTurn, isTurnPlayable } from "../utils/helpers";
-import { initialDemoState } from "../features/game/demoGameData";
-import { GameMode } from "../features/game/enums";
+import { demoWorderbot, initialDemoState } from "../features/game/demoGameData";
+import { GameEndType, GameMode } from "../features/game/enums";
 
 // Define types for the slice state
 export type Player = {
@@ -20,7 +24,7 @@ export type Turn = {
   playedAt: string;
   word: string;
   pNum: number;
-  penalty?: number;
+  endTimer?: number;
 };
 
 // a turn which is actively in progress
@@ -41,7 +45,7 @@ export type GameState = {
   streakCount: number;
   isSinglePlayer: boolean;
   isPlayerFirst: boolean;
-  isEnded: boolean;
+  endType?: GameEndType;
   opponent: Player;
   startingWord: string;
   turns: Turn[];
@@ -70,15 +74,11 @@ const initialState: GameState = {
   streakCount: 0,
   isSinglePlayer: true,
   isPlayerFirst: isPlayerFirst,
-  isEnded: false,
-  opponent: {
-    name: "Worderbot",
-    avatar: "",
-  },
+  opponent: demoWorderbot,
   startingWord: initialWord,
   turns: initialTurns,
   initialRestrictions: [],
-  activeTurn: initialActiveTurn,
+  // activeTurn: initialActiveTurn,
 };
 
 const gameSlice = createSlice({
@@ -86,13 +86,13 @@ const gameSlice = createSlice({
   initialState,
   reducers: {
     // load the demo game into state
-    loadDemoGame: (state) => {
-      state = initialDemoState;
+    loadDemoGame: () => {
+      return initialDemoState;
     },
 
-    // bring an immediate end to the current game
-    endGame: (state) => {
-      state.isEnded = true;
+    // load the game object
+    loadGame: (state, action: PayloadAction<GameState>) => {
+      return action.payload;
     },
 
     // add a turn to the current game
@@ -108,26 +108,49 @@ const gameSlice = createSlice({
           state.isPlayerFirst
         )
       ) {
+        state.isLoading = false;
         return;
       }
 
       // get updated turns array with new turn, ensure in turn order
-      const newTurns = [...state.turns, action.payload].sort(
+      const newTurns = [...state.turns, newTurn].sort(
         (a, b) => a.turnNumber - b.turnNumber
       );
 
       // set the turns in state
       state.turns = newTurns;
 
+      // // clear the active turn in state
+      state.activeTurn = undefined;
+
       // if that was the last turn, end the game and clear the prompt
       if (newTurns.length >= TURNS_PER_GAME) {
-        state.isEnded = true;
+        state.endType = GameEndType.Completed;
       }
+
+      state.isLoading = false;
     },
 
     // decrement the timer (if active turn and timer in use)
     decrementTimerCount: (state) => {
-      if (state.activeTurn?.timerCount) state.activeTurn.timerCount -= 1;
+      if (state.activeTurn?.timerCount !== undefined)
+        state.activeTurn.timerCount = Math.max(
+          MIN_TIMER,
+          state.activeTurn.timerCount - 1
+        );
+    },
+
+    //set the timer count
+    setTimerCount: (state, action: PayloadAction<number>) => {
+      if (state.activeTurn?.timerCount !== undefined) {
+        let validatedTime = Math.min(
+          TIMER_COUNT,
+          Math.max(MIN_TIMER, action.payload)
+        );
+        if (state.activeTurn.timerCount !== validatedTime) {
+          state.activeTurn.timerCount = validatedTime;
+        }
+      }
     },
 
     // set the prompt input to the given index
@@ -158,7 +181,10 @@ const gameSlice = createSlice({
           timerCount: state.mode === GameMode.Casual ? undefined : TIMER_COUNT,
           pIndexInput: Math.min(1, prompt.length - 1),
           wordInput: "",
+          startTime: undefined,
         };
+      } else {
+        console.error("Start Turn Error:", "Not the player's turn yet.");
       }
     },
 
@@ -173,7 +199,7 @@ const gameSlice = createSlice({
     },
 
     // record a start timestamp for the active turn (only if it hasn't already been set)
-    recordStartTime: (state) => {
+    recordStartTimeIfEmpty: (state) => {
       if (state.activeTurn && !state.activeTurn.startTime) {
         state.activeTurn.startTime = new Date().toISOString();
       }
@@ -182,22 +208,28 @@ const gameSlice = createSlice({
     setIsWordSplit: (state, action: PayloadAction<boolean>) => {
       if (state.activeTurn) state.activeTurn.isWordSplit = action.payload;
     },
+
+    setIsLoading: (state, action: PayloadAction<boolean>) => {
+      state.isLoading = action.payload;
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
 export const {
   loadDemoGame,
-  endGame,
+  loadGame,
   playNewTurn,
   decrementTimerCount,
   handlePromptInput,
   setWordInput,
   startTurn,
-  recordStartTime,
+  recordStartTimeIfEmpty,
   setInputFocus,
   toggleInputFocus,
   setIsWordSplit,
+  setIsLoading,
+  setTimerCount,
 } = gameSlice.actions;
 
 // We export the reducer function so that it can be added to the store

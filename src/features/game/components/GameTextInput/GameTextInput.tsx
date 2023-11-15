@@ -7,12 +7,13 @@ import { AppTheme } from "../../../../utils/types";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/reduxHooks";
 import useAutoMerge from "../../hooks/useAutoMerge";
 import { setWordInput } from "../../../../slices/gameSlice";
-import { selectIsWordSplit } from "../../gameSelectors";
+import { selectCanAttemptSubmit, selectIsWordSplit } from "../../gameSelectors";
 import TextInputFacade from "../TextInputFacade";
 import useGameInputFocus from "../../hooks/useGameInputFocus";
 import useBlurOnKeyboardDismiss from "../../hooks/useBlurOnKeyboardDismiss";
 import useGameInputLayout from "../../hooks/useGameInputLayout";
 import useCaretControl from "../../hooks/useCaretControl";
+import usePlayTurn from "../../hooks/usePlayTurn";
 
 type Props = TextInputProps & {
   fontSize?: number;
@@ -29,6 +30,8 @@ const GameTextInput = ({ fontSize = 30, style, value, ...props }: Props) => {
   const dispatch = useAppDispatch();
   const multiline = useAppSelector(selectIsWordSplit);
   const { checkInputForAutoMerge } = useAutoMerge();
+  const canSubmit = useAppSelector(selectCanAttemptSubmit);
+  const { attemptWord } = usePlayTurn();
   const { textHeight, onTextHeightLayout, hasRendered, onComponentRender } =
     useGameInputLayout();
   const { caretIndex, isCaretVisible, handleSelectionChange } =
@@ -65,7 +68,7 @@ const GameTextInput = ({ fontSize = 30, style, value, ...props }: Props) => {
     autoCapitalize: "none",
     autoComplete: "off",
     autoCorrect: false,
-    blurOnSubmit: false,
+    blurOnSubmit: multiline,
     contextMenuHidden: true,
     disableFullscreenUI: true, // android
     enablesReturnKeyAutomatically: true, // ios
@@ -74,6 +77,7 @@ const GameTextInput = ({ fontSize = 30, style, value, ...props }: Props) => {
     maxLength: 44, // longest english word is 45 letters
     returnKeyType: "go",
     selectTextOnFocus: false,
+    onSubmitEditing: canSubmit ? attemptWord : undefined,
   };
 
   return (
