@@ -204,7 +204,7 @@ export const selectGameResult = createSelector(
 
 // select the current active restrictions list
 export const selectRestrictions = createSelector(
-  [selectInitialRestrictions, selectTurns],
+  [selectInitialRestrictions, selectPermittedTurns],
   (initialRestrictions, turns) => {
     const newRestrictions = turns
       .filter((turn) => turn.pNum > 1)
