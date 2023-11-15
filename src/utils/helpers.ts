@@ -185,12 +185,12 @@ export const getStyleNumberValue = (value?: string | number) => {
   else return parseInt(value);
 };
 
-const calculateTimeDifferenceInMilliseconds = (
+export const calculateTimeDifferenceInMilliseconds = (
   startedAt: string,
-  playedAt: string
+  playedAt?: string
 ) => {
   const startedDate = new Date(startedAt);
-  const playedDate = new Date(playedAt);
+  const playedDate = playedAt ? new Date(playedAt) : new Date();
 
   // Ensure the parsing was successful
   if (isNaN(startedDate.getTime()) || isNaN(playedDate.getTime())) {
