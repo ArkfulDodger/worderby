@@ -19,6 +19,7 @@ export const createStyles = (theme: AppTheme): Styles => {
     },
     list: {
       flexDirection: "row",
+      flexWrap: "wrap",
       alignItems: "center",
       justifyContent: "center",
       columnGap: 20,
