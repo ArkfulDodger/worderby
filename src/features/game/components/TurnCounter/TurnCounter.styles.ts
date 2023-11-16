@@ -1,5 +1,6 @@
-import { PixelRatio, StyleSheet, ViewStyle } from "react-native";
+import { StyleSheet, ViewStyle } from "react-native";
 import { AppTheme } from "../../../../utils/types";
+import { fontScaled } from "../../../../utils/helpers";
 
 interface StaticStyles {
   container: ViewStyle;
@@ -12,8 +13,7 @@ interface DynamicStyles {
 interface Styles extends StaticStyles, DynamicStyles {}
 
 export const createStyles = (theme: AppTheme): Styles => {
-  const scaleFactor = PixelRatio.getFontScale();
-  const size = 8 * scaleFactor;
+  const size = fontScaled(8);
 
   const staticStyles = StyleSheet.create<StaticStyles>({
     container: {

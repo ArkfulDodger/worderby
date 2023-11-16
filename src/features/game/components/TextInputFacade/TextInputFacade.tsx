@@ -1,8 +1,9 @@
 import { useMemo } from "react";
 import useStyles from "../../../../hooks/useStyles";
 import { createStyles } from "./TextInputFacade.styles";
-import { PixelRatio, Platform, StyleProp, TextStyle, View } from "react-native";
+import { Platform, StyleProp, TextStyle, View } from "react-native";
 import { Text } from "react-native-paper";
+import { fontScaled } from "../../../../utils/helpers";
 
 type Props = {
   fontSize: number;
@@ -23,7 +24,6 @@ const TextInputFacade = ({
   style,
 }: Props) => {
   const styles = useStyles(createStyles, fontSize);
-  const scaleFactor = PixelRatio.getFontScale();
 
   // the caret to display on the text input
   const caret = isCaretVisible && (
@@ -35,7 +35,7 @@ const TextInputFacade = ({
   // the descent of the font (half the distance for android)
   const descent = useMemo(() => {
     if (textHeight) {
-      let heightDifference = textHeight - fontSize * scaleFactor;
+      let heightDifference = textHeight - fontScaled(fontSize);
       if (heightDifference > 0) {
         return Platform.OS === "ios"
           ? heightDifference
