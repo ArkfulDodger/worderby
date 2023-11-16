@@ -54,7 +54,7 @@ const useExpandableContainer = ({ minHeight, maxHeight }: Props) => {
 
   // the content justification, centered if content is smaller than min height
   const isCentered = useDerivedValue(() => {
-    if (contentHeight.value < minHeight && !isExpanded.value) return true;
+    if (contentHeight.value < minHeight - 5 && !isExpanded.value) return true;
     else return false;
   });
 
