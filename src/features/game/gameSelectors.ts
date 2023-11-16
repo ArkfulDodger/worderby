@@ -4,6 +4,7 @@ import {
   getGameScore,
   getPermittedTurns,
   getPrompt,
+  getUniqueStringArray,
   getWorderbyte,
   isPlayersTurn,
 } from "../../utils/helpers";
@@ -130,15 +131,13 @@ export const selectWorderbyte = createSelector(
 );
 
 // select the prompt substrings which are used/unused
-export const selectUsedUnusedPrompt = (state: RootState) => {
-  const prompt = selectPrompt(state);
-  const pIndex = selectPIndex(state);
-
-  return {
+export const selectUsedUnusedPrompt = createSelector(
+  [selectPrompt, selectPIndex],
+  (prompt, pIndex) => ({
     unusedPrompt: prompt.slice(0, pIndex),
     usedPrompt: prompt.slice(pIndex),
-  };
-};
+  })
+);
 
 // can the current word input be submitted (is at least one character)
 export const selectCanAttemptSubmit = (state: RootState) => {
@@ -157,7 +156,7 @@ export const selectCanStartTurn = (state: RootState) => {
 // select the current word to submit based on inputs
 export const selectPlayWord = (state: RootState) => {
   const { usedPrompt } = selectUsedUnusedPrompt(state);
-  return usedPrompt + state.game.activeTurn?.wordInput || "";
+  return (usedPrompt || "") + (state.game.activeTurn?.wordInput || "");
 };
 
 // select the last word played by the player
@@ -205,11 +204,22 @@ export const selectGameResult = createSelector(
 
 // select the current active restrictions list
 export const selectRestrictions = createSelector(
-  [selectInitialRestrictions, selectTurns],
+  [selectInitialRestrictions, selectPermittedTurns],
   (initialRestrictions, turns) => {
-    const newRestrictions = turns.map((turn) => turn.word.slice(turn.pNum));
-    return [...initialRestrictions, ...newRestrictions].sort();
+    const newRestrictions = turns
+      .filter((turn) => turn.pNum > 1)
+      .map((turn) => turn.word.slice(0, turn.pNum));
+    return getUniqueStringArray([
+      ...initialRestrictions,
+      ...newRestrictions,
+    ]).sort();
   }
+);
+
+// select whether the current game has restrictions
+export const selectHasRestrictions = createSelector(
+  [selectRestrictions],
+  (restrictions) => !!restrictions && restrictions.length > 0
 );
 
 // select whether the timer is in active use

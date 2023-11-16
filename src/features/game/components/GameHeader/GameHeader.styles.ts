@@ -38,9 +38,12 @@ export const createStyles = (theme: AppTheme): Styles => {
       justifyContent: "center",
       paddingHorizontal: 5,
       paddingVertical: 4,
+      backgroundColor: theme.colors.primary,
     },
     worderbyte: {
-      fontSize: 15,
+      fontSize: 16,
+      fontWeight: "bold",
+      color: theme.colors.inverseOnSurface,
     },
   });
 

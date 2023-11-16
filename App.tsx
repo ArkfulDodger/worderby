@@ -8,7 +8,6 @@ export default function App() {
   return (
     <ReduxProvider store={store}>
       <AppWrapper>
-        {/* <TestScreen /> */}
         <GamePage />
       </AppWrapper>
     </ReduxProvider>

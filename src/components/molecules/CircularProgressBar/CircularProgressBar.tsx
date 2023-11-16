@@ -31,7 +31,7 @@ const NEGATIVE_COLOR_FADED = "#e37685";
 // progress bar will change color when progressing to negative values
 const CircularProgressBar = ({ radius, progress, timer, style }: Props) => {
   // the width of the progress bar line
-  const strokeWidth = 6;
+  const strokeWidth = radius * 0.24;
 
   // the effective radius (center to center of stroke)
   const R = radius - strokeWidth * 0.5;

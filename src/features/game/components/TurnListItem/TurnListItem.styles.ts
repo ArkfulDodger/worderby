@@ -1,6 +1,7 @@
-import { PixelRatio, StyleSheet, TextStyle, ViewStyle } from "react-native";
+import { StyleSheet, TextStyle, ViewStyle } from "react-native";
 import { AppTheme } from "../../../../utils/types";
 import { Turn } from "../../../../slices/gameSlice";
+import { fontScaled } from "../../../../utils/helpers";
 
 export const RESULT_WORD_FONT_SIZE = 24;
 
@@ -20,8 +21,6 @@ interface DynamicStyles {
 export interface Styles extends StaticStyles, DynamicStyles {}
 
 export const createStyles = (theme: AppTheme, turn: Turn): Styles => {
-  const scaleFactor = PixelRatio.getFontScale();
-
   const staticStyles = StyleSheet.create<StaticStyles>({
     container: {
       alignSelf: turn.isPlayer ? "flex-start" : "flex-end",
@@ -33,7 +32,7 @@ export const createStyles = (theme: AppTheme, turn: Turn): Styles => {
       flexDirection: turn.isPlayer ? "row" : "row-reverse",
     },
     timerIcon: {
-      fontSize: RESULT_WORD_FONT_SIZE * 0.64 * scaleFactor,
+      fontSize: fontScaled(RESULT_WORD_FONT_SIZE * 0.64),
     },
     wordText: {
       fontSize: RESULT_WORD_FONT_SIZE,

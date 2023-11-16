@@ -1,4 +1,4 @@
-import { PixelRatio, StyleProp, View, ViewStyle } from "react-native";
+import { StyleProp, View, ViewStyle } from "react-native";
 import useStyles from "../../../../hooks/useStyles";
 import { createStyles } from "./PlayerScoreBlock.styles";
 import { Avatar, Text } from "react-native-paper";
@@ -8,6 +8,7 @@ import {
   selectOpponentScore,
   selectUserScore,
 } from "../../gameSelectors";
+import { fontScaled } from "../../../../utils/helpers";
 
 type Props = {
   isPlayer?: boolean;
@@ -17,15 +18,14 @@ type Props = {
 // displays the score, name, and avatar for a player in the game cycle
 // isPlayer prop determines styling layout and content source
 const PlayerScoreBlock = ({ isPlayer = false, style }: Props) => {
-  const scaleFactor = PixelRatio.getFontScale();
-  const styles = useStyles(createStyles, isPlayer, [scaleFactor]);
+  const styles = useStyles(createStyles, isPlayer);
   const score = useAppSelector(
     isPlayer ? selectUserScore : selectOpponentScore
   );
   const opponent = useAppSelector(selectOpponent);
 
   // the size of the avatar (scaling with text scale)
-  const avatarSize = 20 * scaleFactor;
+  const avatarSize = fontScaled(20);
 
   // get player/opponent name and avatar
   const name = isPlayer ? "Name" : opponent.name;
