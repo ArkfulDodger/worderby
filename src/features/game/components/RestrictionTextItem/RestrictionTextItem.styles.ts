@@ -1,5 +1,6 @@
-import { PixelRatio, StyleSheet, TextStyle, ViewStyle } from "react-native";
+import { StyleSheet, TextStyle, ViewStyle } from "react-native";
 import { AppTheme } from "../../../../utils/types";
+import { fontScaled } from "../../../../utils/helpers";
 
 interface StaticStyles {
   container: ViewStyle;
@@ -9,9 +10,8 @@ interface DynamicStyles {
   endings: (n: number) => TextStyle;
 }
 
-const scaleFactor = PixelRatio.getFontScale();
 const FONT_SIZE = 16;
-export const RESTRICTION_ITEM_HEIGHT = scaleFactor * (FONT_SIZE * 1.5);
+export const RESTRICTION_ITEM_HEIGHT = fontScaled(FONT_SIZE * 1.5);
 
 export interface Styles extends StaticStyles, DynamicStyles {}
 

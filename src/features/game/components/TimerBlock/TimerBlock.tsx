@@ -1,12 +1,12 @@
 import useStyles from "../../../../hooks/useStyles";
-import { createStyles } from "./TimerBlock.styles";
+import { TIMER_SIZE, createStyles } from "./TimerBlock.styles";
 import { useAppSelector } from "../../../../hooks/reduxHooks";
 import {
   selectTimerCount,
   selectStartTime,
   selectIsTimerInUse,
 } from "../../gameSelectors";
-import { PixelRatio, View } from "react-native";
+import { View } from "react-native";
 import { Text } from "react-native-paper";
 import { useEffect } from "react";
 import useAnimatedTimer from "../../hooks/useAnimatedTimer";
@@ -24,9 +24,6 @@ const TimerBlock = ({}: Props) => {
   const isAppActive = useAppSelector(selectIsAppActive);
   const { progress, startTimer, timerValue } = useAnimatedTimer();
 
-  const scaleFactor = PixelRatio.getFontScale();
-  const size = 50 * scaleFactor;
-
   // when a new start time is set, start the timer
   // restarts the timer when app is refocused (catching up to present)
   useEffect(() => {
@@ -39,7 +36,7 @@ const TimerBlock = ({}: Props) => {
     <View style={[styles.container]}>
       {isTimerInUse && (
         <CircularProgressBar
-          radius={size * 0.5}
+          radius={TIMER_SIZE * 0.5}
           progress={progress}
           timer={timerValue}
           style={styles.timerCircle}

@@ -1,5 +1,6 @@
-import { PixelRatio, StyleSheet, TextStyle, ViewStyle } from "react-native";
+import { StyleSheet, TextStyle, ViewStyle } from "react-native";
 import { AppTheme } from "../../../../utils/types";
+import { fontScaled } from "../../../../utils/helpers";
 
 interface StaticStyles {
   container: ViewStyle;
@@ -20,8 +21,6 @@ export interface Styles extends StaticStyles, DynamicStyles {}
 const FONT_SIZE = 18;
 
 export const createStyles = (theme: AppTheme): Styles => {
-  const scaleFactor = PixelRatio.getFontScale();
-
   const staticStyles = StyleSheet.create<StaticStyles>({
     container: {
       alignSelf: "stretch",
@@ -52,7 +51,7 @@ export const createStyles = (theme: AppTheme): Styles => {
 
   const dynamicStyles: DynamicStyles = {
     timerIcon: (count) => ({
-      fontSize: FONT_SIZE * 0.8 * scaleFactor,
+      fontSize: fontScaled(FONT_SIZE * 0.8),
       color: count > 0 ? "green" : count < 0 ? "red" : theme.colors.text,
     }),
     timerText: (count) => ({

@@ -1,3 +1,4 @@
+import { PixelRatio } from "react-native";
 import {
   ADDED_LETTER_VALUE,
   ALLOW_TIMER_BONUS,
@@ -262,4 +263,10 @@ export const getUniqueStringArray = (array: string[]) => {
     return self.indexOf(value) === index;
   });
   return newArray;
+};
+
+// takes a standard size and scales it with font accessibility scale
+export const fontScaled = (size: number) => {
+  const scaleFactor = PixelRatio.getFontScale();
+  return size * scaleFactor;
 };

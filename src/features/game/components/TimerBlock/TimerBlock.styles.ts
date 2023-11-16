@@ -1,5 +1,6 @@
-import { PixelRatio, StyleSheet, TextStyle, ViewStyle } from "react-native";
+import { StyleSheet, TextStyle, ViewStyle } from "react-native";
 import { AppTheme } from "../../../../utils/types";
+import { fontScaled } from "../../../../utils/helpers";
 
 interface Styles {
   container: ViewStyle;
@@ -7,16 +8,15 @@ interface Styles {
   timerCircle: ViewStyle;
 }
 
-export const createStyles = (theme: AppTheme): Styles => {
-  const scaleFactor = PixelRatio.getFontScale();
-  const size = 50 * scaleFactor;
+export const TIMER_SIZE = fontScaled(50);
 
+export const createStyles = (theme: AppTheme): Styles => {
   return StyleSheet.create<Styles>({
     container: {
       backgroundColor: theme.colors.inverseOnSurface,
-      width: size,
-      height: size,
-      borderRadius: size * 0.5,
+      width: TIMER_SIZE,
+      height: TIMER_SIZE,
+      borderRadius: TIMER_SIZE * 0.5,
       alignItems: "center",
       justifyContent: "center",
       borderWidth: 0,
