@@ -84,13 +84,9 @@ const useExpandableContainer = ({ minHeight, maxHeight }: Props) => {
     if (
       contentHeight.value > minHeight ||
       (contentHeight.value <= minHeight && containerHeight.value > minHeight)
-    ) {
-      console.log("can toggle/show icon");
+    )
       return true;
-    } else {
-      console.log("cannot toggle/hide icon");
-      return false;
-    }
+    else return false;
   });
 
   // respond to changes in the target height of the container by animating to the new height
