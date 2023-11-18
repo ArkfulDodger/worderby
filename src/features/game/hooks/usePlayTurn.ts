@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
-import useWordDatabase from "../../../hooks/useWordDatabase";
+import useWordList from "../../../hooks/useWordList";
 import { Turn, playNewTurn, setIsLoading } from "../../../slices/gameSlice";
 import { deriveStartTimeFromTimer, getEndTimer } from "../../../utils/helpers";
 import { GameMode } from "../enums";
@@ -16,7 +16,7 @@ const usePlayTurn = () => {
   const wordInput = useAppSelector(selectWordInput);
   const activeTurn = useAppSelector(selectActiveTurn);
   const mode = useAppSelector(selectMode);
-  const { isWordOnList } = useWordDatabase();
+  const { isWordOnList } = useWordList();
 
   const isAttemptWordError = () => {
     // confirm usedPrompt and wordInput are usable

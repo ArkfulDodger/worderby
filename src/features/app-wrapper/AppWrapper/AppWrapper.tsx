@@ -8,6 +8,7 @@ import { createStyles } from "./AppWrapper.styles";
 import useThemeControl from "../hooks/useThemeControl";
 import ThemedStatusBar from "../../../components/molecules/ThemedStatusBar";
 import useAppState from "../hooks/useAppState";
+import WordListProvider from "../Providers/WordListProvider";
 
 type Props = {
   children: React.ReactNode;
@@ -27,10 +28,12 @@ const AppWrapper = ({ children }: Props) => {
     <GestureHandlerRootView style={styles.fill}>
       <PaperProvider theme={theme as ThemeProp}>
         <NavigationContainer theme={theme}>
-          <SafeAreaProvider>
-            {children}
-            <ThemedStatusBar />
-          </SafeAreaProvider>
+          <WordListProvider>
+            <SafeAreaProvider>
+              {children}
+              <ThemedStatusBar />
+            </SafeAreaProvider>
+          </WordListProvider>
         </NavigationContainer>
       </PaperProvider>
     </GestureHandlerRootView>
