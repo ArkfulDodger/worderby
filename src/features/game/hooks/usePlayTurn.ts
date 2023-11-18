@@ -1,4 +1,5 @@
 import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
+import useWordDatabase from "../../../hooks/useWordDatabase";
 import { Turn, playNewTurn, setIsLoading } from "../../../slices/gameSlice";
 import { deriveStartTimeFromTimer, getEndTimer } from "../../../utils/helpers";
 import { GameMode } from "../enums";
@@ -15,6 +16,7 @@ const usePlayTurn = () => {
   const wordInput = useAppSelector(selectWordInput);
   const activeTurn = useAppSelector(selectActiveTurn);
   const mode = useAppSelector(selectMode);
+  const { isWordOnList } = useWordDatabase();
 
   const isAttemptWordError = () => {
     // confirm usedPrompt and wordInput are usable
@@ -42,7 +44,7 @@ const usePlayTurn = () => {
     }
   };
 
-  const attemptWord = () => {
+  const attemptWord = async () => {
     // note the timestamp
     const timestamp = new Date().toISOString();
     const timerCount = activeTurn?.timerCount;
@@ -51,13 +53,25 @@ const usePlayTurn = () => {
     dispatch(setIsLoading(true));
 
     // check errors
-    if (!activeTurn || isAttemptWordError())
-      return dispatch(setIsLoading(false));
+    if (!activeTurn || isAttemptWordError()) {
+      dispatch(setIsLoading(false));
+      return;
+    }
 
     // get the word
     const word = usedPrompt + wordInput;
 
     // TODO: confirm word exists
+    try {
+      const wordExists = await isWordOnList(word);
+      if (!wordExists) {
+        dispatch(setIsLoading(false));
+        return;
+      }
+    } catch (error) {
+      dispatch(setIsLoading(false));
+      return;
+    }
 
     // calculate final endTimer and startedAt values
     let endTimer = timerCount;
