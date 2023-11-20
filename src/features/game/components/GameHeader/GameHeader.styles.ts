@@ -43,6 +43,7 @@ export const createStyles = (theme: AppTheme): Styles => {
     worderbyte: {
       fontSize: 16,
       fontWeight: "bold",
+      textAlign: "center",
       color: theme.colors.inverseOnSurface,
     },
   });

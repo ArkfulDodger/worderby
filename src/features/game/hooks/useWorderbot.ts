@@ -1,25 +1,25 @@
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
-import { Turn, playNewTurn, setIsLoading } from "../../../slices/gameSlice";
+import {
+  Turn,
+  playNewTurn,
+  setIsLoading,
+  worderbotForfeit,
+} from "../../../slices/gameSlice";
 import {
   selectCurrentTurnNumber,
   selectIsWorderbotTurn,
+  selectWorderbotPrompt,
 } from "../gameSelectors";
-
-const DEMO_WORDERBOT_WORDS: { [i: number]: { word: string; pNum: number } } = {
-  1: { word: "order", pNum: 3 },
-  2: { word: "derby", pNum: 3 },
-  3: { word: "byte", pNum: 2 },
-  4: { word: "test", pNum: 2 },
-  5: { word: "establish", pNum: 3 },
-  6: { word: "ship", pNum: 2 },
-};
+import useWordList from "../../../hooks/useWordList";
 
 // control the worderbot opponent
 const useWorderbot = () => {
   const dispatch = useAppDispatch();
   const turnNumber = useAppSelector(selectCurrentTurnNumber);
   const isWorderbotTurn = useAppSelector(selectIsWorderbotTurn);
+  const prompt = useAppSelector(selectWorderbotPrompt);
+  const { selectRandomPlayableWord } = useWordList();
 
   useEffect(() => {
     let timeout: NodeJS.Timeout;
@@ -34,16 +34,26 @@ const useWorderbot = () => {
     };
   }, [isWorderbotTurn]);
 
-  const playWorderbotTurn = () => {
+  const playWorderbotTurn = async () => {
     dispatch(setIsLoading(true));
 
+    // get a word and associated pNum for the worderbot turn
+    const { word, pNum } = await selectRandomPlayableWord(prompt);
+
+    // if no word was returned or pNum is not a number, have Worderbot forfeit
+    if (!word || Number.isNaN(pNum)) {
+      dispatch(worderbotForfeit());
+      return;
+    }
+
+    // play the worderbot turn
     const newTurn: Turn = {
       isPlayer: false,
       turnNumber: turnNumber,
       startedAt: new Date().toISOString(),
       playedAt: new Date().toISOString(),
-      word: DEMO_WORDERBOT_WORDS[turnNumber].word,
-      pNum: DEMO_WORDERBOT_WORDS[turnNumber].pNum,
+      word: word,
+      pNum: pNum,
       endTimer: 0, // ensure no timer bonus for bot
     };
 

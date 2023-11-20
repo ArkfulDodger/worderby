@@ -271,3 +271,10 @@ export const fontScaled = (size: number) => {
   const scaleFactor = PixelRatio.getFontScale();
   return size * scaleFactor;
 };
+
+// selects a random integer between two numbers, inclusive
+export const getRandomInt = (min: number, max: number) => {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+};

@@ -18,6 +18,10 @@ export const createStyles = (theme: AppTheme, result: GameResult): Styles => {
       fontWeight: "bold",
     },
     opponent: {
+      alignSelf: undefined,
+      textAlign: undefined,
+      margin: undefined,
+      fontSize: undefined,
       color: "#c18617",
       fontWeight: undefined,
     },

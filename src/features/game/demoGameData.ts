@@ -24,3 +24,12 @@ export const initialDemoState: GameState = {
     wordInput: "",
   },
 };
+
+const DEMO_WORDERBOT_WORDS: { [i: number]: { word: string; pNum: number } } = {
+  1: { word: "order", pNum: 3 },
+  2: { word: "derby", pNum: 3 },
+  3: { word: "byte", pNum: 2 },
+  4: { word: "test", pNum: 2 },
+  5: { word: "establish", pNum: 3 },
+  6: { word: "ship", pNum: 2 },
+};

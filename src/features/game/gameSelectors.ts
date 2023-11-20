@@ -100,6 +100,21 @@ export const selectPrompt = createSelector(
       : ""
 );
 
+// selects the prompt for the Worderbot turn
+// separate to ensure neither computer or human players utilize the wrong prompt
+export const selectWorderbotPrompt = createSelector(
+  [
+    selectIsWorderbotTurn,
+    selectStartingWord,
+    selectTurns,
+    selectCurrentTurnNumber,
+  ],
+  (isWorderbotTurn, startingWord, turns, currentTurnNumber) =>
+    isWorderbotTurn && currentTurnNumber
+      ? getPrompt(startingWord, turns, currentTurnNumber)
+      : ""
+);
+
 // select the active pIndex for the active turn (pIndex input clamped to 1)
 export const selectPIndex = (state: RootState) => {
   return Math.max(1, selectPIndexInput(state) || 1);
