@@ -57,8 +57,6 @@ const useWorderbot = () => {
       endTimer: 0, // ensure no timer bonus for bot
     };
 
-    console.log("NewTurn:", JSON.stringify(newTurn, null, 2));
-
     dispatch(playNewTurn(newTurn));
   };
 
