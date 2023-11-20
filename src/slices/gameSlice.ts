@@ -212,6 +212,12 @@ const gameSlice = createSlice({
     setIsLoading: (state, action: PayloadAction<boolean>) => {
       state.isLoading = action.payload;
     },
+
+    worderbotForfeit: (state) => {
+      if (!state.isSinglePlayer) return;
+      state.endType = GameEndType.OpponentQuit;
+      state.isLoading = false;
+    },
   },
 });
 
@@ -230,6 +236,7 @@ export const {
   setIsWordSplit,
   setIsLoading,
   setTimerCount,
+  worderbotForfeit,
 } = gameSlice.actions;
 
 // We export the reducer function so that it can be added to the store
