@@ -162,6 +162,7 @@ export const isTurnPlayable = (
       "Play Turn Error:",
       "The new word cannot be played off of the previous turn's word!"
     );
+    return false;
   }
 
   return true;
