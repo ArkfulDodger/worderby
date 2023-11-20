@@ -1,5 +1,6 @@
 import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
-import { GameState, loadGame } from "../../../slices/gameSlice";
+import useWordList from "../../../hooks/useWordList";
+import { GameState, loadGame, setIsLoading } from "../../../slices/gameSlice";
 import { demoWorderbot } from "../demoGameData";
 import { GameMode } from "../enums";
 import {
@@ -13,10 +14,14 @@ const useLoadNewGame = () => {
   const streakCount = useAppSelector(selectStreakCount);
   const isPlayerFirst = useAppSelector(selectIsPlayerFirst);
   const restrictions = useAppSelector(selectRestrictions);
+  const { getRandomStartingWord } = useWordList();
 
   // continue the game streak
-  const continueDemoGame = () => {
-    console.log("continue fired!");
+  const continueDemoGame = async () => {
+    dispatch(setIsLoading(true));
+
+    const startingWord = await getRandomStartingWord();
+
     const newGame: GameState = {
       id: NaN,
       mode: GameMode.Demo,
@@ -25,7 +30,7 @@ const useLoadNewGame = () => {
       isPlayerFirst: !isPlayerFirst,
       endType: undefined,
       opponent: demoWorderbot,
-      startingWord: "word", // TODO: select random word
+      startingWord: startingWord,
       turns: [],
       initialRestrictions: restrictions,
       activeTurn: undefined,

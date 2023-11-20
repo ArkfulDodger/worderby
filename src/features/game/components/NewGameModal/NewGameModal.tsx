@@ -6,6 +6,7 @@ import { selectMode } from "../../gameSelectors";
 import { GameMode } from "../../enums";
 import DemoGameEndMessage from "../DemoGameEndMessage";
 import PlayAgainMessage from "../PlayAgainMessage";
+import useLoadNewGame from "../../hooks/useLoadNewGame";
 
 type Props = {
   visible: boolean;
@@ -16,10 +17,15 @@ type Props = {
 const NewGameModal = ({ visible, hideModal }: Props) => {
   const styles = useStyles(createStyles);
   const mode = useAppSelector(selectMode);
+  const { continueDemoGame } = useLoadNewGame();
 
   return (
     <Modal visible={visible} onDismiss={hideModal}>
-      {mode === GameMode.Demo ? <DemoGameEndMessage /> : <PlayAgainMessage />}
+      {mode === GameMode.Demo ? (
+        <DemoGameEndMessage onContinue={continueDemoGame} />
+      ) : (
+        <PlayAgainMessage />
+      )}
     </Modal>
   );
 };
