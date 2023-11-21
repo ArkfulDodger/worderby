@@ -11,7 +11,7 @@ import { Text } from "react-native-paper";
 import { useEffect } from "react";
 import useAnimatedTimer from "../../hooks/useAnimatedTimer";
 import CircularProgressBar from "../../../../components/molecules/CircularProgressBar";
-import { selectIsAppActive } from "../../../../slices/systemSlice";
+import { selectIsAppActive } from "../../../../store/slices/systemSlice";
 
 type Props = {};
 

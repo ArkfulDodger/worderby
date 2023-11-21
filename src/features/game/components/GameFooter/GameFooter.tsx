@@ -3,7 +3,10 @@ import useStyles from "../../../../hooks/useStyles";
 import { createStyles } from "./GameFooter.styles";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/reduxHooks";
-import { selectIsMuted, toggleIsMuted } from "../../../../slices/systemSlice";
+import {
+  selectIsMuted,
+  toggleIsMuted,
+} from "../../../../store/slices/systemSlice";
 import GameActionButton from "../GameActionButton";
 
 // the footer for the game cycle

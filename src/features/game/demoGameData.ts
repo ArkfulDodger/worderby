@@ -1,4 +1,4 @@
-import { GameState, Player } from "../../slices/gameSlice";
+import { GameState, Player } from "../../store/slices/gameSlice";
 import { GameMode } from "./enums";
 
 export const demoWorderbot: Player = {

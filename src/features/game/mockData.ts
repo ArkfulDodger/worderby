@@ -1,4 +1,4 @@
-import { Turn } from "../../slices/gameSlice";
+import { Turn } from "../../store/slices/gameSlice";
 import { STATIC_DATE } from "../../utils/constants";
 
 const playerTurn1: Turn = {

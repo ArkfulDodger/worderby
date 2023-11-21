@@ -1,14 +1,17 @@
 // Import the createSlice API from Redux Toolkit
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { mockTurns } from "../features/game/mockData";
+import { mockTurns } from "../../features/game/mockData";
 import {
   MIN_TIMER,
   TIMER_COUNT,
   TURNS_PER_GAME,
-} from "../features/game/constants";
-import { getPrompt, isPlayersTurn, isTurnPlayable } from "../utils/helpers";
-import { demoWorderbot, initialDemoState } from "../features/game/demoGameData";
-import { GameEndType, GameMode } from "../features/game/enums";
+} from "../../features/game/constants";
+import { getPrompt, isPlayersTurn, isTurnPlayable } from "../../utils/helpers";
+import {
+  demoWorderbot,
+  initialDemoState,
+} from "../../features/game/demoGameData";
+import { GameEndType, GameMode } from "../../features/game/enums";
 
 // Define types for the slice state
 export type Player = {

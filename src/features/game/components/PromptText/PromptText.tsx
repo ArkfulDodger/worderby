@@ -5,7 +5,7 @@ import useResizingFont from "../../../../hooks/useResizingFont";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/reduxHooks";
 import { selectPIndexInput, selectUsedUnusedPrompt } from "../../gameSelectors";
 import { useEffect } from "react";
-import { recordStartTimeIfEmpty } from "../../../../slices/gameSlice";
+import { recordStartTimeIfEmpty } from "../../../../store/slices/gameSlice";
 
 type Props = {};
 

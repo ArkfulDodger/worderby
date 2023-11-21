@@ -2,7 +2,7 @@ import { View } from "react-native";
 import useStyles from "../../../../hooks/useStyles";
 import { createStyles } from "./TurnListItem.styles";
 import { Text } from "react-native-paper";
-import { Turn } from "../../../../slices/gameSlice";
+import { Turn } from "../../../../store/slices/gameSlice";
 import { getTimerScore, getTurnScore } from "../../../../utils/helpers";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 

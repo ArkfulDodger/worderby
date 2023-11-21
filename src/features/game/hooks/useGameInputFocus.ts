@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { TextInput } from "react-native";
 import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
 import { selectInputFocus, selectIsWordSplit } from "../gameSelectors";
-import { setInputFocus } from "../../../slices/gameSlice";
+import { setInputFocus } from "../../../store/slices/gameSlice";
 
 // control input focus between regular and multiline input field and focus state
 const useGameInputFocus = () => {

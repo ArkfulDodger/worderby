@@ -4,7 +4,7 @@ import { createStyles } from "./LandingScreen.styles";
 import Button from "../../../../components/atoms/Button";
 import useLoadNewGame from "../../../game/hooks/useLoadNewGame";
 import { useAppDispatch } from "../../../../hooks/reduxHooks";
-import { loadDemoGame } from "../../../../slices/gameSlice";
+import { loadDemoGame } from "../../../../store/slices/gameSlice";
 import { GameMode } from "../../../game/enums";
 
 type Props = {};

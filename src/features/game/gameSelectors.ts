@@ -1,5 +1,5 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { RootState } from "../../../store";
+import { RootState } from "../../store/store";
 import {
   getGameScore,
   getPermittedTurns,
@@ -9,7 +9,7 @@ import {
   isPlayersTurn,
 } from "../../utils/helpers";
 import { GameEndType, GameMode, GameResult, RoundPhase } from "./enums";
-import { Turn } from "../../slices/gameSlice";
+import { Turn } from "../../store/slices/gameSlice";
 
 // simple state selectors
 export const selectEndType = (state: RootState) => state.game.endType;

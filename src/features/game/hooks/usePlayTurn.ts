@@ -1,6 +1,10 @@
 import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
 import useWordList from "../../../hooks/useWordList";
-import { Turn, playNewTurn, setIsLoading } from "../../../slices/gameSlice";
+import {
+  Turn,
+  playNewTurn,
+  setIsLoading,
+} from "../../../store/slices/gameSlice";
 import { deriveStartTimeFromTimer, getEndTimer } from "../../../utils/helpers";
 import { GameMode } from "../enums";
 import {

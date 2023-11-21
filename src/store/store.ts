@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
-import themeReducer from "./src/slices/themeSlice";
-import gameReducer from "./src/slices/gameSlice";
-import systemReducer from "./src/slices/systemSlice";
+import themeReducer from "./slices/themeSlice";
+import gameReducer from "./slices/gameSlice";
+import systemReducer from "./slices/systemSlice";
 
 export const store = configureStore({
   reducer: {

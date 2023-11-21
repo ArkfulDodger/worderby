@@ -9,7 +9,7 @@ import {
   TIMER_MS_PER_COUNT,
   TURNS_PER_GAME,
 } from "../features/game/constants";
-import { Turn } from "../slices/gameSlice";
+import { Turn } from "../store/slices/gameSlice";
 
 // retrieves the turns the user is permitted to see displayed
 // cannot see data from latest opponent turn until starting their own turn or game end

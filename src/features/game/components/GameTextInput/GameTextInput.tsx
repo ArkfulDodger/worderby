@@ -6,7 +6,7 @@ import { useTheme } from "react-native-paper";
 import { AppTheme } from "../../../../utils/types";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/reduxHooks";
 import useAutoMerge from "../../hooks/useAutoMerge";
-import { setWordInput } from "../../../../slices/gameSlice";
+import { setWordInput } from "../../../../store/slices/gameSlice";
 import { selectIsWordSplit } from "../../gameSelectors";
 import TextInputFacade from "../TextInputFacade";
 import useGameInputFocus from "../../hooks/useGameInputFocus";
