@@ -1,2 +1,2 @@
-import GamePage from "../features/game/screens/GamePage";
-export default GamePage;
+import LandingScreen from "../features/landing/screens/LandingScreen/LandingScreen";
+export default LandingScreen;
