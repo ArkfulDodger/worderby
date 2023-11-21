@@ -17,12 +17,12 @@ export const initialDemoState: GameState = {
   startingWord: "word",
   turns: [],
   initialRestrictions: [],
-  activeTurn: {
-    turnNumber: 1,
-    timerCount: 10,
-    pIndexInput: 1,
-    wordInput: "",
-  },
+  // activeTurn: {
+  //   turnNumber: 1,
+  //   timerCount: 10,
+  //   pIndexInput: 1,
+  //   wordInput: "",
+  // },
 };
 
 const DEMO_WORDERBOT_WORDS: { [i: number]: { word: string; pNum: number } } = {
