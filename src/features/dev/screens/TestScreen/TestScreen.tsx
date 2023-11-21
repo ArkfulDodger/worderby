@@ -7,7 +7,7 @@ import { useCallback } from "react";
 import {
   selectIsDark,
   setThemePreference,
-} from "../../../../slices/themeSlice";
+} from "../../../../store/slices/themeSlice";
 
 // screen to use for testing
 const TestScreen = () => {

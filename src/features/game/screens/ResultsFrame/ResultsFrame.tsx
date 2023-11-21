@@ -3,7 +3,7 @@ import useStyles from "../../../../hooks/useStyles";
 import { createStyles } from "./ResultsFrame.styles";
 import { useAppSelector } from "../../../../hooks/reduxHooks";
 import { selectStartingWord, selectTurns } from "../../gameSelectors";
-import { Turn } from "../../../../slices/gameSlice";
+import { Turn } from "../../../../store/slices/gameSlice";
 import TurnListItem from "../../components/TurnListItem";
 import { Text } from "react-native-paper";
 import VictoryMessage from "../../components/VictoryMessage";

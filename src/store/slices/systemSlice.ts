@@ -1,7 +1,7 @@
 // Import the createSlice API from Redux Toolkit
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { AppStateStatus } from "react-native";
-import { RootState } from "../../store";
+import { RootState } from "../store";
 
 // Define a type for the slice state
 interface SystemState {

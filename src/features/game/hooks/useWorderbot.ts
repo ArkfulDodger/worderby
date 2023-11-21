@@ -5,7 +5,7 @@ import {
   playNewTurn,
   setIsLoading,
   worderbotForfeit,
-} from "../../../slices/gameSlice";
+} from "../../../store/slices/gameSlice";
 import {
   selectCurrentTurnNumber,
   selectIsWorderbotTurn,

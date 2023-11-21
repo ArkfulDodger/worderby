@@ -10,7 +10,7 @@ import {
   handlePromptInput,
   setWordInput,
   toggleInputFocus,
-} from "../../../../slices/gameSlice";
+} from "../../../../store/slices/gameSlice";
 import PlayWordText from "../../components/PlayWordText";
 import useComponentWidth from "../../../../hooks/useComponentWidth";
 

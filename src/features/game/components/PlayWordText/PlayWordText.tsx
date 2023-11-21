@@ -13,7 +13,7 @@ import {
 import useResizingFont from "../../../../hooks/useResizingFont";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { setIsWordSplit } from "../../../../slices/gameSlice";
+import { setIsWordSplit } from "../../../../store/slices/gameSlice";
 
 type Props = {
   maxWidth?: number; // the calculated width the text can fill

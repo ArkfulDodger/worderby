@@ -8,6 +8,8 @@ interface Styles {
 export const createStyles = (theme: AppTheme): Styles => {
   return StyleSheet.create<Styles>({
     container: {
+      flex: 1,
+      padding: 40,
       justifyContent: "space-evenly",
     },
   });

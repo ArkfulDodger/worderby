@@ -1,6 +1,10 @@
 import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
 import useWordList from "../../../hooks/useWordList";
-import { GameState, loadGame, setIsLoading } from "../../../slices/gameSlice";
+import {
+  GameState,
+  loadGame,
+  setIsLoading,
+} from "../../../store/slices/gameSlice";
 import { demoWorderbot } from "../demoGameData";
 import { GameMode } from "../enums";
 import {

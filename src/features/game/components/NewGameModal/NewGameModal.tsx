@@ -17,14 +17,18 @@ type Props = {
 const NewGameModal = ({ visible, hideModal }: Props) => {
   const styles = useStyles(createStyles);
   const mode = useAppSelector(selectMode);
-  const { continueDemoGame } = useLoadNewGame();
+  const { continueDemoGame, loadSinglePlayerGame, continueSinglePlayerGame } =
+    useLoadNewGame();
 
   return (
     <Modal visible={visible} onDismiss={hideModal}>
       {mode === GameMode.Demo ? (
         <DemoGameEndMessage onContinue={continueDemoGame} />
       ) : (
-        <PlayAgainMessage />
+        <PlayAgainMessage
+          onContinue={continueSinglePlayerGame}
+          onReset={() => loadSinglePlayerGame(mode)}
+        />
       )}
     </Modal>
   );

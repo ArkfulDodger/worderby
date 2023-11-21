@@ -1,6 +1,9 @@
 import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
 import useSelfReplacingTimeout from "../../../hooks/useSelfReplacingTimeout";
-import { handlePromptInput, setWordInput } from "../../../slices/gameSlice";
+import {
+  handlePromptInput,
+  setWordInput,
+} from "../../../store/slices/gameSlice";
 import { selectPrompt, selectWordInput } from "../gameSelectors";
 
 // handle logic for determining if updated word input is a swipe/voice entry which

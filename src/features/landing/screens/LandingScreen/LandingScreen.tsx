@@ -3,28 +3,35 @@ import useStyles from "../../../../hooks/useStyles";
 import { createStyles } from "./LandingScreen.styles";
 import Button from "../../../../components/atoms/Button";
 import useLoadNewGame from "../../../game/hooks/useLoadNewGame";
-import { useAppDispatch } from "../../../../hooks/reduxHooks";
-import { loadDemoGame } from "../../../../slices/gameSlice";
 import { GameMode } from "../../../game/enums";
+import { useRouter } from "expo-router";
 
 type Props = {};
 
 // the screen the user is brought to when newly opening the app
 const LandingScreen = ({}: Props) => {
   const styles = useStyles(createStyles);
-  const dispatch = useAppDispatch();
   const { loadSinglePlayerGame } = useLoadNewGame();
+  const router = useRouter();
 
   const onDemoPress = () => {
-    dispatch(loadDemoGame());
+    router.push("/game/demo");
   };
 
-  const onCompetitivePress = () => {
-    loadSinglePlayerGame(GameMode.Competitive);
+  const onCompetitivePress = async () => {
+    await loadSinglePlayerGame(GameMode.Competitive);
+    router.push({
+      pathname: "/game/[id]",
+      params: { id: GameMode.Competitive },
+    });
   };
 
-  const onCasualPress = () => {
-    loadSinglePlayerGame(GameMode.Casual);
+  const onCasualPress = async () => {
+    await loadSinglePlayerGame(GameMode.Casual);
+    router.push({
+      pathname: "/game/[id]",
+      params: { id: GameMode.Casual },
+    });
   };
 
   return (
