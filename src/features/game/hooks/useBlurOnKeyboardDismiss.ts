@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useAppDispatch } from "../../../hooks/reduxHooks";
-import { setInputFocus } from "../../../slices/gameSlice";
+import { setInputFocus } from "../../../store/slices/gameSlice";
 import { Keyboard } from "react-native";
 
 // ensures the game text input is blurred when the keyboard is dismissed

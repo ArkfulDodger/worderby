@@ -6,8 +6,8 @@ import { useTheme } from "react-native-paper";
 import { AppTheme } from "../../../../utils/types";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/reduxHooks";
 import useAutoMerge from "../../hooks/useAutoMerge";
-import { setWordInput } from "../../../../slices/gameSlice";
-import { selectCanAttemptSubmit, selectIsWordSplit } from "../../gameSelectors";
+import { setWordInput } from "../../../../store/slices/gameSlice";
+import { selectIsWordSplit } from "../../gameSelectors";
 import TextInputFacade from "../TextInputFacade";
 import useGameInputFocus from "../../hooks/useGameInputFocus";
 import useBlurOnKeyboardDismiss from "../../hooks/useBlurOnKeyboardDismiss";
@@ -30,7 +30,6 @@ const GameTextInput = ({ fontSize = 30, style, value, ...props }: Props) => {
   const dispatch = useAppDispatch();
   const multiline = useAppSelector(selectIsWordSplit);
   const { checkInputForAutoMerge } = useAutoMerge();
-  const canSubmit = useAppSelector(selectCanAttemptSubmit);
   const { attemptWord } = usePlayTurn();
   const { textHeight, onTextHeightLayout, hasRendered, onComponentRender } =
     useGameInputLayout();
@@ -77,7 +76,7 @@ const GameTextInput = ({ fontSize = 30, style, value, ...props }: Props) => {
     maxLength: 44, // longest english word is 45 letters
     returnKeyType: "go",
     selectTextOnFocus: false,
-    onSubmitEditing: canSubmit ? attemptWord : undefined,
+    onSubmitEditing: attemptWord,
   };
 
   return (

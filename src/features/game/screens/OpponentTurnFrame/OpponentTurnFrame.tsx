@@ -36,12 +36,12 @@ const OpponentTurnFrame = ({}: Props) => {
       ) : (
         <>
           <View style={styles.wordContainer}>
-            <Text style={styles.labelText}>You Played:</Text>
+            {/* <Text style={styles.labelText}>You Played:</Text> */}
             <PlayedWordText />
+            <PlayedWordScoreBreakdown />
           </View>
           <View style={styles.scoreContainer}>
-            <Text style={styles.labelText}>You Scored:</Text>
-            <PlayedWordScoreBreakdown />
+            {/* <Text style={styles.labelText}>You Scored:</Text> */}
             <Text style={styles.scoreText}>{score}</Text>
           </View>
         </>

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
 import { selectActiveTurn, selectTimerCount } from "../gameSelectors";
 import { MIN_TIMER, TIMER_MS_PER_COUNT } from "../constants";
-import { decrementTimerCount } from "../../../slices/gameSlice";
+import { decrementTimerCount } from "../../../store/slices/gameSlice";
 
 // initiate and stop countdown for the active turn timer
 const useTimer = () => {

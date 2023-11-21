@@ -10,7 +10,7 @@ import {
 import { MIN_TIMER, TIMER_COUNT, TIMER_MS_PER_COUNT } from "../constants";
 import { useCallback, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
-import { setTimerCount } from "../../../slices/gameSlice";
+import { setTimerCount } from "../../../store/slices/gameSlice";
 import { selectRoundPhase, selectStartTime } from "../gameSelectors";
 import { calculateTimeDifferenceInMilliseconds } from "../../../utils/helpers";
 import { RoundPhase } from "../enums";

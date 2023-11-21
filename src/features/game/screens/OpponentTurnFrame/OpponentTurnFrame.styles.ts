@@ -29,16 +29,18 @@ export const createStyles = (theme: AppTheme): Styles => {
     },
     wordContainer: {
       flex: 1,
+      // backgroundColor: "magenta",
       justifyContent: "center",
       alignItems: "center",
       rowGap: 20,
     },
     scoreContainer: {
       flex: 1,
+      // backgroundColor: "blue",
       justifyContent: "center",
       alignItems: "center",
       rowGap: 20,
-      paddingBottom: 40,
+      // paddingBottom: 40,
     },
     scoreText: {
       fontSize: 50,

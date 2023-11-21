@@ -1,5 +1,5 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { RootState } from "../../../store";
+import { RootState } from "../../store/store";
 import {
   getGameScore,
   getPermittedTurns,
@@ -9,7 +9,7 @@ import {
   isPlayersTurn,
 } from "../../utils/helpers";
 import { GameEndType, GameMode, GameResult, RoundPhase } from "./enums";
-import { Turn } from "../../slices/gameSlice";
+import { Turn } from "../../store/slices/gameSlice";
 
 // simple state selectors
 export const selectEndType = (state: RootState) => state.game.endType;
@@ -97,6 +97,21 @@ export const selectPrompt = createSelector(
   (isActivePlayerTurn, activeTurnNumber, startingWord, turns) =>
     isActivePlayerTurn && activeTurnNumber
       ? getPrompt(startingWord, turns, activeTurnNumber)
+      : ""
+);
+
+// selects the prompt for the Worderbot turn
+// separate to ensure neither computer or human players utilize the wrong prompt
+export const selectWorderbotPrompt = createSelector(
+  [
+    selectIsWorderbotTurn,
+    selectStartingWord,
+    selectTurns,
+    selectCurrentTurnNumber,
+  ],
+  (isWorderbotTurn, startingWord, turns, currentTurnNumber) =>
+    isWorderbotTurn && currentTurnNumber
+      ? getPrompt(startingWord, turns, currentTurnNumber)
       : ""
 );
 

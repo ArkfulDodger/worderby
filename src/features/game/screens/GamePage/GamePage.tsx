@@ -12,6 +12,7 @@ import NewGameFrame from "../NewGameFrame";
 import OpponentTurnFrame from "../OpponentTurnFrame";
 import useWorderbot from "../../hooks/useWorderbot";
 import ResultsFrame from "../ResultsFrame";
+import Toast from "react-native-toast-notifications";
 
 type Props = {};
 
@@ -32,6 +33,7 @@ const GamePage = ({}: Props) => {
           {phase === RoundPhase.PlayerTurn && <PlayerTurnFrame />}
           {phase === RoundPhase.OpponentTurn && <OpponentTurnFrame />}
           {phase === RoundPhase.Results && <ResultsFrame />}
+          <Toast ref={(ref) => (global["gameToast"] = ref)} />
         </View>
       </KeyboardAvoidingView>
       <GameFooter />

@@ -55,5 +55,9 @@ module.exports = () => {
         projectId: "26e4d88c-e377-4718-817a-6eca82dba993",
       },
     },
+    plugins: ["expo-router"],
+    experiments: {
+      typedRoutes: true,
+    },
   };
 };

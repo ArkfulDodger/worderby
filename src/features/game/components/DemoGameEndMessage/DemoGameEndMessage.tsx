@@ -6,17 +6,17 @@ import Button from "../../../../components/atoms/Button";
 import OrDivider from "../../../../components/atoms/OrDivider";
 import { useAppSelector } from "../../../../hooks/reduxHooks";
 import { selectStreakCount } from "../../gameSelectors";
-import useLoadNewGame from "../../hooks/useLoadNewGame";
 
-type Props = {};
+type Props = {
+  onContinue: () => Promise<void>;
+};
 
 // The message that appears when the user tries to continue following the demo game
 // allows them to play again or make an account after the first game
 // only allows for making a new account from then on
-const DemoGameEndMessage = ({}: Props) => {
+const DemoGameEndMessage = ({ onContinue }: Props) => {
   const styles = useStyles(createStyles);
   const streakCount = useAppSelector(selectStreakCount);
-  const { continueDemoGame } = useLoadNewGame();
 
   return (
     <>
@@ -28,7 +28,7 @@ const DemoGameEndMessage = ({}: Props) => {
                 Try a rematch! See how the restricted endings from the first
                 game carry over.
               </Text>
-              <Button onPress={continueDemoGame} style={styles.button}>
+              <Button onPress={onContinue} style={styles.button}>
                 Continue
               </Button>
             </View>

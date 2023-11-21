@@ -1,6 +1,6 @@
 import { StyleSheet, TextStyle, ViewStyle } from "react-native";
 import { AppTheme } from "../../../../utils/types";
-import { Turn } from "../../../../slices/gameSlice";
+import { Turn } from "../../../../store/slices/gameSlice";
 import { fontScaled } from "../../../../utils/helpers";
 
 export const RESULT_WORD_FONT_SIZE = 24;

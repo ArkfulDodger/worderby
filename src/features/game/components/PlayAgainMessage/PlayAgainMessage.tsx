@@ -5,9 +5,12 @@ import { View } from "react-native";
 import OrDivider from "../../../../components/atoms/OrDivider";
 import { createStyles } from "./PlayAgainMessage.styles";
 
-type Props = {};
+type Props = {
+  onContinue: () => void;
+  onReset: () => void;
+};
 
-const PlayAgainMessage = ({}: Props) => {
+const PlayAgainMessage = ({ onContinue, onReset }: Props) => {
   const styles = useStyles(createStyles);
 
   return (
@@ -16,12 +19,16 @@ const PlayAgainMessage = ({}: Props) => {
         <Text style={styles.text}>
           Continue your streak{"\n"}restricted endings carry over
         </Text>
-        <Button style={styles.button}>Continue</Button>
+        <Button onPress={onContinue} style={styles.button}>
+          Continue
+        </Button>
       </View>
       <OrDivider />
       <View style={styles.blocks}>
         <Text style={styles.text}>Start a new game</Text>
-        <Button style={styles.button}>Reset</Button>
+        <Button onPress={onReset} style={styles.button}>
+          Reset
+        </Button>
       </View>
     </View>
   );

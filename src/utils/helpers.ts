@@ -9,7 +9,7 @@ import {
   TIMER_MS_PER_COUNT,
   TURNS_PER_GAME,
 } from "../features/game/constants";
-import { Turn } from "../slices/gameSlice";
+import { Turn } from "../store/slices/gameSlice";
 
 // retrieves the turns the user is permitted to see displayed
 // cannot see data from latest opponent turn until starting their own turn or game end
@@ -162,6 +162,7 @@ export const isTurnPlayable = (
       "Play Turn Error:",
       "The new word cannot be played off of the previous turn's word!"
     );
+    return false;
   }
 
   return true;
@@ -269,4 +270,11 @@ export const getUniqueStringArray = (array: string[]) => {
 export const fontScaled = (size: number) => {
   const scaleFactor = PixelRatio.getFontScale();
   return size * scaleFactor;
+};
+
+// selects a random integer between two numbers, inclusive
+export const getRandomInt = (min: number, max: number) => {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 };
