@@ -56,5 +56,8 @@ module.exports = () => {
       },
     },
     plugins: ["expo-router"],
+    experiments: {
+      typedRoutes: true,
+    },
   };
 };
