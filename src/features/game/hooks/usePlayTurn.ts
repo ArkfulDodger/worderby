@@ -1,3 +1,4 @@
+import { Alert } from "react-native";
 import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
 import useWordList from "../../../hooks/useWordList";
 import {
@@ -100,6 +101,7 @@ const usePlayTurn = () => {
       }
     } catch (error) {
       errorToast("Error: could not verify if word exists");
+      Alert.alert("error:", JSON.stringify(error, null, 2));
       return false;
     }
 
