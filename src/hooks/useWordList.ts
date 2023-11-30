@@ -8,6 +8,7 @@ import {
 import { getRandomInt } from "../utils/helpers";
 import { useAppSelector } from "./reduxHooks";
 import { selectRestrictions } from "../features/game/gameSelectors";
+import { Alert } from "react-native";
 
 const USE_LOGS = false;
 
@@ -43,6 +44,7 @@ const useWordList = () => {
   const isWordOnList = async (word: string): Promise<boolean> => {
     return new Promise<boolean>((resolve, reject) => {
       if (!wordDb) {
+        Alert.alert("WORD DB NOT LOADED");
         reject({ message: "word list database not loaded" });
         return;
       }
@@ -73,6 +75,7 @@ const useWordList = () => {
 
     return new Promise<boolean>((resolve, reject) => {
       if (!wordDb) {
+        Alert.alert("WORD DB NOT LOADED");
         reject({ message: "word list database not loaded" });
         return;
       }
@@ -139,6 +142,7 @@ const useWordList = () => {
     return new Promise<{ word: string | null; pNum: number }>(
       (resolve, reject) => {
         if (!wordDb) {
+          Alert.alert("WORD DB NOT LOADED");
           reject({ message: "word list database not loaded" });
           return;
         }
@@ -246,6 +250,7 @@ const useWordList = () => {
   const getRandomStartingWord = async (): Promise<string> => {
     return new Promise<string>((resolve, reject) => {
       if (!wordDb) {
+        Alert.alert("WORD DB NOT LOADED");
         reject({ message: "word list database not loaded" });
         return;
       }
