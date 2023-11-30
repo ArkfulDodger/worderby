@@ -8,6 +8,7 @@ import {
 import { getRandomInt } from "../utils/helpers";
 import { useAppSelector } from "./reduxHooks";
 import { selectRestrictions } from "../features/game/gameSelectors";
+import { Alert } from "react-native";
 
 const USE_LOGS = false;
 
@@ -30,6 +31,10 @@ const useWordList = () => {
     errorHeader: string
   ): SQLStatementErrorCallback => {
     const cb = (tx: SQLTransaction, error: SQLError) => {
+      Alert.alert(
+        `Word List Error: ${errorHeader}`,
+        JSON.stringify(error, null, 2)
+      );
       console.error(errorHeader, error.message);
       reject(error);
       resolve(resolution);
@@ -43,6 +48,7 @@ const useWordList = () => {
   const isWordOnList = async (word: string): Promise<boolean> => {
     return new Promise<boolean>((resolve, reject) => {
       if (!wordDb) {
+        Alert.alert("no word databse loaded");
         reject({ message: "word list database not loaded" });
         return;
       }
