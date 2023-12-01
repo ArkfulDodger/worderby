@@ -38,13 +38,14 @@ const WordListProvider = ({ children }: Props) => {
 
     try {
       const file = require("../../../assets/data/word.db");
-      console.log("word.db file exists:", !!file);
+      Alert.alert("word.db file exists:", !!file ? "true" : "false");
 
-      dbUri = Asset.fromModule(file).uri;
+      let asset = Asset.fromModule(file);
+      dbUri = asset.uri;
+      Alert.alert("Using server URI for asset");
     } catch (error) {
       Alert.alert("No Db File:", JSON.stringify(error, null, 2));
     }
-
     // dbUri = Asset.fromModule(require("../../../assets/data/word.db")).uri;
     // console.log("database uri:", dbUri);
 
@@ -54,7 +55,7 @@ const WordListProvider = ({ children }: Props) => {
     // console.log("downloading database........");
     // load the database from assets into the file system
     let downloadResult = await FileSystem.downloadAsync(dbUri, fileUri);
-    // console.log("download result:", JSON.stringify(downloadResult, null, 2));
+    Alert.alert("download result:", downloadResult.status.toString());
 
     setTimeout(() => {
       Alert.alert("okay go!");
