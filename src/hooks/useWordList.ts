@@ -281,13 +281,48 @@ const useWordList = () => {
             }
           },
           // if there is an error, pass the rejection to the async function
-          errorCallback(resolve, reject, "oops", "Error validating word:")
+          errorCallback(
+            resolve,
+            reject,
+            "oops",
+            "Error getting random starting word:"
+          )
         );
       });
     });
   };
 
-  return { isWordOnList, selectRandomPlayableWord, getRandomStartingWord };
+  const selectTables = async (): Promise<void> => {
+    return new Promise<void>((resolve, reject) => {
+      if (!wordDb) {
+        reject({ message: "word list database not loaded" });
+        return;
+      }
+      log("started looking for random starting word.....");
+
+      wordDb.transaction((tx) => {
+        tx.executeSql(
+          // queries the word list for a single random word
+          "SELECT name FROM sqlite_master WHERE type='table';",
+          [],
+          // resolves the async function with the retrieved word, or fetches another if not usable
+          (tx, result) => {
+            console.log(result.rows);
+            Alert.alert("Rows:", JSON.stringify(result.rows, null, 2));
+          },
+          // if there is an error, pass the rejection to the async function
+          errorCallback(resolve, reject, undefined, "Error getting db tables:")
+        );
+      });
+    });
+  };
+
+  return {
+    isWordOnList,
+    selectRandomPlayableWord,
+    getRandomStartingWord,
+    selectTables,
+  };
 };
 
 export default useWordList;
