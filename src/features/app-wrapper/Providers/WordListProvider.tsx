@@ -56,11 +56,15 @@ const WordListProvider = ({ children }: Props) => {
     let downloadResult = await FileSystem.downloadAsync(dbUri, fileUri);
     // console.log("download result:", JSON.stringify(downloadResult, null, 2));
 
-    // open the database and set the reference in state
-    const wordDb = SQLite.openDatabase("word.db");
+    setTimeout(() => {
+      Alert.alert("okay go!");
 
-    // console.log("wordDb exists:", !!wordDb ? "true" : "false");
-    setDb(wordDb);
+      // open the database and set the reference in state
+      const wordDb = SQLite.openDatabase("word.db");
+
+      // console.log("wordDb exists:", !!wordDb ? "true" : "false");
+      setDb(wordDb);
+    }, 3000);
   }
 
   useEffect(() => {
