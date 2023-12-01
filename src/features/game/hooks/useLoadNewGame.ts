@@ -1,4 +1,3 @@
-import { Alert } from "react-native";
 import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
 import useWordList from "../../../hooks/useWordList";
 import {
@@ -53,8 +52,6 @@ const useLoadNewGame = () => {
     dispatch(setIsLoading(true));
 
     const startingWord = await getRandomStartingWord();
-
-    Alert.alert("Rando Word:", startingWord);
 
     const newGame: GameState = {
       id: NaN,
