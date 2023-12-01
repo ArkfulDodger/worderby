@@ -48,7 +48,6 @@ const useWordList = () => {
   const isWordOnList = async (word: string): Promise<boolean> => {
     return new Promise<boolean>((resolve, reject) => {
       if (!wordDb) {
-        Alert.alert("no word databse loaded");
         reject({ message: "word list database not loaded" });
         return;
       }
@@ -64,7 +63,15 @@ const useWordList = () => {
             resolve(count > 0);
           },
           // if there is an error, pass the rejection to the async function
-          errorCallback(resolve, reject, false, "Error validating word:")
+          (tx, error) => {
+            Alert.alert("1st level error:", JSON.stringify(error, null, 2));
+            return errorCallback(
+              resolve,
+              reject,
+              false,
+              "Error validating word:"
+            )(tx, error);
+          }
         );
       });
     });
