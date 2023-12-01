@@ -3,6 +3,7 @@ import { createContext, useState, useEffect, ReactNode } from "react";
 import * as SQLite from "expo-sqlite";
 import * as FileSystem from "expo-file-system";
 import { Asset } from "expo-asset";
+import { Alert } from "react-native";
 
 export const WordListContext = createContext<SQLite.SQLiteDatabase | undefined>(
   undefined
@@ -33,7 +34,18 @@ const WordListProvider = ({ children }: Props) => {
       // console.log("SQLite Directory Made!");
     }
 
-    let dbUri = Asset.fromModule(require("../../../assets/data/word.db")).uri;
+    let dbUri = "";
+
+    try {
+      const file = require("../../../assets/data/word.db");
+      console.log("word.db file exists:", !!file);
+
+      dbUri = Asset.fromModule(file).uri;
+    } catch (error) {
+      Alert.alert("No Db File:", JSON.stringify(error, null, 2));
+    }
+
+    // dbUri = Asset.fromModule(require("../../../assets/data/word.db")).uri;
     // console.log("database uri:", dbUri);
 
     let fileUri = FileSystem.documentDirectory + "SQLite/word.db";
