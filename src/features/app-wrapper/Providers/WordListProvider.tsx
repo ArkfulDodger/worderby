@@ -42,7 +42,6 @@ const WordListProvider = ({ children }: Props) => {
 
       let asset = Asset.fromModule(file);
       dbUri = asset.uri;
-      Alert.alert("Using server URI for asset");
     } catch (error) {
       Alert.alert("No Db File:", JSON.stringify(error, null, 2));
     }
@@ -57,15 +56,14 @@ const WordListProvider = ({ children }: Props) => {
     let downloadResult = await FileSystem.downloadAsync(dbUri, fileUri);
     Alert.alert("download result:", downloadResult.status.toString());
 
-    setTimeout(() => {
-      Alert.alert("okay go!");
+    let info = await FileSystem.getInfoAsync(fileUri);
+    Alert.alert("db file exists:", info.exists ? "true" : "false");
 
-      // open the database and set the reference in state
-      const wordDb = SQLite.openDatabase("word.db");
+    // open the database and set the reference in state
+    const wordDb = SQLite.openDatabase("word.db");
 
-      // console.log("wordDb exists:", !!wordDb ? "true" : "false");
-      setDb(wordDb);
-    }, 3000);
+    // console.log("wordDb exists:", !!wordDb ? "true" : "false");
+    setDb(wordDb);
   }
 
   useEffect(() => {
