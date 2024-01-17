@@ -35,6 +35,7 @@ const WordListProvider = ({ children }: Props) => {
     }
 
     let dbUri = "";
+    let localUri: string | null = "";
 
     try {
       const file = require("../../../assets/data/word.db");
@@ -42,6 +43,8 @@ const WordListProvider = ({ children }: Props) => {
 
       let asset = Asset.fromModule(file);
       dbUri = asset.uri;
+
+      Alert.alert("Asset:", `downloaded: ${asset.downloaded}\n\nlocalUri:${asset.localUri}\n\nremoteUri:${asset.uri}`)
     } catch (error) {
       Alert.alert("No Db File:", JSON.stringify(error, null, 2));
     }
@@ -54,7 +57,7 @@ const WordListProvider = ({ children }: Props) => {
     // console.log("downloading database........");
     // load the database from assets into the file system
     let downloadResult = await FileSystem.downloadAsync(dbUri, fileUri);
-    Alert.alert("download result:", downloadResult.status.toString() + `\n\ndbUri: ${dbUri}` + "\n\nheaders:\n" + JSON.stringify(downloadResult.headers,null, 2),);
+    // Alert.alert("download result:", downloadResult.status.toString() + `\n\ndbUri: ${dbUri}` + "\n\nheaders:\n" + JSON.stringify(downloadResult.headers,null, 2),);
 
     let info = await FileSystem.getInfoAsync(fileUri);
     // Alert.alert("db file exists:", info.exists ? "true" : "false");
