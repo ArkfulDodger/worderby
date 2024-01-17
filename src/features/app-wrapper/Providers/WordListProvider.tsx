@@ -45,10 +45,10 @@ const WordListProvider = ({ children }: Props) => {
       dbUri = asset.uri;
       localUri = asset.localUri;
 
-      // if (!localUri) {
-      //   await asset.downloadAsync();
-      //   localUri = asset.localUri;
-      // }
+      if (!localUri) {
+        await asset.downloadAsync();
+        localUri = asset.localUri;
+      }
 
       // Alert.alert("Asset:", `downloaded: ${asset.downloaded}\n\nlocalUri:${asset.localUri}\n\nremoteUri:${asset.uri}`)
     } catch (error) {
