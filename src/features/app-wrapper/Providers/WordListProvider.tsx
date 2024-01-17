@@ -38,7 +38,7 @@ const WordListProvider = ({ children }: Props) => {
 
     try {
       const file = require("../../../assets/data/word.db");
-      Alert.alert("word.db file exists:", !!file ? "true" : "false");
+      // Alert.alert("word.db file exists:", !!file ? "true" : "false");
 
       let asset = Asset.fromModule(file);
       dbUri = asset.uri;
@@ -54,10 +54,10 @@ const WordListProvider = ({ children }: Props) => {
     // console.log("downloading database........");
     // load the database from assets into the file system
     let downloadResult = await FileSystem.downloadAsync(dbUri, fileUri);
-    Alert.alert("download result:", downloadResult.status.toString());
+    Alert.alert("download result:", downloadResult.status.toString() + `\n\ndbUri: ${dbUri}` + "\n\nheaders:\n" + JSON.stringify(downloadResult.headers,null, 2),);
 
     let info = await FileSystem.getInfoAsync(fileUri);
-    Alert.alert("db file exists:", info.exists ? "true" : "false");
+    // Alert.alert("db file exists:", info.exists ? "true" : "false");
 
     // open the database and set the reference in state
     const wordDb = SQLite.openDatabase("word.db");
