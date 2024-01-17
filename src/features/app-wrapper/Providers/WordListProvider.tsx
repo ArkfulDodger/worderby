@@ -75,6 +75,11 @@ const WordListProvider = ({ children }: Props) => {
     let downloadResult = await FileSystem.downloadAsync(remoteAssetUri, sqlFileUri);
     // Alert.alert("download result:", downloadResult.status.toString() + `\n\ndbUri: ${dbUri}` + "\n\nheaders:\n" + JSON.stringify(downloadResult.headers,null, 2),);
 
+    // copy the local file over if download failed
+    if (downloadResult.status !== 200 && !!localAssetUri) {
+      await FileSystem.copyAsync({from: localAssetUri, to: sqlFileUri});
+    }
+
     let info = await FileSystem.getInfoAsync(sqlFileUri);
 
     // open the database and set the reference in state
