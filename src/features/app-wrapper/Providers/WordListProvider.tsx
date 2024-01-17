@@ -43,6 +43,7 @@ const WordListProvider = ({ children }: Props) => {
 
       let asset = Asset.fromModule(file);
       dbUri = asset.uri;
+      localUri = asset.localUri;
 
       Alert.alert("Asset:", `downloaded: ${asset.downloaded}\n\nlocalUri:${asset.localUri}\n\nremoteUri:${asset.uri}`)
     } catch (error) {
@@ -53,6 +54,13 @@ const WordListProvider = ({ children }: Props) => {
 
     let fileUri = FileSystem.documentDirectory + "SQLite/word.db";
     // console.log("db file uri:", fileUri);
+    
+    if (localUri) {
+      // confirm that the database exists locally at the asset uri
+      let fileInfo = await FileSystem.getInfoAsync(localUri);
+      let sqliteInfo = await FileSystem.getInfoAsync(localUri);
+      Alert.alert("Module File exists:", fileInfo.exists ? "true" : "false" + "\n\nSQlite FIle exists: " + sqliteInfo.exists ? "true" : "false")
+    }
 
     // console.log("downloading database........");
     // load the database from assets into the file system
