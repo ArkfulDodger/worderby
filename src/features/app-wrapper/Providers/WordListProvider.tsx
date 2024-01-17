@@ -89,7 +89,7 @@ const WordListProvider = ({ children }: Props) => {
         (tx, result) => {
           let tables = JSON.stringify(result.rows._array.map(t => t.name), null, 2);
           Alert.alert("Report:",
-      `Download Result Status: ${downloadResult.status}\nInitial Local Uri: ${localUri}\nDb Uri: ${dbUri}\n\nInitial Asset Size: ${initialFileInfo.size.toString()}\nInitial SQLite file size: ${initialSQLiteInfo.size.toString()}\nSQLite file size: ${info.size.toString()}\n\nTables: ${tables}`);
+      `Initial Local Uri: ${localUri}\nDb Uri: ${dbUri}\n\nInitial Asset Size: ${initialFileInfo.size.toString()}\nInitial SQLite file size: ${initialSQLiteInfo.size.toString()}\nSQLite file size: ${info.size.toString()}\n\nTables: ${tables}`);
         },
         // if there is an error, pass the rejection to the async function
         (tx, error) => {
