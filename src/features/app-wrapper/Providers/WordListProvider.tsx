@@ -72,7 +72,7 @@ const WordListProvider = ({ children }: Props) => {
 
     // console.log("downloading database........");
     // load the database from assets into the file system
-    let downloadResult = await FileSystem.downloadAsync(dbUri, fileUri);
+    // let downloadResult = await FileSystem.downloadAsync(dbUri, fileUri);
     // Alert.alert("download result:", downloadResult.status.toString() + `\n\ndbUri: ${dbUri}` + "\n\nheaders:\n" + JSON.stringify(downloadResult.headers,null, 2),);
 
     let info = await FileSystem.getInfoAsync(fileUri);
