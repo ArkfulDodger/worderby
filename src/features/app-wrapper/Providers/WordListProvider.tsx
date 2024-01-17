@@ -45,7 +45,12 @@ const WordListProvider = ({ children }: Props) => {
       dbUri = asset.uri;
       localUri = asset.localUri;
 
-      Alert.alert("Asset:", `downloaded: ${asset.downloaded}\n\nlocalUri:${asset.localUri}\n\nremoteUri:${asset.uri}`)
+      if (!localUri) {
+        await asset.downloadAsync();
+        localUri = asset.localUri;
+      }
+
+      // Alert.alert("Asset:", `downloaded: ${asset.downloaded}\n\nlocalUri:${asset.localUri}\n\nremoteUri:${asset.uri}`)
     } catch (error) {
       Alert.alert("No Db File:", JSON.stringify(error, null, 2));
     }
@@ -59,7 +64,7 @@ const WordListProvider = ({ children }: Props) => {
       // confirm that the database exists locally at the asset uri
       let fileInfo = await FileSystem.getInfoAsync(localUri);
       let sqliteInfo = await FileSystem.getInfoAsync(localUri);
-      Alert.alert("Module File exists:", fileInfo.exists ? "true" : "false" + "\n\nSQlite FIle exists: " + sqliteInfo.exists ? "true" : "false")
+      Alert.alert("Files:","Module File exists: " + (fileInfo.exists ? "true" : "false") + "\n\nSQlite FIle exists: " + (sqliteInfo.exists ? "true" : "false"))
     }
 
     // console.log("downloading database........");
