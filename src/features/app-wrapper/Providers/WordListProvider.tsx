@@ -45,10 +45,10 @@ const WordListProvider = ({ children }: Props) => {
       dbUri = asset.uri;
       localUri = asset.localUri;
 
-      if (!localUri) {
-        await asset.downloadAsync();
-        localUri = asset.localUri;
-      }
+      // if (!localUri) {
+      //   await asset.downloadAsync();
+      //   localUri = asset.localUri;
+      // }
 
       // Alert.alert("Asset:", `downloaded: ${asset.downloaded}\n\nlocalUri:${asset.localUri}\n\nremoteUri:${asset.uri}`)
     } catch (error) {
@@ -60,12 +60,12 @@ const WordListProvider = ({ children }: Props) => {
     let fileUri = FileSystem.documentDirectory + "SQLite/word.db";
     // console.log("db file uri:", fileUri);
     
-    if (localUri) {
-      // confirm that the database exists locally at the asset uri
-      let fileInfo = await FileSystem.getInfoAsync(localUri, {size: true});
-      let sqliteInfo = await FileSystem.getInfoAsync(localUri, {size: true});
-      Alert.alert("Files:","Module File: " + fileInfo.size + "\n\nSQlite File: " + sqliteInfo.size)
-    }
+    // if (localUri) {
+    //   // confirm that the database exists locally at the asset uri
+    //   let fileInfo = await FileSystem.getInfoAsync(localUri, {size: true});
+    //   let sqliteInfo = await FileSystem.getInfoAsync(localUri, {size: true});
+    //   // Alert.alert("Files:","Module File: " + fileInfo.size + "\n\nSQlite File: " + sqliteInfo.size)
+    // }
 
     // console.log("downloading database........");
     // load the database from assets into the file system
@@ -73,10 +73,31 @@ const WordListProvider = ({ children }: Props) => {
     // Alert.alert("download result:", downloadResult.status.toString() + `\n\ndbUri: ${dbUri}` + "\n\nheaders:\n" + JSON.stringify(downloadResult.headers,null, 2),);
 
     let info = await FileSystem.getInfoAsync(fileUri);
-    // Alert.alert("db file exists:", info.exists ? "true" : "false");
 
     // open the database and set the reference in state
     const wordDb = SQLite.openDatabase("word.db");
+
+    wordDb.transaction((tx) => {
+      tx.executeSql(
+        // queries the word list for a single random word
+        "SELECT name FROM sqlite_master WHERE type='table';",
+        [],
+        // resolves the async function with the retrieved word, or fetches another if not usable
+        (tx, result) => {
+          let tables = JSON.stringify(result.rows._array.map(t => t.name), null, 2);
+          Alert.alert("Report:",
+      `Download Result Status: ${downloadResult.status}\nSQLite file size: ${info.size.toString()}\n\nTables: ${tables}`);
+        },
+        // if there is an error, pass the rejection to the async function
+        (tx, error) => {
+          Alert.alert(
+            `Word DB Error: Table Test`,
+            JSON.stringify(error, null, 2)
+          );
+          return true; // returning true rolls back the transaction
+        }
+      );
+    });
 
     // console.log("wordDb exists:", !!wordDb ? "true" : "false");
     setDb(wordDb);
