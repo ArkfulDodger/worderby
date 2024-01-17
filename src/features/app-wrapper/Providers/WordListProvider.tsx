@@ -60,12 +60,15 @@ const WordListProvider = ({ children }: Props) => {
     let fileUri = FileSystem.documentDirectory + "SQLite/word.db";
     // console.log("db file uri:", fileUri);
     
-    // if (localUri) {
-    //   // confirm that the database exists locally at the asset uri
-    //   let fileInfo = await FileSystem.getInfoAsync(localUri, {size: true});
-    //   let sqliteInfo = await FileSystem.getInfoAsync(localUri, {size: true});
-    //   // Alert.alert("Files:","Module File: " + fileInfo.size + "\n\nSQlite File: " + sqliteInfo.size)
-    // }
+    let initialFileInfo: FileSystem.FileInfo;
+    let initialSQLiteInfo: FileSystem.FileInfo;
+
+    if (localUri) {
+      // confirm that the database exists locally at the asset uri
+      initialFileInfo = await FileSystem.getInfoAsync(localUri, {size: true});
+      initialSQLiteInfo = await FileSystem.getInfoAsync(localUri, {size: true});
+      // Alert.alert("Files:","Module File: " + fileInfo.size + "\n\nSQlite File: " + sqliteInfo.size)
+    }
 
     // console.log("downloading database........");
     // load the database from assets into the file system
@@ -86,7 +89,7 @@ const WordListProvider = ({ children }: Props) => {
         (tx, result) => {
           let tables = JSON.stringify(result.rows._array.map(t => t.name), null, 2);
           Alert.alert("Report:",
-      `Download Result Status: ${downloadResult.status}\nSQLite file size: ${info.size.toString()}\n\nTables: ${tables}`);
+      `Download Result Status: ${downloadResult.status}\nInitial Asset Size: ${initialFileInfo.size.toString()}\nInitial SQLite file size: ${initialSQLiteInfo.size.toString()}\nSQLite file size: ${info.size.toString()}\n\nTables: ${tables}`);
         },
         // if there is an error, pass the rejection to the async function
         (tx, error) => {
