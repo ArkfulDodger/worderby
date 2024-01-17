@@ -62,9 +62,9 @@ const WordListProvider = ({ children }: Props) => {
     
     if (localUri) {
       // confirm that the database exists locally at the asset uri
-      let fileInfo = await FileSystem.getInfoAsync(localUri);
-      let sqliteInfo = await FileSystem.getInfoAsync(localUri);
-      Alert.alert("Files:","Module File exists: " + (fileInfo.exists ? "true" : "false") + "\n\nSQlite FIle exists: " + (sqliteInfo.exists ? "true" : "false"))
+      let fileInfo = await FileSystem.getInfoAsync(localUri, {size: true});
+      let sqliteInfo = await FileSystem.getInfoAsync(localUri, {size: true});
+      Alert.alert("Files:","Module File: " + fileInfo.size + "\n\nSQlite File: " + sqliteInfo.size)
     }
 
     // console.log("downloading database........");
