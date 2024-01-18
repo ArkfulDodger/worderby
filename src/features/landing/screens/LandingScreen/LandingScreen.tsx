@@ -36,7 +36,7 @@ const LandingScreen = ({}: Props) => {
 
   return (
     <View style={styles.container}>
-      <Button onPress={onDemoPress}>Demo</Button>
+      {/* <Button onPress={onDemoPress}>Demo</Button> */}
       <Button onPress={onCompetitivePress}>Competitive</Button>
       <Button onPress={onCasualPress}>Casual</Button>
     </View>
