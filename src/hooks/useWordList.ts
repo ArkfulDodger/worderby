@@ -292,6 +292,7 @@ const useWordList = () => {
     });
   };
 
+  // for debugging: list all the tables in the database
   const selectTables = async (): Promise<void> => {
     return new Promise<void>((resolve, reject) => {
       if (!wordDb) {

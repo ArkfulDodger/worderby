@@ -5,7 +5,6 @@ import Button from "../../../../components/atoms/Button";
 import useLoadNewGame from "../../../game/hooks/useLoadNewGame";
 import { GameMode } from "../../../game/enums";
 import { useRouter } from "expo-router";
-import useWordList from "../../../../hooks/useWordList";
 
 type Props = {};
 
@@ -14,7 +13,6 @@ const LandingScreen = ({}: Props) => {
   const styles = useStyles(createStyles);
   const { loadSinglePlayerGame } = useLoadNewGame();
   const router = useRouter();
-  const { selectTables } = useWordList();
 
   const onDemoPress = () => {
     router.push("/game/demo");
@@ -38,10 +36,9 @@ const LandingScreen = ({}: Props) => {
 
   return (
     <View style={styles.container}>
-      <Button onPress={onDemoPress}>Demo</Button>
+      {/* <Button onPress={onDemoPress}>Demo</Button> */}
       <Button onPress={onCompetitivePress}>Competitive</Button>
       <Button onPress={onCasualPress}>Casual</Button>
-      <Button onPress={selectTables}>Get Tables</Button>
     </View>
   );
 };
