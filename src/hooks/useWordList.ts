@@ -8,6 +8,7 @@ import {
 import { getRandomInt } from "../utils/helpers";
 import { useAppSelector } from "./reduxHooks";
 import { selectRestrictions } from "../features/game/gameSelectors";
+import { Alert } from "react-native";
 
 const USE_LOGS = false;
 
@@ -30,6 +31,10 @@ const useWordList = () => {
     errorHeader: string
   ): SQLStatementErrorCallback => {
     const cb = (tx: SQLTransaction, error: SQLError) => {
+      Alert.alert(
+        `Word List Error: ${errorHeader}`,
+        JSON.stringify(error, null, 2)
+      );
       console.error(errorHeader, error.message);
       reject(error);
       resolve(resolution);
@@ -58,7 +63,15 @@ const useWordList = () => {
             resolve(count > 0);
           },
           // if there is an error, pass the rejection to the async function
-          errorCallback(resolve, reject, false, "Error validating word:")
+          (tx, error) => {
+            Alert.alert("1st level error:", JSON.stringify(error, null, 2));
+            return errorCallback(
+              resolve,
+              reject,
+              false,
+              "Error validating word:"
+            )(tx, error);
+          }
         );
       });
     });
@@ -268,13 +281,49 @@ const useWordList = () => {
             }
           },
           // if there is an error, pass the rejection to the async function
-          errorCallback(resolve, reject, "oops", "Error validating word:")
+          errorCallback(
+            resolve,
+            reject,
+            "oops",
+            "Error getting random starting word:"
+          )
         );
       });
     });
   };
 
-  return { isWordOnList, selectRandomPlayableWord, getRandomStartingWord };
+  // for debugging: list all the tables in the database
+  const selectTables = async (): Promise<void> => {
+    return new Promise<void>((resolve, reject) => {
+      if (!wordDb) {
+        reject({ message: "word list database not loaded" });
+        return;
+      }
+      log("started looking for random starting word.....");
+
+      wordDb.transaction((tx) => {
+        tx.executeSql(
+          // queries the word list for a single random word
+          "SELECT name FROM sqlite_master WHERE type='table';",
+          [],
+          // resolves the async function with the retrieved word, or fetches another if not usable
+          (tx, result) => {
+            console.log(result.rows);
+            Alert.alert("Rows:", JSON.stringify(result.rows, null, 2));
+          },
+          // if there is an error, pass the rejection to the async function
+          errorCallback(resolve, reject, undefined, "Error getting db tables:")
+        );
+      });
+    });
+  };
+
+  return {
+    isWordOnList,
+    selectRandomPlayableWord,
+    getRandomStartingWord,
+    selectTables,
+  };
 };
 
 export default useWordList;
