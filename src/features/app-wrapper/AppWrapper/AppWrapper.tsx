@@ -1,5 +1,4 @@
 import { Provider as PaperProvider } from "react-native-paper";
-import { ThemeProp } from "react-native-paper/lib/typescript/src/types";
 import useStyles from "../../../hooks/useStyles";
 import { createStyles } from "./AppWrapper.styles";
 import useThemeControl from "../hooks/useThemeControl";
@@ -7,6 +6,7 @@ import ThemedStatusBar from "../../../components/molecules/ThemedStatusBar";
 import useAppState from "../hooks/useAppState";
 import WordListProvider from "../Providers/WordListProvider";
 import { Theme, ThemeProvider } from "@react-navigation/native";
+import { ThemeProp } from "react-native-paper/lib/typescript/types";
 
 type Props = {
   children: React.ReactNode;
