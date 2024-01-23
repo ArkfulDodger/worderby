@@ -24,7 +24,7 @@ const GameFooter = () => {
   const onMutePress = () => dispatch(toggleIsMuted());
 
   // TODO: home button logic
-  const onHomePress = () => router.replace("./");
+  const onHomePress = () => router.replace("/");
 
   return (
     <Surface style={styles.footerContainer}>
