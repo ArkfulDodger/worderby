@@ -55,7 +55,28 @@ module.exports = () => {
         projectId: "26e4d88c-e377-4718-817a-6eca82dba993",
       },
     },
-    plugins: ["expo-router"],
+    plugins: [
+      "expo-router",
+      "expo-font",
+      {
+        fonts: [
+          "src/assets/fonts/AppareoExtraLight.ttf",
+          "src/assets/fonts/AppareoLight.ttf",
+          "src/assets/fonts/AppareoMedium.ttf",
+          "src/assets/fonts/AppareoBlack.ttf",
+          "src/assets/fonts/Teko-Regular.ttf",
+          "src/assets/fonts/Teko-Bold.ttf",
+          "src/assets/fonts/Ubuntu-Light.ttf",
+          "src/assets/fonts/Ubuntu-LightItalic.ttf",
+          "src/assets/fonts/Ubuntu-Regular.ttf",
+          "src/assets/fonts/Ubuntu-Italic.ttf",
+          "src/assets/fonts/Ubuntu-Medium.ttf",
+          "src/assets/fonts/Ubuntu-MediumItalic.ttf",
+          "src/assets/fonts/Ubuntu-Bold.ttf",
+          "src/assets/fonts/Ubuntu-BoldItalic.ttf"
+        ]
+      }
+    ],
     experiments: {
       typedRoutes: true,
     },
