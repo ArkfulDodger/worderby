@@ -8,7 +8,9 @@ const light: CustomizedColors = {
   backgroundMid: "#FFF0E6", // midway btw gradient top/bottom
   backgroundLight: "#fff6f2", // slightly lighter than midway
   player: "#dd00ff",
-  opponent: "#c18617"
+  opponent: "#c18617",
+  positiveScore: "green",
+  negativeScore: "red"
   // elevation: {
   //   level0: "transparent",
   //   level1: "#f3ddc8",
@@ -30,7 +32,9 @@ const dark: CustomizedColors = {
   backgroundMid: "#05031e", // midway btw gradient top/bottom
   backgroundLight: "#0d0a36", // slightly lighter than midway
   player: "#C50EE1",
-  opponent: "#00ACB7"
+  opponent: "#00ACB7",
+  positiveScore: "green",
+  negativeScore: "red"
   // elevation: {
   //   level0: "transparent",
   //   level1: "#f3ddc8",

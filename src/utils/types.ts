@@ -19,6 +19,8 @@ export type CustomizedColors = Partial<
   backgroundLight: string,
   player: ColorValue,
   opponent: ColorValue,
+  positiveScore: ColorValue,
+  negativeScore: ColorValue,
 };
 
 // all colors which are defined by the app theme
