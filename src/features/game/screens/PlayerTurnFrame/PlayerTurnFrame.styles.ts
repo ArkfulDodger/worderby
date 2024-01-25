@@ -32,7 +32,7 @@ export const createStyles = (theme: AppTheme): Styles => {
     promptInputArea: {
       alignItems: "center",
       justifyContent: "center",
-      backgroundColor: theme.colors.primaryContainer,
+      // backgroundColor: theme.colors.primaryContainer,
       flex: 1,
       paddingHorizontal: PLAY_AREA_PADDING,
     },
