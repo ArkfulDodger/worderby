@@ -8,6 +8,9 @@ import WordListProvider from "../Providers/WordListProvider";
 import { Theme, ThemeProvider } from "@react-navigation/native";
 import { ThemeProp } from "react-native-paper/lib/typescript/types";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { LinearGradient } from "expo-linear-gradient";
+import { bgGradient } from "../../../theme/gradients";
+import { useMemo } from "react";
 
 type Props = {
   children: React.ReactNode;
@@ -23,13 +26,18 @@ const AppWrapper = ({ children }: Props) => {
   // get the controlled theme object to pass to providers
   const theme = useThemeControl();
 
+  // get the background gradient
+  const gradientProps = useMemo(() => bgGradient(theme), [theme]);
+
   return (
     <GestureHandlerRootView style={styles.fill}>
       <PaperProvider theme={theme as ThemeProp}>
         <ThemeProvider value={theme as Theme}>
           <WordListProvider>
-            {children}
-            <ThemedStatusBar />
+            <LinearGradient style={styles.fill} {...gradientProps}>
+              {children}
+              <ThemedStatusBar />
+            </LinearGradient>
           </WordListProvider>
         </ThemeProvider>
       </PaperProvider>

@@ -15,7 +15,7 @@ export type GradientProps = Pick<
 
 export const bgGradient = (theme: AppTheme): GradientProps => ({
   colors: [theme.colors.backgroundStart, theme.colors.backgroundEnd],
-  start: { x: 0.5, y: 1},
-  end: { x: 0.5, y: 0},
+  start: { x: 0.5, y: 0},
+  end: { x: 0.5, y: 1},
   locations: [0, 1]
 })
