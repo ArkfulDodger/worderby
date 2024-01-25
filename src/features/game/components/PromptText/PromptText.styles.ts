@@ -25,15 +25,15 @@ export const createStyles = (theme: AppTheme): Styles => {
   const dynamicStyles: DynamicStyles = {
     prompt: (size: number, display: boolean) => ({
       fontSize: size,
-      color: display ? "magenta" : "transparent",
+      color: display ? theme.colors.player : "transparent",
       fontWeight: "bold",
       textAlign: "center",
     }),
     unused: (forceBold: boolean) => ({
       fontSize: undefined, // inherit from prompt
-      color: undefined, // inherit from prompt
       textAlign: undefined, // inherit from prompt
-      opacity: 0.5,
+      // color: undefined, // inherit from prompt
+      opacity: 0.6,
       fontWeight: forceBold ? "bold" : "normal", // force bold prior to display for sizing
     }),
   };

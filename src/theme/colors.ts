@@ -7,7 +7,16 @@ const light: CustomizedColors = {
   backgroundEnd: "#FFE2CD",
   backgroundMid: "#FFF0E6", // midway btw gradient top/bottom
   backgroundLight: "#fff6f2", // slightly lighter than midway
-  // primary: "#8F5D00",
+  player: "#dd00ff",
+  opponent: "#c18617"
+  // elevation: {
+  //   level0: "transparent",
+  //   level1: "#f3ddc8",
+  //   level2: "red",
+  //   level3: "#f2d2b4",
+  //   level4: "#f2d2b4",
+  //   level5: "#f2d2b4"
+  // }  
   // secondary: "#FAC336",
   // focus: "#BC02D9",
   // accent: "#00ACB7",
@@ -20,7 +29,16 @@ const dark: CustomizedColors = {
   backgroundEnd: "#000000",
   backgroundMid: "#05031e", // midway btw gradient top/bottom
   backgroundLight: "#0d0a36", // slightly lighter than midway
-  // primary: "#7c75ff",
+  player: "#C50EE1",
+  opponent: "#00ACB7"
+  // elevation: {
+  //   level0: "transparent",
+  //   level1: "#f3ddc8",
+  //   level2: "red",
+  //   level3: "#f2d2b4",
+  //   level4: "#f2d2b4",
+  //   level5: "#f2d2b4"
+  // }  
   // secondary: "#5943D8",
   // focus: "#C50EE1",
   // accent: "#00ACB7",

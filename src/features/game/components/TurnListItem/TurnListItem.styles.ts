@@ -40,10 +40,10 @@ export const createStyles = (theme: AppTheme, turn: Turn): Styles => {
     scoreText: {
       fontSize: RESULT_WORD_FONT_SIZE,
       fontWeight: "bold",
-      color: turn.isPlayer ? "magenta" : "#c18617",
+      color: turn.isPlayer ? theme.colors.player : theme.colors.opponent
     },
     stolen: {
-      color: turn.isPlayer ? "magenta" : "#c18617",
+      color: turn.isPlayer ? theme.colors.player : theme.colors.opponent,
     },
   });
 

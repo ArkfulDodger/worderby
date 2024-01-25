@@ -34,7 +34,7 @@ export const createStyles = (theme: AppTheme): Styles => {
       textAlign: "center",
     },
     stolen: {
-      color: "magenta",
+      color: theme.colors.player,
     },
     letterScoreContainer: {
       flexDirection: "row",

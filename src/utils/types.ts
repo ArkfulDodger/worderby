@@ -3,6 +3,7 @@ import {
   DefaultTheme as NavigationDefaultTheme,
   Theme,
 } from "@react-navigation/native";
+import { ColorValue } from "react-native";
 import { MD3Colors, MD3Theme } from "react-native-paper/lib/typescript/types";
 
 // colors which can be/are customized within the app
@@ -15,7 +16,9 @@ export type CustomizedColors = Partial<
   backgroundStart: string,
   backgroundEnd: string,
   backgroundMid: string,
-  backgroundLight: string
+  backgroundLight: string,
+  player: ColorValue,
+  opponent: ColorValue,
 };
 
 // all colors which are defined by the app theme
