@@ -13,7 +13,7 @@ type Props = {};
 const PromptText = ({}: Props) => {
   const styles = useStyles(createStyles);
   const dispatch = useAppDispatch();
-  const pIndexInput = useAppSelector(selectPIndexInput) || 1;
+  const pIndexInput = useAppSelector(selectPIndexInput) ?? 1;
   const { unusedPrompt, usedPrompt } = useAppSelector(selectUsedUnusedPrompt);
   const { isFontSized, fontSize, onTextLayout } = useResizingFont({
     minFontSize: 15,
