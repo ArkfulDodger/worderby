@@ -36,7 +36,6 @@ export const createStyles = (theme: AppTheme): Styles => {
     },
     scoreContainer: {
       flex: 1,
-      // backgroundColor: "blue",
       justifyContent: "center",
       alignItems: "center",
       rowGap: 20,

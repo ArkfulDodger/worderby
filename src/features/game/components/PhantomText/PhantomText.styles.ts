@@ -20,7 +20,6 @@ export const createStyles = (
   return StyleSheet.create<Styles>({
     container: {
       position: "absolute",
-      backgroundColor: "transparent",
       width: width,
       alignItems: "center",
     },

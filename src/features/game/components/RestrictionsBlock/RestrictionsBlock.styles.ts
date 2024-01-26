@@ -1,4 +1,4 @@
-import { StyleSheet, TextStyle, ViewStyle } from "react-native";
+import { StyleSheet, ViewStyle } from "react-native";
 import { AppTheme } from "../../../../utils/types";
 
 interface StaticStyles {
@@ -7,7 +7,7 @@ interface StaticStyles {
 }
 
 interface DynamicStyles {
-  endings: (n: number) => TextStyle;
+  //
 }
 
 export interface Styles extends StaticStyles, DynamicStyles {}
@@ -27,11 +27,7 @@ export const createStyles = (theme: AppTheme): Styles => {
   });
 
   const dynamicStyles: DynamicStyles = {
-    endings: (n) => ({
-      color: n === Infinity ? "red" : theme.colors.text,
-      fontWeight: n > 1 ? "bold" : "normal",
-      opacity: n === 0 ? 0.4 : 1,
-    }),
+    // 
   };
 
   return { ...staticStyles, ...dynamicStyles };

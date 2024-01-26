@@ -10,7 +10,8 @@ const light: CustomizedColors = {
   player: "#dd00ff",
   opponent: "#c18617",
   positiveScore: "green",
-  negativeScore: "red"
+  negativeScore: "red",
+  alert: "red",
   // elevation: {
   //   level0: "transparent",
   //   level1: "#f3ddc8",
@@ -34,7 +35,8 @@ const dark: CustomizedColors = {
   player: "#C50EE1",
   opponent: "#00ACB7",
   positiveScore: "green",
-  negativeScore: "red"
+  negativeScore: "red",
+  alert: "red"
   // elevation: {
   //   level0: "transparent",
   //   level1: "#f3ddc8",

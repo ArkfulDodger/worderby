@@ -22,7 +22,7 @@ export const createStyles = (theme: AppTheme, result: GameResult): Styles => {
       textAlign: undefined,
       margin: undefined,
       fontSize: undefined,
-      color: "#c18617",
+      color: theme.colors.opponent,
       fontWeight: undefined,
     },
   });

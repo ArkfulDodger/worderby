@@ -49,7 +49,7 @@ export const createStyles = (theme: AppTheme, turn: Turn): Styles => {
 
   const dynamicStyles: DynamicStyles = {
     timerScore: (score) => ({
-      color: score > 0 ? "green" : score < 0 ? "red" : theme.colors.text,
+      color: score > 0 ? theme.colors.positiveScore : score < 0 ? theme.colors.negativeScore : theme.colors.text,
       fontSize: RESULT_WORD_FONT_SIZE * 0.8,
       fontWeight: "bold",
       position: "absolute",

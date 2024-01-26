@@ -24,11 +24,11 @@ export const createStyles = (theme: AppTheme): Styles => {
   });
 
   const dynamicStyles: DynamicStyles = {
-    endings: (n) => ({
+    endings: (matchingChars) => ({
       fontSize: FONT_SIZE,
-      color: n === Infinity ? "red" : theme.colors.text,
-      fontWeight: n > 1 ? "bold" : "normal",
-      opacity: n === 0 ? 0.4 : 1,
+      color: matchingChars === Infinity ? theme.colors.alert : theme.colors.text, // Infinity is an exact match
+      fontWeight: matchingChars > 1 ? "bold" : "normal",
+      opacity: matchingChars === 0 ? 0.4 : 1,
     }),
   };
 
