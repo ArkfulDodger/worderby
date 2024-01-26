@@ -17,7 +17,7 @@ export const createStyles = (theme: AppTheme): Styles => {
     unusable: {
       fontSize: undefined, // inherit from prompt
       textAlign: undefined, // inherit from prompt
-      color: theme.colors.alert,
+      color: theme.colors.notification,
       fontWeight: "normal",
     },
   });
