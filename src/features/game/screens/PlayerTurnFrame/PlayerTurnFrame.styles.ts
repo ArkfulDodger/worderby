@@ -32,7 +32,7 @@ export const createStyles = (theme: AppTheme): Styles => {
     promptInputArea: {
       alignItems: "center",
       justifyContent: "center",
-      backgroundColor: theme.colors.primaryContainer,
+      // backgroundColor: theme.colors.primaryContainer,
       flex: 1,
       paddingHorizontal: PLAY_AREA_PADDING,
     },
@@ -44,7 +44,7 @@ export const createStyles = (theme: AppTheme): Styles => {
     }),
     stolenLetters: (size: number) => ({
       fontSize: size,
-      color: "magenta",
+      color: theme.colors.player,
     }),
     stolenContainer: (isSplit) => ({
       alignSelf: isSplit ? "flex-start" : "center",

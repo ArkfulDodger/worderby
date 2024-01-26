@@ -14,7 +14,7 @@ export const createStyles = (theme: AppTheme, result: GameResult): Styles => {
       textAlign: "center",
       margin: 30,
       fontSize: 40,
-      color: result === GameResult.Win ? "magenta" : theme.colors.text,
+      color: result === GameResult.Win ? theme.colors.player : theme.colors.text,
       fontWeight: "bold",
     },
     opponent: {
@@ -22,7 +22,7 @@ export const createStyles = (theme: AppTheme, result: GameResult): Styles => {
       textAlign: undefined,
       margin: undefined,
       fontSize: undefined,
-      color: "#c18617",
+      color: theme.colors.opponent,
       fontWeight: undefined,
     },
   });

@@ -9,6 +9,9 @@ import Animated, {
 } from "react-native-reanimated";
 import { ColorValue, StyleProp, ViewStyle } from "react-native";
 import { TIMER_COUNT } from "../../../features/game/constants";
+import { useTheme } from "react-native-paper";
+import { AppTheme } from "../../../utils/types";
+import { useMemo } from "react";
 
 type Props = {
   radius: number;
@@ -20,16 +23,16 @@ type Props = {
 // Create an animated version of the Circle Component
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
-// The colors for the progress timer
-const POSITIVE_COLOR = "#1f92f0";
-const POSITIVE_COLOR_FADED = "#98cbf5";
-const NEGATIVE_COLOR = "#e61934";
-const NEGATIVE_COLOR_FADED = "#e37685";
 
 // a circular progress bar which loops over itself over the course of a timer countdown
 // Renders an actively progressing circle svg above a backdrop circle to "fade out" the previous
 // progress bar will change color when progressing to negative values
 const CircularProgressBar = ({ radius, progress, timer, style }: Props) => {
+  const theme = useTheme() as AppTheme;
+  const headerContainerColor = theme.colors.elevation.level1; // update GameHeader.styles if changed
+  const positiveColorFaded = useMemo(() => interpolateColor(0.5, [0,1], [headerContainerColor, theme.colors.timerPositive]), [theme]);
+  const negativeColorFaded = useMemo(() => interpolateColor(0.5, [0,1], [headerContainerColor, theme.colors.timerNegative]), [theme]);
+
   // the width of the progress bar line
   const strokeWidth = radius * 0.24;
 
@@ -49,8 +52,8 @@ const CircularProgressBar = ({ radius, progress, timer, style }: Props) => {
       progress.value,
       [0, 1],
       isActiveCirclePositive.value
-        ? [POSITIVE_COLOR_FADED, POSITIVE_COLOR]
-        : [NEGATIVE_COLOR_FADED, NEGATIVE_COLOR]
+        ? [positiveColorFaded, theme.colors.timerPositive]
+        : [negativeColorFaded, theme.colors.timerNegative]
     )
   );
 
@@ -58,8 +61,8 @@ const CircularProgressBar = ({ radius, progress, timer, style }: Props) => {
   const backstrokeColor = useDerivedValue<ColorValue | undefined>(() =>
     timer.value < TIMER_COUNT - 1
       ? isBackCirclePositive.value
-        ? POSITIVE_COLOR_FADED
-        : NEGATIVE_COLOR_FADED
+        ? positiveColorFaded
+        : negativeColorFaded
       : "transparent"
   );
 

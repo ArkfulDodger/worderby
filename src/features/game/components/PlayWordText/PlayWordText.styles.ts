@@ -14,7 +14,7 @@ export const createStyles = (theme: AppTheme): Styles => ({
   }),
   stolenLetters: (size: number) => ({
     fontSize: size,
-    color: "magenta",
+    color: theme.colors.player,
   }),
   stolenContainer: (isSplit) => ({
     alignSelf: isSplit ? "flex-start" : "center",

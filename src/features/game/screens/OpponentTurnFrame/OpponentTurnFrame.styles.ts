@@ -29,14 +29,13 @@ export const createStyles = (theme: AppTheme): Styles => {
     },
     wordContainer: {
       flex: 1,
-      // backgroundColor: "magenta",
+      // backgroundColor: theme.colors.player,
       justifyContent: "center",
       alignItems: "center",
       rowGap: 20,
     },
     scoreContainer: {
       flex: 1,
-      // backgroundColor: "blue",
       justifyContent: "center",
       alignItems: "center",
       rowGap: 20,

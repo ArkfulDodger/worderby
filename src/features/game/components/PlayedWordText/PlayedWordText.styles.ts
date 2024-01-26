@@ -30,7 +30,7 @@ export const createStyles = (
       color: "transparent",
     },
     stolen: {
-      color: "magenta",
+      color: theme.colors.player,
     },
     splitLeft: {
       textAlign: isSplit ? "left" : "center",

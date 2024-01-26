@@ -34,7 +34,7 @@ export const createStyles = (theme: AppTheme): Styles => {
       textAlign: "center",
     },
     stolen: {
-      color: "magenta",
+      color: theme.colors.player,
     },
     letterScoreContainer: {
       flexDirection: "row",
@@ -52,12 +52,12 @@ export const createStyles = (theme: AppTheme): Styles => {
   const dynamicStyles: DynamicStyles = {
     timerIcon: (count) => ({
       fontSize: fontScaled(FONT_SIZE * 0.8),
-      color: count > 0 ? "green" : count < 0 ? "red" : theme.colors.text,
+      color: count > 0 ? theme.colors.positiveScore : count < 0 ? theme.colors.negativeScore : theme.colors.text,
     }),
     timerText: (count) => ({
       fontSize: FONT_SIZE,
       fontWeight: "bold",
-      color: count > 0 ? "green" : count < 0 ? "red" : theme.colors.text,
+      color: count > 0 ? theme.colors.positiveScore : count < 0 ? theme.colors.negativeScore : theme.colors.text,
     }),
   };
 

@@ -40,16 +40,16 @@ export const createStyles = (theme: AppTheme, turn: Turn): Styles => {
     scoreText: {
       fontSize: RESULT_WORD_FONT_SIZE,
       fontWeight: "bold",
-      color: turn.isPlayer ? "magenta" : "#c18617",
+      color: turn.isPlayer ? theme.colors.player : theme.colors.opponent
     },
     stolen: {
-      color: turn.isPlayer ? "magenta" : "#c18617",
+      color: turn.isPlayer ? theme.colors.player : theme.colors.opponent,
     },
   });
 
   const dynamicStyles: DynamicStyles = {
     timerScore: (score) => ({
-      color: score > 0 ? "green" : score < 0 ? "red" : theme.colors.text,
+      color: score > 0 ? theme.colors.positiveScore : score < 0 ? theme.colors.negativeScore : theme.colors.text,
       fontSize: RESULT_WORD_FONT_SIZE * 0.8,
       fontWeight: "bold",
       position: "absolute",

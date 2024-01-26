@@ -13,14 +13,11 @@ export const TIMER_SIZE = fontScaled(50);
 export const createStyles = (theme: AppTheme): Styles => {
   return StyleSheet.create<Styles>({
     container: {
-      backgroundColor: theme.colors.inverseOnSurface,
       width: TIMER_SIZE,
       height: TIMER_SIZE,
       borderRadius: TIMER_SIZE * 0.5,
       alignItems: "center",
       justifyContent: "center",
-      borderWidth: 0,
-      borderColor: "black",
       overflow: "hidden",
     },
     counter: {

@@ -14,10 +14,11 @@ interface Styles {
 export const createStyles = (theme: AppTheme): Styles => {
   const staticStyles = StyleSheet.create<Styles>({
     outerHeaderContainer: {
-      backgroundColor: "#DDDDDD",
+      backgroundColor: theme.colors.elevation.level1 // update CircularProgressBar if changed
+      // backgroundColor: "#DDDDDD",
     },
     innerHeaderContainer: {
-      backgroundColor: "#EEEEEE",
+      // backgroundColor: "#EEEEEE",
     },
     headerContent: {
       flexDirection: "row",
@@ -44,7 +45,7 @@ export const createStyles = (theme: AppTheme): Styles => {
       fontSize: 16,
       fontWeight: "bold",
       textAlign: "center",
-      color: theme.colors.inverseOnSurface,
+      color: theme.colors.onPrimary,
     },
   });
 
