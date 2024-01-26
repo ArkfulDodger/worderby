@@ -21,6 +21,8 @@ export type CustomizedColors = Partial<
   opponent: ColorValue,
   positiveScore: ColorValue,
   negativeScore: ColorValue,
+  timerPositive: string,
+  timerNegative: string,
 };
 
 // all colors which are defined by the app theme

@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { AppTheme } from "../../../../utils/types";
+import { AppTheme } from "../../../utils/types";
 
 interface Styles {
 	// define static style types

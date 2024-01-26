@@ -14,6 +14,7 @@ interface Styles {
 export const createStyles = (theme: AppTheme): Styles => {
   const staticStyles = StyleSheet.create<Styles>({
     outerHeaderContainer: {
+      backgroundColor: theme.colors.elevation.level1 // update CircularProgressBar if changed
       // backgroundColor: "#DDDDDD",
     },
     innerHeaderContainer: {
