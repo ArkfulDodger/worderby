@@ -25,7 +25,7 @@ export const createStyles = (theme: AppTheme): Styles => {
 
   const dynamicStyles: DynamicStyles = {
     dot: (current) => ({
-      backgroundColor: current ? theme.colors.alert : theme.colors.secondary,
+      backgroundColor: current ? theme.colors.notification : theme.colors.secondary,
       opacity: current ? 1 : 0.9,
       width: size,
       height: size,

@@ -33,7 +33,7 @@ export const createStyles = (theme: AppTheme): Styles => {
       fontSize: undefined, // inherit from prompt
       textAlign: undefined, // inherit from prompt
       // color: undefined, // inherit from prompt
-      opacity: 0.6,
+      opacity: 0.7,
       fontWeight: forceBold ? "bold" : "normal", // force bold prior to display for sizing
     }),
   };

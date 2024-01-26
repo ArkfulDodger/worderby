@@ -32,8 +32,9 @@ const dark: CustomizedColors = {
   backgroundEnd: "#000000",
   backgroundMid: "#05031e", // midway btw gradient top/bottom
   backgroundLight: "#0d0a36", // slightly lighter than midway
-  player: "#C50EE1",
-  opponent: "#00ACB7",
+  player: "#e641ff",
+  opponent: "#d6a851",
+  // opponent: "#00ACB7",
   positiveScore: "green",
   negativeScore: "red",
   alert: "red"
