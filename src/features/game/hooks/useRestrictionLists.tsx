@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useAppSelector } from "../../../hooks/reduxHooks";
 import useSelfReplacingTimeout from "../../../hooks/useSelfReplacingTimeout";
 import { selectPlayWord, selectRestrictions } from "../gameSelectors";
@@ -19,43 +19,46 @@ const useRestrictionLists = () => {
   >([]);
 
   // assess each of the restrictions against the play word
-  const getMatches = () => {
-    let matches = restrictions
-      .map<RestrictionTextItemProps>((r) => {
-        // flag any ending which perfectly matches the play word with Infinity
-        if (playWord.endsWith(r))
-          return {
-            str: r,
-            matchNum: Infinity,
-          };
-
-        // assign a match num to other endings based on how many characters match
-        for (let i = r.length - 1; i > 0; i--) {
-          const substring = r.slice(0, i);
-          if (playWord.endsWith(substring))
+  const getMatches = useCallback(
+    (playWord: string) => {
+      let matches = restrictions
+        .map<RestrictionTextItemProps>((r) => {
+          // flag any ending which perfectly matches the play word with Infinity
+          if (playWord.endsWith(r))
             return {
               str: r,
-              matchNum: i,
+              matchNum: Infinity,
             };
-        }
-
-        // return a match num of 0 if the ending has no overlap with the play word
-        return {
-          str: r,
-          matchNum: 0,
-        };
-      })
-      .sort((a, b) => b.matchNum - a.matchNum);
-
-    return matches;
-  };
+  
+          // assign a match num to other endings based on how many characters match
+          for (let i = r.length - 1; i > 0; i--) {
+            const substring = r.slice(0, i);
+            if (playWord.endsWith(substring))
+              return {
+                str: r,
+                matchNum: i,
+              };
+          }
+  
+          // return a match num of 0 if the ending has no overlap with the play word
+          return {
+            str: r,
+            matchNum: 0,
+          };
+        })
+        .sort((a, b) => b.matchNum - a.matchNum);
+  
+      return matches;
+    },
+    [restrictions],
+  )
 
   // when the play word input changes, update the restriction match array
   useEffect(() => {
     if (playWord !== undefined && playWord !== "") {
       // assess the matches on a delay in case the user is rapidly typing
       setRefreshMatchTimeout(() => {
-        const refreshedMatches = getMatches();
+        const refreshedMatches = getMatches(playWord);
         setRestrictionItems(refreshedMatches);
       }, 300);
     } else {
