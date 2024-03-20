@@ -68,10 +68,12 @@ const WordListProvider = ({ children }: Props) => {
 
     log(`Attempting FileSystem download of Db from Expo remote...`);
     // Attempt to Download the Database from the Expo remote asset
-    let downloadResult = await FileSystem.downloadAsync(asset.uri, sqlFileUri);
+    let downloadResult = asset.uri
+      ? await FileSystem.downloadAsync(asset.uri, sqlFileUri)
+      : null;
 
     // If the download fails, download via asset and copy over
-    if (downloadResult.status !== 200) {
+    if (!downloadResult || downloadResult.status !== 200) {
       // download asset if not already done
       log("    ...failed");
       log("checking if Module asset downloaded...");
