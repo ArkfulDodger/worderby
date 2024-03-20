@@ -5,11 +5,7 @@ import * as FileSystem from "expo-file-system";
 import { Asset } from "expo-asset";
 import { Alert } from "react-native";
 import { useAppDispatch } from "../../../hooks/reduxHooks";
-import {
-  addDevLog,
-  clearDevLogs,
-  setIsLoadingDb,
-} from "../../../store/slices/systemSlice";
+import { addDevLog, setIsLoadingDb } from "../../../store/slices/systemSlice";
 
 export const WordListContext = createContext<SQLite.SQLiteDatabase | undefined>(
   undefined
@@ -27,7 +23,7 @@ const WordListProvider = ({ children }: Props) => {
 
   // loads/creates the database and returns the db object
   async function loadDatabase(): Promise<void> {
-    dispatch(clearDevLogs());
+    // dispatch(clearDevLogs());
     // designate loading the database in state
     dispatch(setIsLoadingDb(true));
 
