@@ -32,6 +32,7 @@ const WordListProvider = ({ children }: Props) => {
     dispatch(setIsLoadingDb(true));
 
     log("Checking in FileSystem if SQLite directory exists...");
+    Alert.alert("I've been hit!");
     // if there is no SQLite directory on the device, create it
     if (
       !(await FileSystem.getInfoAsync(FileSystem.documentDirectory + "SQLite"))
