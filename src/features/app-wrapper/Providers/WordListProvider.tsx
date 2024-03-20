@@ -20,7 +20,6 @@ const WordListProvider = ({ children }: Props) => {
   const dispatch = useAppDispatch();
   const [db, setDb] = useState<SQLite.SQLiteDatabase>();
   const log = (str: string) => {
-    Alert.alert("logging:", str);
     dispatch(addDevLog(str));
   };
 
@@ -50,6 +49,22 @@ const WordListProvider = ({ children }: Props) => {
     let sqlFileUri = FileSystem.documentDirectory + "SQLite/word.db";
     log(`[asset uri]: ${asset.uri}`);
     log(`[sqlFileUri]: ${sqlFileUri}`);
+
+    Alert.alert(
+      "asset:",
+      `${JSON.stringify(
+        {
+          name: asset.name,
+          type: asset.type,
+          uri: asset.uri,
+          localUri: asset.localUri,
+          downloaded: asset.downloaded,
+          downloading: asset.downloading,
+        },
+        null,
+        2
+      )}`
+    );
 
     log(`Attempting FileSystem download of Db from Expo remote...`);
     // Attempt to Download the Database from the Expo remote asset
