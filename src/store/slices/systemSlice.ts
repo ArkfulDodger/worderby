@@ -8,6 +8,7 @@ interface SystemState {
   appState: AppStateStatus;
   isMuted: boolean;
   isLoadingDb: boolean;
+  devLogs: string[];
 }
 
 // This is the initial state of the slice
@@ -15,6 +16,7 @@ const initialState: SystemState = {
   appState: "active",
   isMuted: false,
   isLoadingDb: false,
+  devLogs: [],
 };
 
 const systemSlice = createSlice({
@@ -35,17 +37,34 @@ const systemSlice = createSlice({
     setIsLoadingDb: (state, action: PayloadAction<boolean>) => {
       state.isLoadingDb = action.payload;
     },
+
+    // add a new log to the dev logs (in Dev only)
+    addDevLog: (state, action: PayloadAction<string>) => {
+      if (!__DEV__) return;
+      state.devLogs = [...state.devLogs, action.payload];
+    },
+
+    // clear all dev logs
+    clearDevLogs: (state) => {
+      state.devLogs = [];
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { toggleIsMuted, setAppState, setIsLoadingDb } =
-  systemSlice.actions;
+export const {
+  toggleIsMuted,
+  setAppState,
+  setIsLoadingDb,
+  addDevLog,
+  clearDevLogs,
+} = systemSlice.actions;
 
 export const selectIsAppActive = (state: RootState) =>
   state.system.appState === "active";
 export const selectIsMuted = (state: RootState) => state.system.isMuted;
 export const selectIsLoadingDb = (state: RootState) => state.system.isLoadingDb;
+export const selectDevLogs = (state: RootState) => state.system.devLogs;
 
 // We export the reducer function so that it can be added to the store
 export default systemSlice.reducer;
