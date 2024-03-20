@@ -7,12 +7,14 @@ import { RootState } from "../store";
 interface SystemState {
   appState: AppStateStatus;
   isMuted: boolean;
+  isLoadingDb: boolean;
 }
 
 // This is the initial state of the slice
 const initialState: SystemState = {
   appState: "active",
   isMuted: false,
+  isLoadingDb: false,
 };
 
 const systemSlice = createSlice({
@@ -28,15 +30,22 @@ const systemSlice = createSlice({
     setAppState: (state, action: PayloadAction<AppStateStatus>) => {
       state.appState = action.payload;
     },
+
+    // set whether or not the word list database is loading
+    setIsLoadingDb: (state, action: PayloadAction<boolean>) => {
+      state.isLoadingDb = action.payload;
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { toggleIsMuted, setAppState } = systemSlice.actions;
+export const { toggleIsMuted, setAppState, setIsLoadingDb } =
+  systemSlice.actions;
 
 export const selectIsAppActive = (state: RootState) =>
   state.system.appState === "active";
 export const selectIsMuted = (state: RootState) => state.system.isMuted;
+export const selectIsLoadingDb = (state: RootState) => state.system.isLoadingDb;
 
 // We export the reducer function so that it can be added to the store
 export default systemSlice.reducer;

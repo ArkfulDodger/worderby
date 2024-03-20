@@ -5,6 +5,9 @@ import Button from "../../../../components/atoms/Button";
 import useLoadNewGame from "../../../game/hooks/useLoadNewGame";
 import { GameMode } from "../../../game/enums";
 import { useRouter } from "expo-router";
+import { useAppSelector } from "../../../../hooks/reduxHooks";
+import { selectIsLoadingDb } from "../../../../store/slices/systemSlice";
+import { ActivityIndicator, Text } from "react-native-paper";
 
 type Props = {};
 
@@ -13,6 +16,7 @@ const LandingScreen = ({}: Props) => {
   const styles = useStyles(createStyles);
   const { loadSinglePlayerGame } = useLoadNewGame();
   const router = useRouter();
+  const isDbLoading = useAppSelector(selectIsLoadingDb);
 
   const onDemoPress = () => {
     router.push("/game/demo");
@@ -37,6 +41,12 @@ const LandingScreen = ({}: Props) => {
   return (
     <View style={styles.container}>
       {/* <Button onPress={onDemoPress}>Demo</Button> */}
+      {isDbLoading && (
+        <View>
+          <ActivityIndicator />
+          <Text>Database is loading...</Text>
+        </View>
+      )}
       <Button onPress={onCompetitivePress}>Competitive</Button>
       <Button onPress={onCasualPress}>Casual</Button>
     </View>
