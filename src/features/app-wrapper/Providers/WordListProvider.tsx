@@ -5,11 +5,7 @@ import * as FileSystem from "expo-file-system";
 import { Asset } from "expo-asset";
 import { Alert } from "react-native";
 import { useAppDispatch } from "../../../hooks/reduxHooks";
-import {
-  addDevLog,
-  clearDevLogs,
-  setIsLoadingDb,
-} from "../../../store/slices/systemSlice";
+import { addDevLog, setIsLoadingDb } from "../../../store/slices/systemSlice";
 
 export const WordListContext = createContext<SQLite.SQLiteDatabase | undefined>(
   undefined
@@ -23,53 +19,53 @@ interface Props {
 const WordListProvider = ({ children }: Props) => {
   const dispatch = useAppDispatch();
   const [db, setDb] = useState<SQLite.SQLiteDatabase>();
-  // const log = (str: string) => dispatch(addDevLog(str));
+  const log = (str: string) => {
+    Alert.alert("logging:", str);
+    dispatch(addDevLog(str));
+  };
 
   // loads/creates the database and returns the db object
   async function loadDatabase(): Promise<void> {
-    dispatch(clearDevLogs());
+    // dispatch(clearDevLogs());
     // designate loading the database in state
     dispatch(setIsLoadingDb(true));
 
-    dispatch(addDevLog("Checking in FileSystem if SQLite directory exists..."));
-    Alert.alert("I've been hit!");
+    log("Checking in FileSystem if SQLite directory exists...");
     // if there is no SQLite directory on the device, create it
     if (
       !(await FileSystem.getInfoAsync(FileSystem.documentDirectory + "SQLite"))
         .exists
     ) {
-      dispatch(addDevLog("    ...no"));
-      dispatch(addDevLog("Making SQLite directory with FileSystem"));
+      log("    ...no");
+      log("Making SQLite directory with FileSystem");
       await FileSystem.makeDirectoryAsync(
         FileSystem.documentDirectory + "SQLite"
       );
     } else {
-      dispatch(addDevLog("    ...yes"));
+      log("    ...yes");
     }
 
     // get the database asset and the location where it needs to be
     const asset = Asset.fromModule(require("../../../assets/data/word.db"));
     let sqlFileUri = FileSystem.documentDirectory + "SQLite/word.db";
-    dispatch(addDevLog(`[asset uri]: ${asset.uri}`));
-    dispatch(addDevLog(`[sqlFileUri]: ${sqlFileUri}`));
+    log(`[asset uri]: ${asset.uri}`);
+    log(`[sqlFileUri]: ${sqlFileUri}`);
 
-    dispatch(
-      addDevLog(`Attempting FileSystem download of Db from Expo remote...`)
-    );
+    log(`Attempting FileSystem download of Db from Expo remote...`);
     // Attempt to Download the Database from the Expo remote asset
     let downloadResult = await FileSystem.downloadAsync(asset.uri, sqlFileUri);
 
     // If the download fails, download via asset and copy over
     if (downloadResult.status !== 200) {
       // download asset if not already done
-      dispatch(addDevLog("    ...failed"));
-      dispatch(addDevLog("checking if Module asset downloaded..."));
+      log("    ...failed");
+      log("checking if Module asset downloaded...");
       if (!asset.downloaded) {
-        dispatch(addDevLog("    ...no, downloading..."));
+        log("    ...no, downloading...");
         await asset.downloadAsync();
-        dispatch(addDevLog("    ...... complete!"));
+        log("    ...... complete!");
       } else {
-        dispatch(addDevLog("    ...yes!"));
+        log("    ...yes!");
       }
       if (asset.localUri) {
         // copy the database to its proper location if a local database exists
@@ -83,16 +79,14 @@ const WordListProvider = ({ children }: Props) => {
         throw new Error("Word List could not be loaded!");
       }
     } else {
-      dispatch(addDevLog("    ...success!"));
+      log("    ...success!");
     }
 
-    dispatch(addDevLog("IMPORTANT STEP:"));
-    dispatch(addDevLog("Attempting to open the database..."));
+    log("IMPORTANT STEP:");
+    log("Attempting to open the database...");
     // open the database and set the reference in state
     const wordDb = SQLite.openDatabase("word.db");
-    dispatch(
-      addDevLog(`    ...Completed attempt. Name: ${wordDb._name || "[none]"}`)
-    );
+    log(`    ...Completed attempt. Name: ${wordDb._name || "[none]"}`);
     setDb(wordDb);
 
     dispatch(setIsLoadingDb(false));
