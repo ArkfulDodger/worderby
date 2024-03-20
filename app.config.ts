@@ -74,10 +74,10 @@ module.exports = () => {
             "src/assets/fonts/Ubuntu-Medium.ttf",
             "src/assets/fonts/Ubuntu-MediumItalic.ttf",
             "src/assets/fonts/Ubuntu-Bold.ttf",
-            "src/assets/fonts/Ubuntu-BoldItalic.ttf"
-          ]
-        }
-      ]
+            "src/assets/fonts/Ubuntu-BoldItalic.ttf",
+          ],
+        },
+      ],
     ],
     experiments: {
       typedRoutes: true,
