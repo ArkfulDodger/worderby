@@ -40,7 +40,6 @@ const systemSlice = createSlice({
 
     // add a new log to the dev logs (in Dev only)
     addDevLog: (state, action: PayloadAction<string>) => {
-      if (!__DEV__) return;
       state.devLogs = [...state.devLogs, action.payload];
     },
 

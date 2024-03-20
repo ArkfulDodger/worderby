@@ -50,21 +50,21 @@ const WordListProvider = ({ children }: Props) => {
     log(`[asset uri]: ${asset.uri}`);
     log(`[sqlFileUri]: ${sqlFileUri}`);
 
-    Alert.alert(
-      "asset:",
-      `${JSON.stringify(
-        {
-          name: asset.name,
-          type: asset.type,
-          uri: asset.uri,
-          localUri: asset.localUri,
-          downloaded: asset.downloaded,
-          downloading: asset.downloading,
-        },
-        null,
-        2
-      )}`
-    );
+    // Alert.alert(
+    //   "asset:",
+    //   `${JSON.stringify(
+    //     {
+    //       name: asset.name,
+    //       type: asset.type,
+    //       uri: asset.uri,
+    //       localUri: asset.localUri,
+    //       downloaded: asset.downloaded,
+    //       downloading: asset.downloading,
+    //     },
+    //     null,
+    //     2
+    //   )}`
+    // );
 
     log(`Attempting FileSystem download of Db from Expo remote...`);
     // Attempt to Download the Database from the Expo remote asset
