@@ -14,12 +14,12 @@ module.exports = () => {
     owner: "arkfuldodger",
     version: "0.0.1",
     orientation: "portrait",
-    icon: "./assets/icon.png",
+    icon: "./src/assets/images/icon.png",
     userInterfaceStyle: "automatic",
     splash: {
-      image: "./assets/splash.png",
+      image: "./src/assets/images/splash.png",
       resizeMode: "contain",
-      backgroundColor: "#ffffff",
+      backgroundColor: "#FFF0E6",
     },
     assetBundlePatterns: ["**/*"],
     updates: {
@@ -35,11 +35,33 @@ module.exports = () => {
         : IS_PREV
         ? "com.arkfuldodger.worderby.preview"
         : "com.arkfuldodger.worderby.dev",
+      splash: {
+        image: "./src/assets/images/worderby-splash.png",
+        resizeMode: "contain",
+        backgroundColor: "#FFF0E6",
+        dark: {
+          image: "./src/assets/images/worderby-splash-dark.png",
+          resizeMode: "cover",
+          backgroundColor: "#05031e",
+        },
+      },
     },
     android: {
       adaptiveIcon: {
-        foregroundImage: "./assets/adaptive-icon.png",
-        backgroundColor: "#ffffff",
+        foregroundImage: "./src/assets/images/adaptive-icon-foreground.png",
+        backgroundImage: "./src/assets/images/adaptive-icon-background.png",
+        monochromeImage: "./src/assets/images/adaptive-icon-monochrome.png",
+        backgroundColor: "#FFF0E6",
+      },
+      splash: {
+        image: "./src/assets/images/worderby-splash.png",
+        resizeMode: "contain",
+        backgroundColor: "#FFF0E6",
+        dark: {
+          image: "./src/assets/images/worderby-splash-dark.png",
+          resizeMode: "cover",
+          backgroundColor: "#05031e",
+        },
       },
       package: IS_PROD
         ? "com.arkfuldodger.worderby"
